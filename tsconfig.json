@@ -3,15 +3,12 @@
         "target": "es5",
         "module": "ESNext",
         "moduleResolution": "node",
-        "declaration": true,
-        "outDir": "lib",
         "strict": true,
         "noImplicitAny": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strictPropertyInitialization": false,
         "baseUrl": ".",
         "paths": {
             "@film/*": [
@@ -26,7 +23,7 @@
         "node_modules"
     ],
     "include": [
-        "src/**/*",
-        "http.js"
+        "packages/*/*",
+        "apps/*/*"
     ]
 }
