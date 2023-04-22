@@ -1,0 +1,21 @@
+{
+  "name": "@ff/time-controller",
+  "version": "0.0.1",
+  "description": "@ff/time-controller",
+  "module": "dist/time-controller.esm.js",
+  "types": "dist/time-controller.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overdev-l/FilmFusion.git",
+    "directory": "packages/time-controller"
+  },
+  "bugs": {
+    "url": "https://github.com/overdev-l/FilmFusion/issues"
+  },
+  "keywords": ["ff"],
+  "author": "Overdev",
+  "license": "MIT"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@ff/renderer",
+  "version": "0.0.1",
+  "description": "@ff/renderer",
+  "module": "dist/renderer.esm.js",
+  "types": "dist/renderer.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overdev-l/FilmFusion.git",
+    "directory": "packages/renderer"
+  },
+  "bugs": {
+    "url": "https://github.com/overdev-l/FilmFusion/issues"
+  },
+  "keywords": ["ff"],
+  "author": "Overdev",
+  "license": "MIT"
+}
