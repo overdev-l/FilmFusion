@@ -2,7 +2,8 @@
   "version": "1.0.0",
   "scripts": {
     "commitlint": "commitlint --config .commitlintrc.json -e -V",
-    "lint": "npx eslint packages/* apps/** --fix"
+    "lint": "npx eslint packages/* apps/** --fix",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
@@ -12,6 +13,8 @@
     "@typescript-eslint/parser": "^5.59.0",
     "esbuild": "^0.17.17",
     "eslint": "^8.39.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   }
