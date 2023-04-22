@@ -1,0 +1,57 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "env": {
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "quotes": [
+            2,
+            "double"
+        ],
+        "no-const-assign": 2,
+        "semi": [
+            2,
+            "never"
+        ],
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "no-duplicate-case": 2,
+        "no-empty": 2,
+        "no-ex-assign": 2,
+        "no-extra-boolean-cast": 2,
+        "no-extra-parens": 2,
+        "eol-last": "error",
+        "no-extra-semi": 2,
+        "no-func-assign": 2,
+        "no-obj-calls": 2,
+        "no-unreachable": 2,
+        "block-scoped-var": 2,
+        "eqeqeq": 2,
+        "no-return-await": 2,
+        "no-self-assign": 2,
+        "no-self-compare": 2,
+        "no-unused-expressions": 0,
+        "init-declarations": 0,
+        "no-unused-vars": 0,
+        "comma-dangle": [
+            2,
+            "always"
+        ],
+        "func-style": 2,
+        "indent": 2,
+        "no-mixed-spaces-and-tabs": 2,
+        "no-dupe-class-members": 2,
+        "@typescript-eslint/ban-types": 0,
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-non-null-assertion": 0,
+        "@typescript-eslint/no-namespace": 0,
+        "no-undef": 0
+    }
+}
