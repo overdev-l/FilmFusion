@@ -1,26 +1,19 @@
 {
-  "name": "FilmFusion",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "workspaces": [
-    "packages/*"
-  ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.1"
+    
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
+    "esbuild": "^0.17.17",
     "eslint": "^8.39.0",
     "tslib": "^2.5.0",
+    
     "typescript": "^5.0.4"
   }
 }
