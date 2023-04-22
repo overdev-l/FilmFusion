@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "commitlint": "commitlint --config .commitlint.json -e -V"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
