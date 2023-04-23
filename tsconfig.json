@@ -11,7 +11,7 @@
         "emitDecoratorMetadata": true,
         "baseUrl": ".",
         "paths": {
-            "@film/*": [
+            "@film-fusion/*": [
                 "packages/*/src"
             ],
             "tslib": [
