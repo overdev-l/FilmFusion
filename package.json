@@ -6,9 +6,7 @@
     "commitlint": "commitlint --config .commitlintrc.json -e -V",
     "lint": "npx eslint packages/* --fix",
     "lint-staged": "lint-staged",
-    "dev:demo": "vite",
-    "build:demo": "vue-tsc && vite build",
-    "preview:demo": "vite preview"
+    "dev": "turbo run dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
@@ -23,6 +21,7 @@
     "rollup": "^3.20.7",
     "rollup-plugin-esbuild": "^5.0.0",
     "tslib": "^2.5.0",
+    "turbo": "^1.9.3",
     "typescript": "^5.0.4"
   }
 }

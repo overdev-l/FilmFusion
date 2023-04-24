@@ -1,1 +1,8 @@
 node_modules
+.vscode
+.idea
+.DS_Store
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
