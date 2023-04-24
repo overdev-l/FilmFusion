@@ -8,6 +8,10 @@
     "files": [
         "dist"
     ],
+    "scripts": {
+        "dev": "esbuild --bundle --format=esm --outfile=dist/scheduler.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -w --emitDeclarationOnly --outDir dist"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/overdev-l/FilmFusion.git",

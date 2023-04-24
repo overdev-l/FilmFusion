@@ -1,7 +1,7 @@
 const a = "123213"
 console.log(a)
 console.log(a + "123")
-interface ITest {
+export interface ITest {
     data: string[]
 }
 const test: ITest = {
