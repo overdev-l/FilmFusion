@@ -1,29 +1,32 @@
 {
-  "name": "@film-fusion/scheduler",
-  "version": "0.0.1",
-  "description": "@film-fusion/scheduler",
-  "module": "dist/scheduler.esm.js",
-  "types": "dist/scheduler.d.ts",
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/overdev-l/FilmFusion.git",
-    "directory": "packages/scheduler"
-  },
-  "bugs": {
-    "url": "https://github.com/overdev-l/FilmFusion/issues"
-  },
-  "buildOptions": {
-    "name": "FilmFusionScheduler",
-    "formats": [
-      "esm",
-      "cjs",
-      "umd"
-    ]
-  },
-  "keywords": ["film-fusion"],
-  "author": "Overdev",
-  "license": "MIT"
+    "name": "@film-fusion/scheduler",
+    "version": "0.0.1",
+    "description": "@film-fusion/scheduler",
+    "main": "dis/scheduler.esm.js",
+    "module": "dist/scheduler.esm.js",
+    "types": "dist/scheduler.d.ts",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/overdev-l/FilmFusion.git",
+        "directory": "packages/scheduler"
+    },
+    "bugs": {
+        "url": "https://github.com/overdev-l/FilmFusion/issues"
+    },
+    "buildOptions": {
+        "name": "FilmFusionScheduler",
+        "formats": [
+            "esm",
+            "cjs",
+            "umd"
+        ]
+    },
+    "keywords": [
+        "film-fusion"
+    ],
+    "author": "Overdev",
+    "license": "MIT"
 }

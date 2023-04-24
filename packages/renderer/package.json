@@ -1,29 +1,37 @@
 {
-  "name": "@film-fusion/renderer",
-  "version": "0.0.1",
-  "description": "@film-fusion/renderer",
-  "module": "dist/renderer.esm.js",
-  "types": "dist/renderer.d.ts",
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/overdev-l/FilmFusion.git",
-    "directory": "packages/renderer"
-  },
-  "bugs": {
-    "url": "https://github.com/overdev-l/FilmFusion/issues"
-  },
-  "buildOptions": {
-    "name": "FilmFusionRenderer",
-    "formats": [
-      "esm",
-      "cjs",
-      "umd"
-    ]
-  },
-  "keywords": ["film-fusion"],
-  "author": "Overdev",
-  "license": "MIT"
+    "name": "@film-fusion/renderer",
+    "version": "0.0.1",
+    "description": "@film-fusion/renderer",
+    "main": "dis/renderer.esm.js",
+    "module": "dist/renderer.esm.js",
+    "types": "dist/renderer.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "npm-run-all watch ts-types",
+        "watch": "esbuild --bundle --format=esm --outfile=dist/renderer.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -p tsconfig.json -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/overdev-l/FilmFusion.git",
+        "directory": "packages/renderer"
+    },
+    "bugs": {
+        "url": "https://github.com/overdev-l/FilmFusion/issues"
+    },
+    "buildOptions": {
+        "name": "FilmFusionRenderer",
+        "formats": [
+            "esm",
+            "cjs",
+            "umd"
+        ]
+    },
+    "keywords": [
+        "film-fusion"
+    ],
+    "author": "Overdev",
+    "license": "MIT"
 }

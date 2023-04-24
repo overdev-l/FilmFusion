@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "ESNext",
         "moduleResolution": "node",
         "strict": true,
@@ -9,6 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "declaration": true,
         "baseUrl": ".",
         "paths": {
             "@film-fusion/*": [
@@ -24,6 +25,8 @@
     ],
     "include": [
         "packages/*/src",
-        "apps/*/*"
-, "vite.config.ts", "tsconfig.node.json"    ]
+        "apps/*/*",
+        "vite.config.ts",
+        "tsconfig.node.json"
+    ]
 }

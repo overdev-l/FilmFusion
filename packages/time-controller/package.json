@@ -1,29 +1,32 @@
 {
-  "name": "@film-fusion/time-controller",
-  "version": "0.0.1",
-  "description": "@film-fusion/time-controller",
-  "module": "dist/time-controller.esm.js",
-  "types": "dist/time-controller.d.ts",
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/overdev-l/FilmFusion.git",
-    "directory": "packages/time-controller"
-  },
-  "bugs": {
-    "url": "https://github.com/overdev-l/FilmFusion/issues"
-  },
-  "buildOptions": {
-    "name": "FilmFusionTimeController",
-    "formats": [
-      "esm",
-      "cjs",
-      "umd"
-    ]
-  },
-  "keywords": ["film-fusion"],
-  "author": "Overdev",
-  "license": "MIT"
+    "name": "@film-fusion/time-controller",
+    "version": "0.0.1",
+    "description": "@film-fusion/time-controller",
+    "main": "dis/time-controller.esm.js",
+    "module": "dist/time-controller.esm.js",
+    "types": "dist/time-controller.d.ts",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/overdev-l/FilmFusion.git",
+        "directory": "packages/time-controller"
+    },
+    "bugs": {
+        "url": "https://github.com/overdev-l/FilmFusion/issues"
+    },
+    "buildOptions": {
+        "name": "FilmFusionTimeController",
+        "formats": [
+            "esm",
+            "cjs",
+            "umd"
+        ]
+    },
+    "keywords": [
+        "film-fusion"
+    ],
+    "author": "Overdev",
+    "license": "MIT"
 }
