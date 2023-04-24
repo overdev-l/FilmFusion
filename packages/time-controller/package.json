@@ -15,6 +15,14 @@
   "bugs": {
     "url": "https://github.com/overdev-l/FilmFusion/issues"
   },
+  "buildOptions": {
+    "name": "FilmFusionTimeController",
+    "formats": [
+      "esm",
+      "cjs",
+      "umd"
+    ]
+  },
   "keywords": ["film-fusion"],
   "author": "Overdev",
   "license": "MIT"

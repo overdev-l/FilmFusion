@@ -1,6 +1,7 @@
 import { packages, } from "./utils.js"
-import { cpus, } from "node:os"
-run()
+import { createRequire, } from "node:module"
+import path from "node:path"
+const require = createRequire(import.meta.url)
 
 const run = () => {
     try {
@@ -11,12 +12,22 @@ const run = () => {
 }
 
 const buildAll = async (packages) => {
-    await performPackage(cpus().length, packages, build)
+    await performPackage(packages, build)
 }
 
-const performPackage = async (c, t, b) => {
-    console.log(c, t, b)
+const performPackage = async ( t, b) => {
+    const ret = []
+    for(let item of packages) {
+        const p = Promise.resolve().then(() => b(item))
+        ret.push(p)
+    }
+    return Promise.all(ret)
 }
 const build = (target) => {
-    console.log(target)
+    const pkgDir = path.resolve(`packages/${target}`)
+    const pkg = require(`${pkgDir}/package.json`)
+    console.log(pkg)
 }
+
+
+run()
