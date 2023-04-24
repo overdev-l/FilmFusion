@@ -25,5 +25,5 @@
     "include": [
         "packages/*/src",
         "apps/*/*"
-    ]
+, "vite.config.ts", "tsconfig.node.json"    ]
 }
