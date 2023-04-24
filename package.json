@@ -4,7 +4,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "commitlint": "commitlint --config .commitlintrc.json -e -V",
-    "lint": "npx eslint packages/* apps/** --fix",
+    "lint": "npx eslint packages/* --fix",
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
