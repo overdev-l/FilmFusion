@@ -6,6 +6,10 @@
       "dev": {
         "cache": false,
         "persistent": true
+      },
+      "ts-types": {
+        "cache": false,
+        "persistent": true
       }
     }
   }

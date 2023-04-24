@@ -6,7 +6,8 @@
     "commitlint": "commitlint --config .commitlintrc.json -e -V",
     "lint": "npx eslint packages/* --fix",
     "lint-staged": "lint-staged",
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "ts-types": "turbo run ts-types"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
