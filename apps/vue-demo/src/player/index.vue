@@ -20,9 +20,24 @@ const refs = reactive<any>({
  const initRender = () => {
     refs.render = new Renderer({
         target: "#player",
-        movieWidth: 1080,
-        movieHeight: 1920
+        movieWidth: 1920,
+        movieHeight: 1080
     })
+    setTimeout(() => {
+        refs.render.setBackground({
+            type: 2,
+            color: '',
+            image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
+            alpha: 100
+        })
+        // refs.render.setBackground({
+        //     type: 1,
+        //     color: '#0093E9',
+        //     image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
+        //     alpha: 100
+        // })
+
+    }, 2000)
  }
  window.addEventListener('resize', () => {
     refs.render.resize()

@@ -157,13 +157,12 @@ class Renderer {
             image.src = background.image
             image.onload = () => {
                 this.backgroundRect.fillPatternImage(image)
-                this.backgroundRect.alpha(background.alpha)
-                this.backgroundRect.fillPatternX(this.backgroundRect.width() / 2)
-                this.backgroundRect.fillPatternY(this.backgroundRect.height() / 2)
+                this.backgroundRect.fill("")
+                this.backgroundRect.alpha(background.alpha / 100)
                 this.backgroundRect.fillPatternRepeat("no-repeat")
-                this.backgroundRect.fillPatternOffset({
-                    x: image.width / 2,
-                    y: image.height / 2,
+                this.backgroundRect.fillPatternScale({
+                    x: this.backgroundRect.width() / image.width,
+                    y: this.backgroundRect.height() / image.height,
                 })
             }
         }
