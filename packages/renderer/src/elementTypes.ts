@@ -2,6 +2,8 @@ import Konva from "konva"
 namespace ElementOptions {
     export interface Options {
         layer: Konva.Layer
+        movieWidth: number
+        movieHeight: number
     }
     type ElementType = 1 | 2
     type ElementValue<T, O, P> = T extends P ? O : never

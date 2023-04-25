@@ -24,12 +24,12 @@ const refs = reactive<any>({
         movieHeight: 1080
     })
     setTimeout(() => {
-        refs.render.setCover({
-            type: 2,
-            color: '',
-            image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
-            alpha: 100
-        })
+        // refs.render.setCover({
+        //     type: 2,
+        //     color: '',
+        //     image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
+        //     alpha: 100
+        // })
         refs.render.setBackground({
             type: 1,
             color: '#93E9',
@@ -37,7 +37,6 @@ const refs = reactive<any>({
             alpha: 50
         })
         refs.render.addElements([
-        
             {
                 type: 1,
                 text: "测试文字",
@@ -70,8 +69,8 @@ const refs = reactive<any>({
                     alpha: 100,
                 },
                 position: {
-                    x: 100,
-                    y: 100,
+                    x: 1080,
+                    y: 900,
                     z: 80,
                     w: 200,
                     h: 256,

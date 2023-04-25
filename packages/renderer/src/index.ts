@@ -79,19 +79,22 @@ class Renderer {
     private initElements() {
         this.elementTarget = new Element({
             layer: this.elementsLayer,
+            movieWidth: this.movieWidth,
+            movieHeight: this.movieHeight,
         })
     }
     /**
      *  计算图层大小位置
      */
     private initLayersPosition() {
-        this.backgroundLayer.setPosition({
-            x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
-            y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
-        }).scale({
-            x: this.scale,
-            y: this.scale,
-        }).zIndex(0)
+        this.backgroundLayer
+            .setPosition({
+                x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
+                y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
+            }).scale({
+                x: this.scale,
+                y: this.scale,
+            }).zIndex(0)
         this.movieLayer.setPosition({
             x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
             y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,

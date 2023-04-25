@@ -4,14 +4,17 @@ import { transformColorFormat, getPosition, } from "./utils"
 class Element {
     private elements: Array<Konva.Label | Konva.Image>
     private layer: Konva.Layer
+    private movieWidth: number
+    private movieHeight: number
     constructor(options: ElementOptions.Options) {
         this.layer = options.layer
         this.elements = []
+        this.movieWidth = options.movieWidth
+        this.movieHeight = options.movieHeight
     }
     public addElement(elements: ElementOptions.AddElementOptions[]) {
         for (let i = 0; i < elements.length; i++) {
             const element = elements[i]
-            console.log(element.position.z / 100, element.type)
             if (element.type === 1) {
                 const textGroup = new Konva.Label()
                 const textContainer = new Konva.Tag()
@@ -37,7 +40,7 @@ class Element {
                 textGroup.height(textContainer.height())
                 textGroup.add(textContainer)
                 textGroup.add(text)
-                const position = getPosition(element.position.x, element.position.y, textContainer.width(), textContainer.height(), this.layer.width(), this.layer.height())
+                const position = getPosition(element.position.x, element.position.y, textContainer.width(), textContainer.height(), this.movieWidth, this.movieHeight)
                 textGroup.x(position.x)
                 textGroup.y(position.y)
                 textGroup.offsetX(textContainer.width() / 2)
@@ -58,7 +61,8 @@ class Element {
                         height: element.position.h,
                     })
                     image.opacity(element.style.alpha / 100)
-                    const position = getPosition(element.position.x, element.position.y, image.width(), image.height(), this.layer.width(), this.layer.height())
+                    const position = getPosition(element.position.x, element.position.y, image.width(), image.height(), this.movieWidth, this.movieHeight)
+                    console.log(position)
                     image.x(position.x)
                     image.y(position.y)
                     image.offsetX(image.width() / 2)
