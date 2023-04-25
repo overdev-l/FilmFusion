@@ -36,7 +36,7 @@ class Renderer {
         this.initStage()
         this.initLayers()
     }
-    initScale() {
+    private initScale() {
         const scaleX = this.target.clientWidth / this.movieWidth
         const scaleY = this.target.clientHeight / this.movieHeight
         this.scale = Math.min(scaleX, scaleY)
@@ -133,6 +133,7 @@ class Renderer {
         this.backgroundLayer.add(this.backgroundRect)
     }
     /**
+     * resize
      * 重新计算舞台大小
      */
     public resize() {
