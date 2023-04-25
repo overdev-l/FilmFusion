@@ -24,19 +24,18 @@ const refs = reactive<any>({
         movieHeight: 1080
     })
     setTimeout(() => {
-        // refs.render.setBackground({
-        //     type: 2,
-        //     color: '',
-        //     image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
-        //     alpha: 100
-        // })
+        refs.render.setCover({
+            type: 2,
+            color: '',
+            image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
+            alpha: 100
+        })
         refs.render.setBackground({
             type: 1,
-            color: '#0093E9',
+            color: '#93E9',
             image: '',
             alpha: 50
         })
-
     }, 2000)
  }
  window.addEventListener('resize', () => {

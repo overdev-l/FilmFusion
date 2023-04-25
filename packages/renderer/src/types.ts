@@ -11,6 +11,13 @@ namespace RendererOptions {
         image: string
         alpha: number
     }
+
+    export interface Cover {
+        type: 1 | 2
+        image: string
+        alpha: number
+        color: string
+    }
 }
 
 export default RendererOptions

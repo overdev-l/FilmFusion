@@ -1,10 +1,11 @@
 import RendererOptions from "./types"
 import Konva from "konva"
+import { getTargetScale, } from "./utils"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
     private mediaTarget: HTMLVideoElement | HTMLImageElement
-    private coverTarget: HTMLImageElement
+    private coverTarget: Konva.Rect
     private backgroundLayer: Konva.Layer
     private movieLayer: Konva.Layer
     private elementsLayer: Konva.Layer
@@ -82,47 +83,40 @@ class Renderer {
         }).scale({
             x: this.scale,
             y: this.scale,
-        })
+        }).zIndex(0)
         this.movieLayer.setPosition({
             x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
             y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
         }).scale({
             x: this.scale,
             y: this.scale,
-        })
+        }).zIndex(1)
         this.elementsLayer.setPosition({
             x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
             y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
         }).scale({
             x: this.scale,
             y: this.scale,
-        })
+        }).zIndex(2)
         this.subtitleLayer.setPosition({
             x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
             y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
         }).scale({
             x: this.scale,
             y: this.scale,
-        })
+        }).zIndex(3)
         this.coverLayer.setPosition({
             x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
             y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
         }).scale({
             x: this.scale,
             y: this.scale,
-        })
-        this.coverLayer.setPosition({
-            x: this.stage.width() / 2 - this.movieWidth * this.scale / 2,
-            y: this.stage.height() / 2 - this.movieHeight * this.scale / 2,
-        }).scale({
-            x: this.scale,
-            y: this.scale,
-        })
+        }).zIndex(4)
     }
     /**
      * 初始化默认背景
      */
-    private initBackgroundRect() { 
+    private initBackgroundRect() {
         this.backgroundRect = new Konva.Rect({
             x: 0,
             y: 0,
@@ -146,14 +140,14 @@ class Renderer {
     }
     /**
      * setBackground
-     * @param background 
-     * @param background.type 1. color 2. image
+     * @param Background 
+     * @param Background.type 1. color 2. image
      */
     public setBackground(background: RendererOptions.Background) {
         if (background.type === 1) {
             this.backgroundRect.fill(background.color)
             this.backgroundRect.alpha(background.alpha)
-        } else if(background.type === 2) {
+        } else if (background.type === 2) {
             const image = new Image()
             image.src = background.image
             image.onload = () => {
@@ -168,6 +162,48 @@ class Renderer {
             }
         }
     }
+    /**
+     * setCover
+     * @param Cover 
+     * @param Cover.type 1. color 2. image
+     */
+    public setCover(cover: RendererOptions.Cover) {
+        this.coverLayer.destroyChildren()
+        if (cover.type === 1) {
+            this.coverTarget = new Konva.Rect({
+                x: 0,
+                y: 0,
+                width: this.movieWidth,
+                height: this.movieHeight,
+            }).fill(cover.color).alpha(cover.alpha)
+            this.coverLayer.add(this.coverTarget)
+        } else {
+            const image = new Image()
+            image.src = cover.image
+            image.onload = () => {
+                this.coverTarget = new Konva.Rect({
+                    x: this.movieWidth / 2,
+                    y: this.movieHeight / 2,
+                    width: image.width,
+                    height: image.height,
+                })
+                    .scale({
+                        x: getTargetScale(image.width, image.height, this.movieWidth, this.movieHeight),
+                        y: getTargetScale(image.width, image.height, this.movieWidth, this.movieHeight),
+                    })
+                    .offset({
+                        x: image.width / 2,
+                        y: image.height / 2,
+                    })
+                    .fillPatternImage(image)
+                    .alpha(cover.alpha / 100)
+                    .fillPatternRepeat("no-repeat")
+                this.coverLayer.add(this.coverTarget)
+            }
+        }
+
+    }
 }
 
 export default Renderer
+
