@@ -10,6 +10,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": true,
+        "strictPropertyInitialization":false,
         "baseUrl": ".",
         "paths": {
             "@film-fusion/*": [

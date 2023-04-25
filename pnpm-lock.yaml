@@ -3,6 +3,10 @@ lockfileVersion: '6.0'
 importers:
 
   .:
+    dependencies:
+      konva:
+        specifier: ^9.0.1
+        version: 9.0.1
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.1
@@ -52,6 +56,9 @@ importers:
 
   apps/vue-demo:
     dependencies:
+      '@film-fusion/renderer':
+        specifier: workspace:*
+        version: link:../../packages/renderer
       primevue:
         specifier: ^3.27.0
         version: 3.27.0(vue@3.2.47)
@@ -2752,6 +2759,10 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /konva@9.0.1:
+    resolution: {integrity: sha512-wzpkprJ8idE42TDF9Lu9RNjVVYNXrj0apvTK3pujdHQhX1iNV+MUquSxYN8HqjYSG95QQ51jhFzRLWhnhf44Mw==}
+    dev: false
 
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}

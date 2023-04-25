@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@film-fusion/renderer": "workspace:*",
     "primevue": "^3.27.0",
     "reset-css": "^5.0.1",
     "vue": "^3.2.47"
