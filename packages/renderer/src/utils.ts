@@ -46,8 +46,6 @@ const checkColorFormat = (color: string) => {
         return "hex"
     } else if (rgbRegex.test(color)) {
         return color.includes("a") ? "rgba" : "rgb"
-    } else {
-        throw new Error(`Invalid color format: ${color}`)
     }
 }
 

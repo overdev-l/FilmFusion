@@ -59,7 +59,7 @@ const refs = reactive<any>({
                 position: {
                     x: 100,
                     y: 100,
-                    z: 10,
+                    z: 90,
                 }
             },
             {
@@ -72,7 +72,7 @@ const refs = reactive<any>({
                 position: {
                     x: 100,
                     y: 100,
-                    z: 9,
+                    z: 80,
                     w: 200,
                     h: 256,
                 }

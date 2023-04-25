@@ -2,7 +2,7 @@ import Konva from "konva"
 import ElementOptions from "./elementTypes"
 import { transformColorFormat, getPosition, } from "./utils"
 class Element {
-    private elements: Array<Konva.Group>
+    private elements: Array<Konva.Label | Konva.Image>
     private layer: Konva.Layer
     constructor(options: ElementOptions.Options) {
         this.layer = options.layer
@@ -13,8 +13,8 @@ class Element {
             const element = elements[i]
             console.log(element.position.z / 100, element.type)
             if (element.type === 1) {
-                const textGroup = new Konva.Group()
-                const textContainer = new Konva.Rect()
+                const textGroup = new Konva.Label()
+                const textContainer = new Konva.Tag()
                 const text = new Konva.Text({
                     text: element.text,
                     fontSize: element.style.fontSize,
@@ -44,11 +44,11 @@ class Element {
                 textGroup.offsetY(textContainer.height() / 2)
                 textGroup.name(element.name)
                 this.layer.add(textGroup)
-                textGroup.setZIndex(element.position.z / 100)
+                text.zIndex(element.position.z / 100)
+                textContainer.zIndex((element.position.z - 1) / 100)
                 this.elements.push(textGroup)
             } else {
                 // 图片
-                const imageGroup = new Konva.Group()
                 const img = new Image()
                 img.src = element.image
                 img.onload = () => {
@@ -58,18 +58,15 @@ class Element {
                         height: element.position.h,
                     })
                     image.opacity(element.style.alpha / 100)
-                    imageGroup.width(element.position.w)
-                    imageGroup.height(element.position.w)
-                    const position = getPosition(element.position.x, element.position.y, imageGroup.width(), imageGroup.height(), this.layer.width(), this.layer.height())
-                    imageGroup.x(position.x)
-                    imageGroup.y(position.y)
-                    imageGroup.offsetX(imageGroup.width() / 2)
-                    imageGroup.offsetY(imageGroup.height() / 2)
-                    imageGroup.name(element.name)
-                    imageGroup.add(image)
-                    this.layer.add(imageGroup)
-                    imageGroup.setZIndex(element.position.z / 100)
-                    this.elements.push(imageGroup)
+                    const position = getPosition(element.position.x, element.position.y, image.width(), image.height(), this.layer.width(), this.layer.height())
+                    image.x(position.x)
+                    image.y(position.y)
+                    image.offsetX(image.width() / 2)
+                    image.offsetY(image.height() / 2)
+                    image.name(element.name)
+                    this.layer.add(image)
+                    image.zIndex(element.position.z / 100)
+                    this.elements.push(image)
                 }
             }
         }
