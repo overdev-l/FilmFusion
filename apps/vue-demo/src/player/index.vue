@@ -36,6 +36,48 @@ const refs = reactive<any>({
             image: '',
             alpha: 50
         })
+        refs.render.addElements([
+        
+            {
+                type: 1,
+                text: "测试文字",
+                name: "element1",
+                style: {
+                    alpha: 90,
+                    color: '#2399D7',
+                    fontSize: 100,
+                    fontFamily: '微软雅黑',
+                    fontItalic: false,
+                    fontBold: true,
+                    align: 'center',
+                    fontStoke: '#FFFB7D',
+                    fontStokeWidth: 10,
+                    backgroundColor: '#2BFF88',
+                    backgroundAlpha: 50,
+                    backgroundPadding: 20,
+                },
+                position: {
+                    x: 100,
+                    y: 100,
+                    z: 10,
+                }
+            },
+            {
+                type: 2,
+                image: "https://image.liuyongzhi.cn/video/ai-draw.tokyo_en_.png",
+                name: "element2",
+                style: {
+                    alpha: 100,
+                },
+                position: {
+                    x: 100,
+                    y: 100,
+                    z: 9,
+                    w: 200,
+                    h: 256,
+                }
+            },
+        ])
     }, 2000)
  }
  window.addEventListener('resize', () => {

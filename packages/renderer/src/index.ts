@@ -1,6 +1,8 @@
 import RendererOptions from "./types"
+import ElementOptions from "./elementTypes"
 import Konva from "konva"
 import { getTargetScale, } from "./utils"
+import Element from "./element"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
@@ -14,7 +16,7 @@ class Renderer {
     private movieAnimation: Konva.Animation
     private elementAnimation: Konva.Animation
     private backgroundRect: Konva.Rect
-    private elements: Element[]
+    private elementTarget: Element
     private subtitleText: Konva.Text
     private movieWidth: number
     private movieHeight: number
@@ -36,6 +38,7 @@ class Renderer {
         this.initScale()
         this.initStage()
         this.initLayers()
+        this.initElements()
     }
     private initScale() {
         const scaleX = this.target.clientWidth / this.movieWidth
@@ -72,6 +75,11 @@ class Renderer {
         this.stage.add(this.coverLayer)
         this.initLayersPosition()
         this.initBackgroundRect()
+    }
+    private initElements() {
+        this.elementTarget = new Element({
+            layer: this.elementsLayer,
+        })
     }
     /**
      *  计算图层大小位置
@@ -202,6 +210,9 @@ class Renderer {
             }
         }
 
+    }
+    public addElements(elements: ElementOptions.AddElementOptions[]) {
+        this.elementTarget.addElement(elements)
     }
 }
 
