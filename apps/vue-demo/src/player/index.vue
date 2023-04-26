@@ -80,13 +80,23 @@ const refs = reactive<any>({
             },
         ])
         refs.render.setMovie({
-            type: 1,
-            url: "https://image.liuyongzhi.cn/video/video2.mp4",
+            type: 2,
+            url: "https://image.liuyongzhi.cn/video/pexels-3456%E2%80%8A%C3%97%E2%80%8A5184.jpg",
             volume: 100,
             loop: true,
             startTime: 5000,
             endTime: 10000,
         })
+        setTimeout(() => {
+            refs.render.setMovie({
+                type: 1,
+                url: "https://image.liuyongzhi.cn/video/video1.mp4",
+                volume: 100,
+                loop: true,
+                startTime: 5000,
+                endTime: 10000,
+            })
+        }, 1000)
     }, 2000)
  }
  window.addEventListener('resize', () => {

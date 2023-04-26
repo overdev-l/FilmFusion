@@ -144,6 +144,14 @@ class Renderer {
         })
         this.backgroundLayer.add(this.backgroundRect)
     }
+    private updateMovieLayer(target: HTMLVideoElement) {
+        requestAnimationFrame(() => {
+            this.movieLayer.draw()
+            if (target.readyState !== 4) {
+                this.updateMovieLayer(target)
+            }
+        })
+    }
     /** 
      * setMovie
      */
@@ -155,6 +163,8 @@ class Renderer {
             this.mediaTarget.onload = () => {
                 this.movieTarget = new Konva.Image({
                     image: this.mediaTarget,
+                    x: this.movieWidth / 2,
+                    y: this.movieHeight / 2,
                 })
                     .scale({
                         x: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
@@ -164,6 +174,7 @@ class Renderer {
                         x: this.mediaTarget.width / 2,
                         y: this.mediaTarget.height / 2,
                     })
+                this.movieLayer.add(this.movieTarget)
             }
         } else if (options.type === 1) {
             let target: HTMLVideoElement
@@ -189,9 +200,11 @@ class Renderer {
                     })
                 this.movieLayer.add(this.movieTarget)
                 this.layerAnimation()
+                this.updateMovieLayer(target)
             }
         }
     }
+
     public play() {
         if (this.mediaTarget instanceof HTMLVideoElement) {
             this.mediaTarget.play()
@@ -210,6 +223,7 @@ class Renderer {
      */
     public resize() {
         requestAnimationFrame(() => {
+            console.log("resize")
             this.stage.width(this.target.clientWidth)
             this.stage.height(this.target.clientHeight)
             this.initScale()

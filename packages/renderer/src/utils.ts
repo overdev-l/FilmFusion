@@ -50,7 +50,6 @@ const checkColorFormat = (color: string) => {
 }
 
 export const getPosition = (x: number, y: number, width: number, height: number, maxX: number, maxY: number) => {
-    console.log(x, y, width, height, maxX, maxY)
     const position = {
         x: Math.min(Math.max(x, width / 2), maxX - width / 2),
         y: Math.min(Math.max(y, height / 2), maxY - height/ 2),

@@ -62,7 +62,6 @@ class Element {
                     })
                     image.opacity(element.style.alpha / 100)
                     const position = getPosition(element.position.x, element.position.y, image.width(), image.height(), this.movieWidth, this.movieHeight)
-                    console.log(position)
                     image.x(position.x)
                     image.y(position.y)
                     image.offsetX(image.width() / 2)
