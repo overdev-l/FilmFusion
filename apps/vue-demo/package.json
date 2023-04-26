@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@film-fusion/renderer": "workspace:*",
+    "primeicons": "^6.0.1",
     "primevue": "^3.27.0",
     "reset-css": "^5.0.1",
     "vue": "^3.2.47"

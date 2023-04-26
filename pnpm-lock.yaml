@@ -59,6 +59,9 @@ importers:
       '@film-fusion/renderer':
         specifier: workspace:*
         version: link:../../packages/renderer
+      primeicons:
+        specifier: ^6.0.1
+        version: 6.0.1
       primevue:
         specifier: ^3.27.0
         version: 3.27.0(vue@3.2.47)
@@ -3467,6 +3470,10 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
+
+  /primeicons@6.0.1:
+    resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
+    dev: false
 
   /primevue@3.27.0(vue@3.2.47):
     resolution: {integrity: sha512-oVJl8vLGNb6t5nXN41mnjR5V9Cc/eHVvmtRWiNgIC1db6OW3Qo7y2LaDEmXps/wdxX/FuJ7nuPHAZI4y8tvGyQ==}

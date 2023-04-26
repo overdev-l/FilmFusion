@@ -2,7 +2,32 @@
     <div class="w-full h-full">
         <div class="w-full h-[50%] flex">
             <div class="w-[50%] h-full border-b-2 border-indigo-500 border-solid box-border">
-                <button @click="play">play</button>
+                <Card class="h-full flex flex-col gap-6">
+                    <template #content>
+                        <div class="h-full flex flex-col gap-6">
+                            <div class="flex justify-between">
+                                <Button label="Play" severity="help" icon="pi pi-play" @click="play" raised rounded />
+                                <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded />
+                            </div>
+                            <div class="flex gap-6 h-[40px] items-center  justify-between">
+                                <Badge :value="refs.videoVolume" class="flex1"></Badge>
+                                <Slider v-model="refs.videoVolume" class="w-14rem w-[60%]" />
+                                <Button label="Set Video Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                            </div>
+                            <div class="flex gap-6 h-[40px] items-center justify-between">
+                                <Badge :value="refs.backgroundVolume" class="flex1"></Badge>
+                                <Slider v-model="refs.backgroundVolume" class="w-14rem w-[60%]" />
+                                <Button label="Set Background Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                            </div>
+                            <div class="flex gap-6 h-[40px] items-center  justify-between">
+                                <Badge :value="refs.voiceVolume" class="flex1"></Badge>
+                                <Slider v-model="refs.voiceVolume" class="w-14rem w-[60%]" />
+                                <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                            </div>
+                        </div>
+                    </template>
+                </Card>
+
             </div>
             <div class="w-[50%] h-full border-b-2 border-l-2 border-indigo-500 border-solid box-border" id="player"></div>
         </div>
@@ -16,10 +41,17 @@
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
 import Renderer from '@film-fusion/renderer';
+import Button from "primevue/button"
+import Card from 'primevue/card';
+import Slider from 'primevue/slider';
+import Badge from 'primevue/badge';
 const refs = reactive<any>({
-    render: null
+    render: null,
+    videoVolume: 100,
+    backgroundVolume: 100,
+    voiceVolume: 100,
 })
- const initRender = () => {
+const initRender = () => {
     refs.render = new Renderer({
         target: "#player",
         movieWidth: 1920,
@@ -98,12 +130,12 @@ const refs = reactive<any>({
             })
         }, 1000)
     }, 2000)
- }
- window.addEventListener('resize', () => {
+}
+window.addEventListener('resize', () => {
     refs.render.resize()
- })
- const play = () => {
+})
+const play = () => {
     refs.render.play()
- }
- onMounted(initRender)
+}
+onMounted(initRender)
 </script>
