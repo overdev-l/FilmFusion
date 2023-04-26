@@ -1,7 +1,9 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-[50%] flex">
-            <div class="w-[50%] h-full border-b-2 border-indigo-500 border-solid box-border"></div>
+            <div class="w-[50%] h-full border-b-2 border-indigo-500 border-solid box-border">
+                <button @click="play">play</button>
+            </div>
             <div class="w-[50%] h-full border-b-2 border-l-2 border-indigo-500 border-solid box-border" id="player"></div>
         </div>
         <div class="w-full h-[50%] flex">
@@ -77,10 +79,21 @@ const refs = reactive<any>({
                 }
             },
         ])
+        refs.render.setMovie({
+            type: 1,
+            url: "https://image.liuyongzhi.cn/video/video2.mp4",
+            volume: 100,
+            loop: true,
+            startTime: 5000,
+            endTime: 10000,
+        })
     }, 2000)
  }
  window.addEventListener('resize', () => {
     refs.render.resize()
  })
+ const play = () => {
+    refs.render.play()
+ }
  onMounted(initRender)
 </script>

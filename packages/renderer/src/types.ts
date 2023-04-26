@@ -1,5 +1,7 @@
 
 namespace RendererOptions {
+    type ElementType = 1 | 2 // 1. (视频 | 颜色) 2. 图片
+    type ElementValue<T, O, P> = T extends P ? O : never
     export interface Options {
         target: string | HTMLDivElement
         movieWidth: number
@@ -13,10 +15,19 @@ namespace RendererOptions {
     }
 
     export interface Cover {
-        type: 1 | 2
-        image: string
+        type: ElementType
+        image: ElementValue<ElementType, string, 2>
         alpha: number
-        color: string
+        color: ElementValue<ElementType, string, 1>
+    }
+
+    export interface MovieOptions {
+        type: ElementType
+        url: string
+        volume: ElementValue<ElementType, number, 1>
+        loop: ElementValue<ElementType, boolean, 1>
+        startTime: ElementValue<ElementType, number, 1>
+        endTime: ElementValue<ElementType, number, 1>
     }
 }
 

@@ -7,6 +7,7 @@ class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
     private mediaTarget: HTMLVideoElement | HTMLImageElement
+    private movieTarget: Konva.Image
     private coverTarget: Konva.Rect
     private backgroundLayer: Konva.Layer
     private movieLayer: Konva.Layer
@@ -50,6 +51,7 @@ class Renderer {
             container: this.target,
             width: this.target.clientWidth,
             height: this.target.clientHeight,
+            background: "transparent",
         })
     }
     private initLayers() {
@@ -82,6 +84,11 @@ class Renderer {
             movieWidth: this.movieWidth,
             movieHeight: this.movieHeight,
         })
+    }
+    private layerAnimation() {
+        this.movieAnimation = new Konva.Animation((frame) => {
+            //
+        }, this.movieLayer)
     }
     /**
      *  计算图层大小位置
@@ -136,6 +143,66 @@ class Renderer {
             fill: "black",
         })
         this.backgroundLayer.add(this.backgroundRect)
+    }
+    /** 
+     * setMovie
+     */
+    public setMovie(options: RendererOptions.MovieOptions) {
+        this.movieLayer.destroyChildren()
+        if (options.type === 2) {
+            this.mediaTarget = new Image()
+            this.mediaTarget.src = options.url
+            this.mediaTarget.onload = () => {
+                this.movieTarget = new Konva.Image({
+                    image: this.mediaTarget,
+                })
+                    .scale({
+                        x: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
+                        y: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
+                    })
+                    .offset({
+                        x: this.mediaTarget.width / 2,
+                        y: this.mediaTarget.height / 2,
+                    })
+            }
+        } else if (options.type === 1) {
+            let target: HTMLVideoElement
+            this.mediaTarget = target = document.createElement("video") 
+            this.mediaTarget.src = options.url
+            this.mediaTarget.width = this.movieWidth
+            this.mediaTarget.height = this.movieHeight
+            this.mediaTarget.onloadeddata = () => {
+                target.currentTime = options.startTime / 1000
+                target.volume = options.volume / 100
+                this.movieTarget = new Konva.Image({
+                    image: this.mediaTarget,
+                    x: this.movieWidth / 2,
+                    y: this.movieHeight / 2,
+                })
+                    .scale({
+                        x: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
+                        y: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
+                    })
+                    .offset({
+                        x: this.mediaTarget.width / 2,
+                        y: this.mediaTarget.height / 2,
+                    })
+                this.movieLayer.add(this.movieTarget)
+                this.layerAnimation()
+            }
+        }
+    }
+    public play() {
+        if (this.mediaTarget instanceof HTMLVideoElement) {
+            this.mediaTarget.play()
+            this.movieAnimation.start()
+        }
+    }
+    public pause() {
+        if (this.mediaTarget instanceof HTMLVideoElement) {
+            this.mediaTarget.pause()
+            this.movieAnimation.stop()
+        }
     }
     /**
      * resize
