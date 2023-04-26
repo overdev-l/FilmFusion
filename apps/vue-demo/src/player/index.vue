@@ -45,6 +45,7 @@ import Button from "primevue/button"
 import Card from 'primevue/card';
 import Slider from 'primevue/slider';
 import Badge from 'primevue/badge';
+import { elementsData, backgroundImageData, movieImageData, movieVideoData2160_3240_15s, movieVideoData1920_1080_9s } from './mock'
 const refs = reactive<any>({
     render: null,
     videoVolume: 100,
@@ -54,80 +55,15 @@ const refs = reactive<any>({
 const initRender = () => {
     refs.render = new Renderer({
         target: "#player",
-        movieWidth: 1920,
-        movieHeight: 1080
+        movieWidth: 1080,
+        movieHeight: 1920
     })
     setTimeout(() => {
-        // refs.render.setCover({
-        //     type: 2,
-        //     color: '',
-        //     image: 'https://image.liuyongzhi.cn/video/bg1.jpg',
-        //     alpha: 100
-        // })
-        refs.render.setBackground({
-            type: 1,
-            color: '#93E9',
-            image: '',
-            alpha: 50
-        })
-        refs.render.addElements([
-            {
-                type: 1,
-                text: "测试文字",
-                name: "element1",
-                style: {
-                    alpha: 90,
-                    color: '#2399D7',
-                    fontSize: 100,
-                    fontFamily: '微软雅黑',
-                    fontItalic: false,
-                    fontBold: true,
-                    align: 'center',
-                    fontStoke: '#FFFB7D',
-                    fontStokeWidth: 10,
-                    backgroundColor: '#2BFF88',
-                    backgroundAlpha: 50,
-                    backgroundPadding: 20,
-                },
-                position: {
-                    x: 0,
-                    y: 0,
-                    z: 90,
-                }
-            },
-            {
-                type: 2,
-                image: "https://image.liuyongzhi.cn/video/ai-draw.tokyo_en_.png",
-                name: "element2",
-                style: {
-                    alpha: 100,
-                },
-                position: {
-                    x: 1080,
-                    y: 900,
-                    z: 80,
-                    w: 200,
-                    h: 256,
-                }
-            },
-        ])
-        refs.render.setMovie({
-            type: 2,
-            url: "https://image.liuyongzhi.cn/video/pexels-3456%E2%80%8A%C3%97%E2%80%8A5184.jpg",
-            volume: 100,
-            loop: true,
-            startTime: 5000,
-            endTime: 10000,
-        })
+        refs.render.setBackground(backgroundImageData)
+        refs.render.addElements(elementsData)
+        refs.render.setMovie(movieVideoData1920_1080_9s)
         setTimeout(() => {
-            refs.render.setMovie({
-                type: 1,
-                url: "https://image.liuyongzhi.cn/video/video1.mp4",
-                volume: 100,
-                loop: true,
-                startTime: 5000,
-                endTime: 10000,
-            })
+            // refs.render.setMovie(movieVideoData)
         }, 1000)
     }, 2000)
 }

@@ -144,6 +144,11 @@ class Renderer {
         })
         this.backgroundLayer.add(this.backgroundRect)
     }
+    /**
+     * updateMovieLayer
+     * 更新视频首页
+     * @param target 
+     */
     private updateMovieLayer(target: HTMLVideoElement) {
         requestAnimationFrame(() => {
             this.movieLayer.draw()
@@ -151,6 +156,20 @@ class Renderer {
                 this.updateMovieLayer(target)
             }
         })
+    }
+    /**
+     * videoPlayEvent
+     * video loop
+     * @param options 
+     * @param target 
+     */
+    private videoPlayEvent(options: RendererOptions.MovieOptions, target: HTMLVideoElement) {
+        const currentTime = target.currentTime * 1000
+        console.log(target.currentTime)
+        if (currentTime> options.endTime && options.loop) {
+            target.currentTime = options.startTime / 1000
+            target.play()
+        }
     }
     /** 
      * setMovie
@@ -180,8 +199,7 @@ class Renderer {
             let target: HTMLVideoElement
             this.mediaTarget = target = document.createElement("video") 
             this.mediaTarget.src = options.url
-            this.mediaTarget.width = this.movieWidth
-            this.mediaTarget.height = this.movieHeight
+            target.addEventListener("timeupdate", this.videoPlayEvent.bind(this, options, target))
             this.mediaTarget.onloadeddata = () => {
                 target.currentTime = options.startTime / 1000
                 target.volume = options.volume / 100
@@ -189,15 +207,18 @@ class Renderer {
                     image: this.mediaTarget,
                     x: this.movieWidth / 2,
                     y: this.movieHeight / 2,
+                    width: target.videoWidth,
+                    height: target.videoHeight,
                 })
                     .scale({
-                        x: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
-                        y: getTargetScale(this.mediaTarget.width, this.mediaTarget.height, this.movieWidth, this.movieHeight),
+                        x: getTargetScale(target.videoWidth, target.videoHeight, this.movieWidth, this.movieHeight),
+                        y: getTargetScale(target.videoWidth, target.videoHeight, this.movieWidth, this.movieHeight),
                     })
                     .offset({
-                        x: this.mediaTarget.width / 2,
-                        y: this.mediaTarget.height / 2,
+                        x: target.videoWidth / 2,
+                        y: target.videoHeight / 2,
                     })
+                this.movieTarget.width()
                 this.movieLayer.add(this.movieTarget)
                 this.layerAnimation()
                 this.updateMovieLayer(target)
@@ -205,18 +226,6 @@ class Renderer {
         }
     }
 
-    public play() {
-        if (this.mediaTarget instanceof HTMLVideoElement) {
-            this.mediaTarget.play()
-            this.movieAnimation.start()
-        }
-    }
-    public pause() {
-        if (this.mediaTarget instanceof HTMLVideoElement) {
-            this.mediaTarget.pause()
-            this.movieAnimation.stop()
-        }
-    }
 
     public setVideoVolume(volume: number) {
         if (this.mediaTarget instanceof HTMLVideoElement) {
@@ -231,7 +240,6 @@ class Renderer {
      */
     public resize() {
         requestAnimationFrame(() => {
-            console.log("resize")
             this.stage.width(this.target.clientWidth)
             this.stage.height(this.target.clientHeight)
             this.initScale()
@@ -305,6 +313,19 @@ class Renderer {
     }
     public addElements(elements: ElementOptions.AddElementOptions[]) {
         this.elementTarget.addElement(elements)
+    }
+
+    public play() {
+        if (this.mediaTarget instanceof HTMLVideoElement) {
+            this.mediaTarget.play()
+            this.movieAnimation.start()
+        }
+    }
+    public pause() {
+        if (this.mediaTarget instanceof HTMLVideoElement) {
+            this.mediaTarget.pause()
+            this.movieAnimation.stop()
+        }
     }
 }
 
