@@ -217,6 +217,14 @@ class Renderer {
             this.movieAnimation.stop()
         }
     }
+
+    public setVideoVolume(volume: number) {
+        if (this.mediaTarget instanceof HTMLVideoElement) {
+            this.mediaTarget.volume = volume / 100
+        } else {
+            console.warn("the current scene is not a video")
+        }
+    }
     /**
      * resize
      * 重新计算舞台大小

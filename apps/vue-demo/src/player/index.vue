@@ -6,23 +6,23 @@
                     <template #content>
                         <div class="h-full flex flex-col gap-6">
                             <div class="flex justify-between">
-                                <Button label="Play" severity="help" icon="pi pi-play" @click="play" raised rounded />
-                                <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded />
+                                <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="play"/>
+                                <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="pause"/>
                             </div>
                             <div class="flex gap-6 h-[40px] items-center  justify-between">
                                 <Badge :value="refs.videoVolume" class="flex1"></Badge>
                                 <Slider v-model="refs.videoVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Video Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                                <Button label="Set Video Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setVideoVolume"/>
                             </div>
                             <div class="flex gap-6 h-[40px] items-center justify-between">
                                 <Badge :value="refs.backgroundVolume" class="flex1"></Badge>
                                 <Slider v-model="refs.backgroundVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Background Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                                <Button label="Set Background Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setBackgroundVolume"/>
                             </div>
                             <div class="flex gap-6 h-[40px] items-center  justify-between">
                                 <Badge :value="refs.voiceVolume" class="flex1"></Badge>
                                 <Slider v-model="refs.voiceVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]" />
+                                <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setVoiceVolume"/>
                             </div>
                         </div>
                     </template>
@@ -136,6 +136,18 @@ window.addEventListener('resize', () => {
 })
 const play = () => {
     refs.render.play()
+}
+const pause = () => {
+    refs.render.pause()
+}
+const setVideoVolume = () => {
+    refs.render.setVideoVolume(refs.videoVolume)
+}
+const setBackgroundVolume = () => {
+    refs.render.setBackgroundVolume(refs.backgroundVolume)
+}
+const setVoiceVolume = () => {
+    refs.render.setVoiceVolume(refs.voiceVolume)
 }
 onMounted(initRender)
 </script>
