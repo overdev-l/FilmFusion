@@ -49,7 +49,9 @@
                     </TabPanel>
                 </TabView>
             </div>
-            <div class="flex-1 h-full box-border"></div>
+            <div class="flex-1 h-full box-border p-[1.25rem]">
+                <ProgressBar :value="refs.progress" />
+            </div>
         </div>
     </div>
 </template>
@@ -58,11 +60,11 @@
 import { onMounted, reactive, ref } from 'vue';
 import Renderer from '@film-fusion/renderer';
 import Button from "primevue/button"
-import Card from 'primevue/card';
 import Slider from 'primevue/slider';
 import Badge from 'primevue/badge';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import ProgressBar from 'primevue/progressbar';
 import { elementsData, backgroundImageData, movieVideoData1920_1080_9s } from './mock'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
@@ -71,6 +73,7 @@ const refs = reactive<any>({
     videoVolume: 100,
     backgroundVolume: 100,
     voiceVolume: 100,
+    progress: 50,
     ScenesEditor: undefined,
     BackgroundMusicEditor: undefined,
     ElementsEditor: undefined,
@@ -99,13 +102,22 @@ window.addEventListener('resize', () => {
 
 
 const initScenesJsonEditor = () => {
-    refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement)
+    refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement, {
+        mode: "form",
+        language: "en"
+    })
 }
 const initBackgroundMusicJsonEditor = () => {
-    refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement)
+    refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {
+        mode: "form",
+        language: "en"
+    })
 }
 const initElementsJsonEditor = () => {
-    refs.ElementsEditor = new JSONEditor(ElementsRef.value as HTMLElement)
+    refs.ElementsEditor = new JSONEditor(ElementsRef.value as HTMLElement, {
+        mode: "form",
+        language: "en"
+    })
 }
 const play = () => {
     refs.render.play()
