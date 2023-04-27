@@ -1,57 +1,83 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-[50%] flex">
-            <div class="w-[50%] h-full border-b-2 border-indigo-500 border-solid box-border">
-                <Card class="h-full flex flex-col gap-6">
-                    <template #content>
-                        <div class="h-full flex flex-col gap-6">
-                            <div class="flex justify-between">
-                                <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="play"/>
-                                <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="pause"/>
-                            </div>
-                            <div class="flex gap-6 h-[40px] items-center  justify-between">
-                                <Badge :value="refs.videoVolume" class="flex1"></Badge>
-                                <Slider v-model="refs.videoVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Video Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setVideoVolume"/>
-                            </div>
-                            <div class="flex gap-6 h-[40px] items-center justify-between">
-                                <Badge :value="refs.backgroundVolume" class="flex1"></Badge>
-                                <Slider v-model="refs.backgroundVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Background Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setBackgroundVolume"/>
-                            </div>
-                            <div class="flex gap-6 h-[40px] items-center  justify-between">
-                                <Badge :value="refs.voiceVolume" class="flex1"></Badge>
-                                <Slider v-model="refs.voiceVolume" class="w-14rem w-[60%]" />
-                                <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]" @click="setVoiceVolume"/>
-                            </div>
-                        </div>
-                    </template>
-                </Card>
-
+            <div class="w-[50%] h-full box-border flex-col gap-6 p-[1.25rem]">
+                <div class="h-full flex flex-col gap-6">
+                    <div class="flex justify-between">
+                        <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="play" />
+                        <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="pause" />
+                    </div>
+                    <div class="flex justify-between">
+                        <Button label="Update Scenes" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
+                        <Button label="Update Background Music" severity="help" icon="pi pi-sync" raised rounded
+                            @click="pause" />
+                        <Button label="Update Elements" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
+                    </div>
+                    <div class="flex gap-6 h-[40px] items-center  justify-between">
+                        <Badge :value="refs.videoVolume" class="flex1"></Badge>
+                        <Slider v-model="refs.videoVolume" class="w-14rem w-[60%]" />
+                        <Button label="Set Video Volume" icon="pi pi-cog" raised rounded class="w-[30%]"
+                            @click="setVideoVolume" />
+                    </div>
+                    <div class="flex gap-6 h-[40px] items-center justify-between">
+                        <Badge :value="refs.backgroundVolume" class="flex1"></Badge>
+                        <Slider v-model="refs.backgroundVolume" class="w-14rem w-[60%]" />
+                        <Button label="Set Background Volume" icon="pi pi-cog" raised rounded class="w-[30%]"
+                            @click="setBackgroundVolume" />
+                    </div>
+                    <div class="flex gap-6 h-[40px] items-center  justify-between">
+                        <Badge :value="refs.voiceVolume" class="flex1"></Badge>
+                        <Slider v-model="refs.voiceVolume" class="w-14rem w-[60%]" />
+                        <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]"
+                            @click="setVoiceVolume" />
+                    </div>
+                </div>
             </div>
-            <div class="w-[50%] h-full border-b-2 border-l-2 border-indigo-500 border-solid box-border" id="player"></div>
+            <div class="w-[50%] h-full box-border" id="player"></div>
         </div>
         <div class="w-full h-[50%] flex">
-            <div class="flex-1 h-full border-r-2 border-indigo-500 border-solid box-border"></div>
+            <div class="flex-1 h-full box-border">
+                <TabView class="w-full h-full flex flex-col">
+                    <TabPanel header="Scenes">
+                        <div class="w-full h-full" ref="ScenesRef"></div>
+                    </TabPanel>
+                    <TabPanel header="Background Music">
+                        <div class="w-full h-full" id="BackgroundMusic" ref="BackgroundMusicRef"></div>
+                    </TabPanel>
+                    <TabPanel header="Elements">
+                        <div class="w-full h-full" id="Elements" ref="ElementsRef"></div>
+                    </TabPanel>
+                </TabView>
+            </div>
             <div class="flex-1 h-full box-border"></div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import Renderer from '@film-fusion/renderer';
 import Button from "primevue/button"
 import Card from 'primevue/card';
 import Slider from 'primevue/slider';
 import Badge from 'primevue/badge';
-import { elementsData, backgroundImageData, movieImageData, movieVideoData2160_3240_15s, movieVideoData1920_1080_9s } from './mock'
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import { elementsData, backgroundImageData, movieVideoData1920_1080_9s } from './mock'
+import JSONEditor from 'jsoneditor'
+import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
     render: null,
     videoVolume: 100,
     backgroundVolume: 100,
     voiceVolume: 100,
+    ScenesEditor: undefined,
+    BackgroundMusicEditor: undefined,
+    ElementsEditor: undefined,
 })
+const ScenesRef = ref<HTMLElement>()
+const BackgroundMusicRef = ref<HTMLElement>()
+const ElementsRef = ref<HTMLElement>()
 const initRender = () => {
     refs.render = new Renderer({
         target: "#player",
@@ -70,6 +96,17 @@ const initRender = () => {
 window.addEventListener('resize', () => {
     refs.render.resize()
 })
+
+
+const initScenesJsonEditor = () => {
+    refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement)
+}
+const initBackgroundMusicJsonEditor = () => {
+    refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement)
+}
+const initElementsJsonEditor = () => {
+    refs.ElementsEditor = new JSONEditor(ElementsRef.value as HTMLElement)
+}
 const play = () => {
     refs.render.play()
 }
@@ -86,4 +123,17 @@ const setVoiceVolume = () => {
     refs.render.setVoiceVolume(refs.voiceVolume)
 }
 onMounted(initRender)
+onMounted(initScenesJsonEditor)
+onMounted(initBackgroundMusicJsonEditor)
+onMounted(initElementsJsonEditor)
 </script>
+
+<style>
+.p-tabview-panels {
+    flex: 1;
+}
+
+.p-tabview-panel {
+    height: 100%;
+}
+</style>

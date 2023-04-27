@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@film-fusion/renderer": "workspace:*",
+    "jsoneditor": "^9.10.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.27.0",
     "reset-css": "^5.0.1",
     "vue": "^3.2.47"
   },
   "devDependencies": {
+    "@types/jsoneditor": "^9.9.0",
     "@types/node": "^18.16.0",
     "@vitejs/plugin-vue": "^4.1.0",
     "autoprefixer": "^10.4.14",
