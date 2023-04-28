@@ -86,3 +86,15 @@ export const movieVideoData2160_3240_15s = {
     startTime: 5000,
     endTime: 10000,
 }
+
+
+export const backgroundMusicData = [
+    {
+        audio: "https://image.liuyongzhi.cn/video/backgroundMusic_122000ms.mp3",
+        loop: true,
+        startTime: 0,
+        endTime: 122000,
+        volume: 100,
+        mute: false,
+    },
+]

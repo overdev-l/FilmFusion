@@ -3,6 +3,8 @@ import ElementOptions from "./elementTypes"
 import Konva from "konva"
 import { getTargetScale, } from "./utils"
 import Element from "./element"
+import AudioElement from "./audio"
+import AudioOptions from "./audioTyps"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
@@ -10,6 +12,7 @@ class Renderer {
     private movieTarget: Konva.Image
     private coverTarget: Konva.Rect
     private backgroundLayer: Konva.Layer
+    private backgroundElements: AudioElement
     private movieLayer: Konva.Layer
     private elementsLayer: Konva.Layer
     private subtitleLayer: Konva.Layer
@@ -40,6 +43,7 @@ class Renderer {
         this.initStage()
         this.initLayers()
         this.initElements()
+        this.initBackgroundElements()
     }
     private initScale() {
         const scaleX = this.target.clientWidth / this.movieWidth
@@ -89,6 +93,9 @@ class Renderer {
         this.movieAnimation = new Konva.Animation((frame) => {
             //
         }, this.movieLayer)
+    }
+    private initBackgroundElements() {
+        this.backgroundElements = new AudioElement()
     }
     /**
      *  计算图层大小位置
@@ -311,8 +318,24 @@ class Renderer {
         }
 
     }
+    /**
+     * addElements
+     * @param elements.type 1. image 2. text 
+     */
     public addElements(elements: ElementOptions.AddElementOptions[]) {
         this.elementTarget.addElement(elements)
+    }
+    /**
+     * removeElements
+     * @param ids 
+     */
+    public removeElements(ids: string[]) {
+        for(const id of ids) {
+            this.elementTarget.removeElement(id)
+        }
+    }
+    public setBackgroundAudios(audios: AudioOptions.Options) {
+        console.log(audios)
     }
 
     public play() {

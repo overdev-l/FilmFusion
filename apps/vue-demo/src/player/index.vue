@@ -11,7 +11,6 @@
                         <Button label="Update Scenes" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
                         <Button label="Update Background Music" severity="help" icon="pi pi-sync" raised rounded
                             @click="pause" />
-                        <Button label="Update Elements" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
                         <Badge :value="refs.videoVolume" class="flex1"></Badge>
@@ -30,6 +29,14 @@
                         <Slider v-model="refs.voiceVolume" class="w-14rem w-[60%]" />
                         <Button label="Set Voice Volume" icon="pi pi-cog" raised rounded class="w-[30%]"
                             @click="setVoiceVolume" />
+                    </div>
+                    <div class="flex gap-6 h-[40px] items-center  justify-between">
+                        <div class="p-inputgroup">
+                            <Button label="Remove Elements" severity="help" icon="pi pi-trash" raised
+                                @click="removeElements" />
+                            <InputText placeholder="Element Name" class="p-inputtext-sm" v-model="refs.elementNames"/>
+                        </div>
+                        <Button label="Add elements" severity="help" icon="pi pi-plus" raised rounded @click="addElements" />
                     </div>
                 </div>
             </div>
@@ -60,12 +67,13 @@
 import { onMounted, reactive, ref } from 'vue';
 import Renderer from '@film-fusion/renderer';
 import Button from "primevue/button"
+import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
 import Badge from 'primevue/badge';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import ProgressBar from 'primevue/progressbar';
-import { elementsData, backgroundImageData, movieVideoData1920_1080_9s } from './mock'
+import { elementsData, backgroundImageData, movieVideoData1920_1080_9s, backgroundMusicData } from './mock'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
@@ -77,6 +85,7 @@ const refs = reactive<any>({
     ScenesEditor: undefined,
     BackgroundMusicEditor: undefined,
     ElementsEditor: undefined,
+    elementNames: elementsData.map(item => item.name).join(','),
 })
 const ScenesRef = ref<HTMLElement>()
 const BackgroundMusicRef = ref<HTMLElement>()
@@ -89,7 +98,6 @@ const initRender = () => {
     })
     setTimeout(() => {
         refs.render.setBackground(backgroundImageData)
-        refs.render.addElements(elementsData)
         refs.render.setMovie(movieVideoData1920_1080_9s)
         setTimeout(() => {
             // refs.render.setMovie(movieVideoData)
@@ -111,13 +119,13 @@ const initBackgroundMusicJsonEditor = () => {
     refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    })
+    }, backgroundMusicData)
 }
 const initElementsJsonEditor = () => {
     refs.ElementsEditor = new JSONEditor(ElementsRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    })
+    }, elementsData)
 }
 const play = () => {
     refs.render.play()
@@ -133,6 +141,13 @@ const setBackgroundVolume = () => {
 }
 const setVoiceVolume = () => {
     refs.render.setVoiceVolume(refs.voiceVolume)
+}
+const addElements = () => {
+    refs.render.addElements(refs.ElementsEditor.get())
+}
+const removeElements = () => {
+    const elementNames = refs.elementNames.split(",")
+    refs.render.removeElements(elementNames)
 }
 onMounted(initRender)
 onMounted(initScenesJsonEditor)

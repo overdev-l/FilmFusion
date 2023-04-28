@@ -15,6 +15,11 @@ class Element {
     public addElement(elements: ElementOptions.AddElementOptions[]) {
         for (let i = 0; i < elements.length; i++) {
             const element = elements[i]
+            const existElement = this.elements.find((item) => item.name() === element.name)
+            if (existElement) {
+                console.warn(`element name: ${element.name} is exist`)
+                continue
+            }
             if (element.type === 1) {
                 const textGroup = new Konva.Label()
                 const textContainer = new Konva.Tag()
@@ -72,6 +77,14 @@ class Element {
                     this.elements.push(image)
                 }
             }
+        }
+    }
+    public removeElement(name: string) {
+        const element = this.elements.find((element) => element.name() === name)
+        if (element) {
+            element.destroy()
+        } else {
+            console.warn(`element name: ${name} is not exist`)
         }
     }
 }
