@@ -13,9 +13,10 @@ class Element {
         this.movieHeight = options.movieHeight
     }
     public addElement(elements: ElementOptions.AddElementOptions[]) {
+        console.log()
         for (let i = 0; i < elements.length; i++) {
             const element = elements[i]
-            const existElement = this.elements.find((item) => item.name() === element.name)
+            const existElement = this.layer.getChildren().find((item) => item.name() === element.name)
             if (existElement) {
                 console.warn(`element name: ${element.name} is exist`)
                 continue
@@ -80,7 +81,7 @@ class Element {
         }
     }
     public removeElement(name: string) {
-        const element = this.elements.find((element) => element.name() === name)
+        const element = this.layer.getChildren().find((element) => element.name() === name)
         if (element) {
             element.destroy()
         } else {
