@@ -334,8 +334,8 @@ class Renderer {
             this.elementTarget.removeElement(id)
         }
     }
-    public setBackgroundAudios(audios: AudioOptions.Options) {
-        console.log(audios)
+    public setBackgroundAudios(audios: AudioOptions.Options[]) {
+        this.backgroundElements.setAudios(audios)
     }
 
     public play() {

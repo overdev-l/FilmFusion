@@ -10,7 +10,7 @@
                     <div class="flex justify-between">
                         <Button label="Update Scenes" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
                         <Button label="Update Background Music" severity="help" icon="pi pi-sync" raised rounded
-                            @click="pause" />
+                            @click="updateBackgroundMusic" />
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
                         <Badge :value="refs.videoVolume" class="flex1"></Badge>
@@ -148,6 +148,9 @@ const addElements = () => {
 const removeElements = () => {
     const elementNames = refs.elementNames.split(",")
     refs.render.removeElements(elementNames)
+}
+const updateBackgroundMusic = () => {
+    refs.render.setBackgroundAudios(refs.BackgroundMusicEditor.get())
 }
 onMounted(initRender)
 onMounted(initScenesJsonEditor)
