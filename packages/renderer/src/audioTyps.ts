@@ -7,6 +7,7 @@ namespace AudioOptions {
         volume: number
         mute?: boolean
         format?: string
+        id: string
     }
 }
 

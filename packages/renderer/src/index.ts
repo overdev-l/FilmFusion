@@ -172,7 +172,6 @@ class Renderer {
      */
     private videoPlayEvent(options: RendererOptions.MovieOptions, target: HTMLVideoElement) {
         const currentTime = target.currentTime * 1000
-        console.log(target.currentTime)
         if (currentTime> options.endTime && options.loop) {
             target.currentTime = options.startTime / 1000
             target.play()
@@ -343,11 +342,17 @@ class Renderer {
             this.mediaTarget.play()
             this.movieAnimation.start()
         }
+        if (this.backgroundElements instanceof AudioElement) {
+            this.backgroundElements.play()
+        }
     }
     public pause() {
         if (this.mediaTarget instanceof HTMLVideoElement) {
             this.mediaTarget.pause()
             this.movieAnimation.stop()
+        }
+        if (this.backgroundElements instanceof AudioElement) {
+            this.backgroundElements.pause()
         }
     }
 }

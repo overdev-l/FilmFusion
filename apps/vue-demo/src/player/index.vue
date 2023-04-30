@@ -1,7 +1,7 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-[50%] flex">
-            <div class="w-[50%] h-full box-border flex-col gap-6 p-[1.25rem]">
+            <div class="w-[50%] h-full box-border flex-col gap-6 p-[1.25rem] overflow-y-scroll">
                 <div class="h-full flex flex-col gap-6">
                     <div class="flex justify-between">
                         <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="play" />
@@ -9,8 +9,6 @@
                     </div>
                     <div class="flex justify-between">
                         <Button label="Update Scenes" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
-                        <Button label="Update Background Music" severity="help" icon="pi pi-sync" raised rounded
-                            @click="updateBackgroundMusic" />
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
                         <Badge :value="refs.videoVolume" class="flex1"></Badge>
@@ -34,9 +32,14 @@
                         <div class="p-inputgroup">
                             <Button label="Remove Elements" severity="help" icon="pi pi-trash" raised
                                 @click="removeElements" />
-                            <InputText placeholder="Element Name" class="p-inputtext-sm" v-model="refs.elementNames"/>
+                            <InputText placeholder="Element Name" class="p-inputtext-sm" v-model="refs.elementNames" />
                         </div>
-                        <Button label="Add elements" severity="help" icon="pi pi-plus" raised rounded @click="addElements" />
+                        <Button label="Add elements" severity="help" icon="pi pi-plus" raised rounded
+                            @click="addElements" />
+                    </div>
+                    <div class="flex gap-6 h-[40px] items-center  justify-between">
+                        <Button label="Set Background Music" severity="help" icon="pi pi-plus" raised rounded
+                            @click="setBackgroundMusic" />
                     </div>
                 </div>
             </div>
@@ -96,13 +99,10 @@ const initRender = () => {
         movieWidth: 1080,
         movieHeight: 1920
     })
-    setTimeout(() => {
-        refs.render.setBackground(backgroundImageData)
-        refs.render.setMovie(movieVideoData1920_1080_9s)
-        setTimeout(() => {
-            // refs.render.setMovie(movieVideoData)
-        }, 1000)
-    }, 2000)
+    refs.render.setBackground(backgroundImageData)
+    refs.render.setMovie(movieVideoData1920_1080_9s)
+    refs.render.setBackgroundAudios(backgroundMusicData)
+
 }
 window.addEventListener('resize', () => {
     refs.render.resize()
@@ -149,7 +149,7 @@ const removeElements = () => {
     const elementNames = refs.elementNames.split(",")
     refs.render.removeElements(elementNames)
 }
-const updateBackgroundMusic = () => {
+const setBackgroundMusic = () => {
     refs.render.setBackgroundAudios(refs.BackgroundMusicEditor.get())
 }
 onMounted(initRender)
