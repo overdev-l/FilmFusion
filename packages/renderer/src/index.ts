@@ -153,7 +153,7 @@ class Renderer {
     }
     /**
      * updateMovieLayer
-     * 更新视频首页
+     * 更新视频预览
      * @param target 
      */
     private updateMovieLayer(target: HTMLVideoElement) {
@@ -232,13 +232,24 @@ class Renderer {
         }
     }
 
-
+    /**
+     * setVideoVolume
+     * 设置视频音量
+     * @param volume 
+     */
     public setVideoVolume(volume: number) {
         if (this.mediaTarget instanceof HTMLVideoElement) {
             this.mediaTarget.volume = volume / 100
         } else {
             console.warn("the current scene is not a video")
         }
+    }
+    /**
+     * setBackgroundMusicAudio
+     * @param volume 
+     */
+    public setBackgroundMusicAudioVolume(volume: number) {
+        this.backgroundElements.setAudiosVolume(volume)
     }
     /**
      * resize
@@ -333,6 +344,10 @@ class Renderer {
             this.elementTarget.removeElement(id)
         }
     }
+    /**
+     * setBackgroundAudios
+     * @param audios 
+     */
     public setBackgroundAudios(audios: AudioOptions.Options[]) {
         this.backgroundElements.setAudios(audios)
     }

@@ -21,6 +21,16 @@ class AudioElement {
             }
         })
     }
+    /**
+     * setAudiosVolume
+     * 设置音频音量
+     * @param volume 
+     */
+    public setAudiosVolume(volume: number) {
+        this.audios.forEach(audio => {
+            audio.target.volume(volume / 100)
+        })
+    }
     play() {
         this.audios.forEach((audio) => {
             console.log(audio.target)

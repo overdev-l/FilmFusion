@@ -137,7 +137,7 @@ const setVideoVolume = () => {
     refs.render.setVideoVolume(refs.videoVolume)
 }
 const setBackgroundVolume = () => {
-    refs.render.setBackgroundVolume(refs.backgroundVolume)
+    refs.render.setBackgroundMusicAudioVolume(refs.backgroundVolume)
 }
 const setVoiceVolume = () => {
     refs.render.setVoiceVolume(refs.voiceVolume)
