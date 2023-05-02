@@ -13,6 +13,7 @@ class Renderer {
     private coverTarget: Konva.Rect
     private backgroundLayer: Konva.Layer
     private backgroundElements: AudioElement
+    private voiceElements: AudioElement
     private movieLayer: Konva.Layer
     private elementsLayer: Konva.Layer
     private subtitleLayer: Konva.Layer
@@ -44,6 +45,7 @@ class Renderer {
         this.initLayers()
         this.initElements()
         this.initBackgroundElements()
+        this.initVoiceElements()
     }
     private initScale() {
         const scaleX = this.target.clientWidth / this.movieWidth
@@ -96,6 +98,9 @@ class Renderer {
     }
     private initBackgroundElements() {
         this.backgroundElements = new AudioElement()
+    }
+    private initVoiceElements() {
+        this.voiceElements = new AudioElement()
     }
     /**
      *  计算图层大小位置
@@ -230,11 +235,13 @@ class Renderer {
                 this.updateMovieLayer(target)
             }
         }
+        if (options.voice) {
+            this.setVoiceAudio(options.voice)
+        }
     }
 
     /**
      * setVideoVolume
-     * 设置视频音量
      * @param volume 
      */
     public setVideoVolume(volume: number) {
@@ -245,11 +252,25 @@ class Renderer {
         }
     }
     /**
+     * setBackgroundAudios
+     * @param audios 
+     */
+    public setBackgroundAudios(audios: AudioOptions.Options[]) {
+        this.backgroundElements.setAudios(audios)
+    }
+    /**
      * setBackgroundMusicAudio
      * @param volume 
      */
     public setBackgroundMusicAudioVolume(volume: number) {
         this.backgroundElements.setAudiosVolume(volume)
+    }
+    /**
+     * setVoiceAudio
+     * @param audio 
+     */
+    public setVoiceAudio(audio: AudioOptions.Options) {
+        this.voiceElements.setAudios([audio,])
     }
     /**
      * resize
@@ -344,13 +365,7 @@ class Renderer {
             this.elementTarget.removeElement(id)
         }
     }
-    /**
-     * setBackgroundAudios
-     * @param audios 
-     */
-    public setBackgroundAudios(audios: AudioOptions.Options[]) {
-        this.backgroundElements.setAudios(audios)
-    }
+
 
     public play() {
         if (this.mediaTarget instanceof HTMLVideoElement) {
@@ -360,6 +375,9 @@ class Renderer {
         if (this.backgroundElements instanceof AudioElement) {
             this.backgroundElements.play()
         }
+        if (this.voiceElements instanceof AudioElement) {
+            this.voiceElements.play()
+        }
     }
     public pause() {
         if (this.mediaTarget instanceof HTMLVideoElement) {
@@ -368,6 +386,9 @@ class Renderer {
         }
         if (this.backgroundElements instanceof AudioElement) {
             this.backgroundElements.pause()
+        }
+        if (this.voiceElements instanceof AudioElement) {
+            this.voiceElements.pause()
         }
     }
 }

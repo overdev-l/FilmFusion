@@ -113,7 +113,7 @@ const initScenesJsonEditor = () => {
     refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    })
+    }, [movieVideoData1920_1080_9s])
 }
 const initBackgroundMusicJsonEditor = () => {
     refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {

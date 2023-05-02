@@ -1,4 +1,4 @@
-
+import AudioOptions from "./audioTyps"
 namespace RendererOptions {
     type ElementType = 1 | 2 // 1. (视频 | 颜色) 2. 图片
     type ElementValue<T, O, P> = T extends P ? O : never
@@ -28,6 +28,7 @@ namespace RendererOptions {
         loop: ElementValue<ElementType, boolean, 1>
         startTime: ElementValue<ElementType, number, 1>
         endTime: ElementValue<ElementType, number, 1>
+        voice?: AudioOptions.Options
     }
 }
 
