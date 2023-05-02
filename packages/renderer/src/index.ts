@@ -26,6 +26,12 @@ class Renderer {
     private movieWidth: number
     private movieHeight: number
     private scale: number
+    private sourceStatus: RendererOptions.SourceStatus = {
+        backgroundMusicReady: false,
+        voiceMusicReady: false,
+        movieReady: false,
+        subtitleReady: false,
+    }
     constructor(options: RendererOptions.Options) {
         if (options.target instanceof HTMLDivElement) {
             this.target = options.target
@@ -187,6 +193,7 @@ class Renderer {
      */
     public setMovie(options: RendererOptions.MovieOptions) {
         this.movieLayer.destroyChildren()
+        this.sourceStatus.movieReady = false
         if (options.type === 2) {
             this.mediaTarget = new Image()
             this.mediaTarget.src = options.url
@@ -205,6 +212,7 @@ class Renderer {
                         y: this.mediaTarget.height / 2,
                     })
                 this.movieLayer.add(this.movieTarget)
+                this.sourceStatus.movieReady = true
             }
         } else if (options.type === 1) {
             let target: HTMLVideoElement
@@ -233,6 +241,7 @@ class Renderer {
                 this.movieLayer.add(this.movieTarget)
                 this.layerAnimation()
                 this.updateMovieLayer(target)
+                this.sourceStatus.movieReady = true
             }
         }
         if (options.voice) {

@@ -30,6 +30,13 @@ namespace RendererOptions {
         endTime: ElementValue<ElementType, number, 1>
         voice?: AudioOptions.Options
     }
+
+    export interface SourceStatus {
+        backgroundMusicReady: boolean
+        voiceMusicReady: boolean
+        movieReady: boolean
+        subtitleReady: boolean
+    }
 }
 
 export default RendererOptions
