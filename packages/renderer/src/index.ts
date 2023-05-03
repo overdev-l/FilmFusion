@@ -4,7 +4,7 @@ import Konva from "konva"
 import { getTargetScale, } from "./utils"
 import Element from "./element"
 import AudioElement from "./audio"
-import AudioOptions from "./audioTyps"
+import AudioOptions from "./audioTypes"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
@@ -26,6 +26,7 @@ class Renderer {
     private movieWidth: number
     private movieHeight: number
     private scale: number
+    private playerStatus: "playing" | "pause" | "stop" = "stop"
     private sourceStatus: RendererOptions.SourceStatus = {
         backgroundMusicReady: false,
         voiceMusicReady: false,
@@ -246,6 +247,16 @@ class Renderer {
         }
         if (options.voice) {
             this.setVoiceAudio(options.voice)
+        } else {
+            this.sourceStatus.voiceMusicReady = true
+            this.voiceElements.setAudios([], () => {
+                this.sourceStatus.voiceMusicReady = true
+            })
+        }
+        if (options.subtitle) {
+            console.log(options.subtitle)
+        } else {
+            this.sourceStatus.subtitleReady = true
         }
     }
 
@@ -265,7 +276,10 @@ class Renderer {
      * @param audios 
      */
     public setBackgroundAudios(audios: AudioOptions.Options[]) {
-        this.backgroundElements.setAudios(audios)
+        this.sourceStatus.backgroundMusicReady = false
+        this.backgroundElements.setAudios(audios, () => {
+            this.sourceStatus.backgroundMusicReady = true
+        })
     }
     /**
      * setBackgroundMusicAudio
@@ -279,7 +293,10 @@ class Renderer {
      * @param audio 
      */
     public setVoiceAudio(audio: AudioOptions.Options) {
-        this.voiceElements.setAudios([audio,])
+        this.sourceStatus.voiceMusicReady = false
+        this.voiceElements.setAudios([audio,], () => {
+            this.sourceStatus.voiceMusicReady = true
+        })
     }
     /**
      * resize
@@ -362,7 +379,7 @@ class Renderer {
      * addElements
      * @param elements.type 1. image 2. text 
      */
-    public addElements(elements: ElementOptions.AddElementOptions[]) {
+    public addElements(elements: ElementOptions.AddElementOptions<1 | 2>[]) {
         this.elementTarget.addElement(elements)
     }
     /**
@@ -377,6 +394,18 @@ class Renderer {
 
 
     public play() {
+        const isNotReady = Object.keys(this.sourceStatus).some((val) => {
+            const key: keyof RendererOptions.SourceStatus = val as keyof RendererOptions.SourceStatus
+            return this.sourceStatus[key] === false
+        })
+        if (isNotReady) {
+            console.warn("the source is not ready")
+            return
+        }
+        if (this.playerStatus === "playing") {
+            console.warn("the player is playing")
+            return
+        }
         if (this.mediaTarget instanceof HTMLVideoElement) {
             this.mediaTarget.play()
             this.movieAnimation.start()
@@ -387,8 +416,13 @@ class Renderer {
         if (this.voiceElements instanceof AudioElement) {
             this.voiceElements.play()
         }
+        this.playerStatus = "playing"
     }
     public pause() {
+        if (this.playerStatus === "pause") {
+            console.warn("the player is pause")
+            return
+        }
         if (this.mediaTarget instanceof HTMLVideoElement) {
             this.mediaTarget.pause()
             this.movieAnimation.stop()
@@ -399,6 +433,7 @@ class Renderer {
         if (this.voiceElements instanceof AudioElement) {
             this.voiceElements.pause()
         }
+        this.playerStatus = "pause"
     }
 }
 

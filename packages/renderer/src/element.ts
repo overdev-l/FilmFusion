@@ -12,8 +12,7 @@ class Element {
         this.movieWidth = options.movieWidth
         this.movieHeight = options.movieHeight
     }
-    public addElement(elements: ElementOptions.AddElementOptions[]) {
-        console.log()
+    public addElement(elements: ElementOptions.AddElementOptions<1 | 2>[]) {
         for (let i = 0; i < elements.length; i++) {
             const element = elements[i]
             const existElement = this.layer.getChildren().find((item) => item.name() === element.name)

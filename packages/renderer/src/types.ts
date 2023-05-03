@@ -1,4 +1,5 @@
-import AudioOptions from "./audioTyps"
+import AudioOptions from "./audioTypes"
+import ElementOptions from "./elementTypes"
 namespace RendererOptions {
     type ElementType = 1 | 2 // 1. (视频 | 颜色) 2. 图片
     type ElementValue<T, O, P> = T extends P ? O : never
@@ -29,6 +30,7 @@ namespace RendererOptions {
         startTime: ElementValue<ElementType, number, 1>
         endTime: ElementValue<ElementType, number, 1>
         voice?: AudioOptions.Options
+        subtitle?: SubtitleOptions
     }
 
     export interface SourceStatus {
@@ -36,6 +38,9 @@ namespace RendererOptions {
         voiceMusicReady: boolean
         movieReady: boolean
         subtitleReady: boolean
+    }
+    export interface SubtitleOptions extends ElementOptions.AddElementOptions<1> {
+        url: string
     }
 }
 

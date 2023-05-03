@@ -1,24 +1,40 @@
 import { Howl, } from "howler"
-import AudioOptions from "./audioTyps"
+import AudioOptions from "./audioTypes"
 class AudioElement {
     audios: {
         target: Howl,
         id?: number
-    }[]
+    }[] = []
 
-    setAudios(options: AudioOptions.Options[]) {
-        this.audios = options.map((audio) => {
-            return {
-                target: new Howl({
-                    src: audio.audio,
-                    volume: audio.volume / 100,
-                    mute: audio.mute,
-                    format: audio.format || "mp3",
+    setAudios(options: AudioOptions.Options[], callback: () => void) {
+        const ps = []
+        for (let index = 0; index < options.length; index++) {
+            const element = options[index]
+            const p = new Promise<void>((resolve, reject) => {
+                const audio = new Howl({
+                    src: element.audio,
+                    volume: element.volume / 100,
+                    mute: element.mute,
+                    format: element.format || "mp3",
                     sprite: {
-                        main: [audio.startTime, audio.endTime - audio.startTime, audio.loop,],
+                        main: [element.startTime, element.endTime - element.startTime, element.loop,],
                     },
-                }),
-            }
+                    onload: () => {
+                        resolve()
+                    },
+                    onloaderror: (id, error) => {
+                        reject(error)
+                    },
+                })
+                this.audios[index] = {
+                    target: audio,
+                }
+            })
+            ps.push(p)
+        }
+        Promise.all(ps).then(() => {
+            console.log("音频加载完成")
+            callback()
         })
     }
     /**
