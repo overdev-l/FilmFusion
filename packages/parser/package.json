@@ -9,8 +9,8 @@
         "dist"
     ],
     "scripts": {
-        "dev": "esbuild --bundle --format=esm --outfile=dist/parser.esm.js --watch=forever src/index.ts",
-        "ts-types": "tsc -w --emitDeclarationOnly --outDir dist"
+        "dev": "esbuild --bundle --format=esm --outfile=dist/parse.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/parse.d.ts"
     },
     "repository": {
         "type": "git",
