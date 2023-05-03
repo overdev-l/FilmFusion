@@ -140,7 +140,7 @@ const setBackgroundVolume = () => {
     refs.render.setBackgroundMusicAudioVolume(refs.backgroundVolume)
 }
 const setVoiceVolume = () => {
-    refs.render.setVoiceVolume(refs.voiceVolume)
+    refs.render.setVoiceMusicAudioVolume(refs.voiceVolume)
 }
 const addElements = () => {
     refs.render.addElements(refs.ElementsEditor.get())

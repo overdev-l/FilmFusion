@@ -299,6 +299,13 @@ class Renderer {
         })
     }
     /**
+     * setBackgroundMusicAudio
+     * @param volume 
+     */
+    public setVoiceMusicAudioVolume(volume: number) {
+        this.voiceElements.setAudiosVolume(volume)
+    }
+    /**
      * resize
      * 重新计算舞台大小
      */
