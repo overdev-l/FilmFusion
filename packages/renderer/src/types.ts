@@ -10,8 +10,8 @@ namespace RendererOptions {
     }
     export interface Background {
         type: 1 | 2
-        color: string
-        image: string
+        color?: string
+        image?: string
         alpha: number
     }
 

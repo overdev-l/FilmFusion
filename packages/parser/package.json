@@ -9,8 +9,8 @@
         "dist"
     ],
     "scripts": {
-        "dev": "esbuild --bundle --format=esm --outfile=dist/parse.esm.js --watch=forever src/index.ts",
-        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/parse.d.ts"
+        "dev": "esbuild --bundle --format=esm --outfile=dist/parser.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/parser.d.ts"
     },
     "repository": {
         "type": "git",
@@ -32,5 +32,11 @@
         "film-fusion"
     ],
     "author": "Overdev",
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.4.0"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0"
+    }
 }

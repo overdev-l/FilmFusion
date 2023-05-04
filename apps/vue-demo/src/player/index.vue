@@ -69,6 +69,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import Renderer from '@film-fusion/renderer';
+import Parser from '@film-fusion/parser';
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
@@ -76,7 +77,7 @@ import Badge from 'primevue/badge';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import ProgressBar from 'primevue/progressbar';
-import { elementsData, backgroundImageData, movieVideoData1920_1080_9s, backgroundMusicData } from './mock'
+import { elementsData, backgroundImageData, movieVideoData1920_1080_9s, movieVideoData2160_3240_15s, backgroundMusicData } from './mock'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
@@ -104,6 +105,14 @@ const initRender = () => {
     refs.render.setBackgroundAudios(backgroundMusicData)
 
 }
+const initParser = () => {
+    const parser = new Parser({
+        backgroundAudio: refs.BackgroundMusicEditor.get(),
+        scenes: refs.ScenesEditor.get(),
+        elements: refs.ElementsEditor.get(),
+        background: backgroundImageData as any,
+    })
+}
 window.addEventListener('resize', () => {
     refs.render.resize()
 })
@@ -113,7 +122,7 @@ const initScenesJsonEditor = () => {
     refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    }, [movieVideoData1920_1080_9s])
+    }, [movieVideoData1920_1080_9s, movieVideoData2160_3240_15s, movieVideoData1920_1080_9s, movieVideoData2160_3240_15s])
 }
 const initBackgroundMusicJsonEditor = () => {
     refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {
@@ -156,6 +165,7 @@ onMounted(initRender)
 onMounted(initScenesJsonEditor)
 onMounted(initBackgroundMusicJsonEditor)
 onMounted(initElementsJsonEditor)
+onMounted(initParser)
 </script>
 
 <style>
