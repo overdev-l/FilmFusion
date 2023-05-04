@@ -77,4 +77,7 @@ class Parser {
 
 }
 
-export default Parser
+export {
+    Parser,
+}
+export * from "./types"

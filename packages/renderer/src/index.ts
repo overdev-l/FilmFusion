@@ -324,11 +324,11 @@ class Renderer {
      */
     public setBackground(background: RendererOptions.Background) {
         if (background.type === 1) {
-            this.backgroundRect.fill(background.color)
+            this.backgroundRect.fill(background.color as string)
             this.backgroundRect.alpha(background.alpha)
         } else if (background.type === 2) {
             const image = new Image()
-            image.src = background.image
+            image.src = background.image as string
             image.onload = () => {
                 this.backgroundRect.fillPatternImage(image)
                 this.backgroundRect.fill("")
@@ -444,5 +444,10 @@ class Renderer {
     }
 }
 
-export default Renderer
+export {
+    Renderer,
+}
+export * from "./types"
+export * from "./audioTypes"
+export * from "./elementTypes"
 
