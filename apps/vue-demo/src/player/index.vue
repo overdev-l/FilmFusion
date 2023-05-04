@@ -68,8 +68,8 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import Renderer from '@film-fusion/renderer';
-import Parser from '@film-fusion/parser';
+import { Renderer, RendererOptions } from '@film-fusion/renderer';
+import { Parser } from '@film-fusion/parser';
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
@@ -82,6 +82,7 @@ import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
     render: null,
+    parser: null,
     videoVolume: 100,
     backgroundVolume: 100,
     voiceVolume: 100,
@@ -106,11 +107,11 @@ const initRender = () => {
 
 }
 const initParser = () => {
-    const parser = new Parser({
+    refs.parser = new Parser({
         backgroundAudio: refs.BackgroundMusicEditor.get(),
         scenes: refs.ScenesEditor.get(),
         elements: refs.ElementsEditor.get(),
-        background: backgroundImageData as any,
+        background: backgroundImageData as RendererOptions.Background,
     })
 }
 window.addEventListener('resize', () => {

@@ -73,11 +73,13 @@ class Parser {
         })
         const result = await BlobTransformBase64(data)
         this.cache.set(options.image as string, result)
+        options.image = result
+        this.background = options
     }
 
 }
 
 export {
     Parser,
+    ParserOptions,
 }
-export * from "./types"

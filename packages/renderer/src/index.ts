@@ -446,8 +446,8 @@ class Renderer {
 
 export {
     Renderer,
+    RendererOptions,
+    ElementOptions,
+    AudioOptions,
 }
-export * from "./types"
-export * from "./audioTypes"
-export * from "./elementTypes"
 

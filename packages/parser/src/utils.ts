@@ -3,7 +3,6 @@ export const BlobTransformBase64 = (blob: Blob):Promise<string> => new Promise((
     const reader = new FileReader()
     reader.readAsDataURL(blob)
     reader.onload = () => {
-        const dataURL = reader.result as string
-        resolve(dataURL.split(",")[1])
+        resolve(reader.result as string)
     }
 })
