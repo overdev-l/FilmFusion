@@ -33,7 +33,6 @@ class AudioElement {
             ps.push(p)
         }
         Promise.all(ps).then(() => {
-            console.log("音频加载完成")
             callback()
         })
     }

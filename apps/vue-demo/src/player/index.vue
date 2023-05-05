@@ -68,7 +68,7 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { Renderer, RendererOptions } from '@film-fusion/renderer';
+import { Renderer, RendererConfig } from '@film-fusion/renderer';
 import { Parser } from '@film-fusion/parser';
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
@@ -111,7 +111,7 @@ const initParser = () => {
         backgroundAudio: refs.BackgroundMusicEditor.get(),
         scenes: refs.ScenesEditor.get(),
         elements: refs.ElementsEditor.get(),
-        background: backgroundImageData as RendererOptions.Background,
+        background: backgroundImageData as RendererConfig.Background,
     })
 }
 window.addEventListener('resize', () => {

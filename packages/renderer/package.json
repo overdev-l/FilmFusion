@@ -2,9 +2,9 @@
     "name": "@film-fusion/renderer",
     "version": "0.0.1",
     "description": "@film-fusion/renderer",
-    "main": "dis/renderer.esm.js",
-    "module": "dist/renderer.esm.js",
-    "types": "dist/renderer.d.ts",
+    "main": "dis/index.esm.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/types/index.d.ts",
     "files": [
         "dist"
     ],

@@ -1,6 +1,6 @@
 import ParserConfig from "./types"
 import axios from "axios"
-import { BlobTransformBase64, } from "./utils"
+import { BlobTransformBlobUrl, } from "./utils"
 class Parser {
     cache: Map<string, string> = new Map()
     sceneFiber: ParserConfig.SceneFiber | null = null
@@ -19,6 +19,7 @@ class Parser {
             this.parserElements(options.elements)
         }
         this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber)
+        console.log(this.cache)
     }
 
     initFiber(options: ParserConfig.Options) {
@@ -31,13 +32,7 @@ class Parser {
                 isHead: i === 0,
                 isTail: i === options.scenes.length - 1,
                 isLoaded: false,
-                movie: {
-                    ...options.scenes[i],
-                    subtitle: options.scenes[i].subtitle ? {
-                        ...options.scenes[i].subtitle,
-                        data: [],
-                    } : undefined,
-                },
+                movie: options.scenes[i],
                 nextScene: null,
             }
             if (current) {
@@ -49,6 +44,7 @@ class Parser {
             if (i === 0) {
                 this.sceneFiber = fiber
             }
+            console.log(this.sceneFiber)
         }
     }
 
@@ -65,7 +61,7 @@ class Parser {
             const { data, } = await axios.get(audio.audio, {
                 responseType: "blob",
             })
-            const result = await BlobTransformBase64(data)
+            const result = await BlobTransformBlobUrl(data)
             this.cache.set(audio.audio, result)
             audio.audio = result
             this.backgroundAudio.push(audio)
@@ -92,7 +88,7 @@ class Parser {
     }
 
     async parserFiber(options: ParserConfig.SceneFiber) {
-        const currentFiber = options
+        let currentFiber: ParserConfig.SceneFiber | null = options
         while(currentFiber !== null) {
             currentFiber.movie.url = await this.parserData(currentFiber.movie.url)
             if (currentFiber.movie.voice) {
@@ -101,6 +97,7 @@ class Parser {
             if (currentFiber.movie.subtitle) {
                 currentFiber.movie.subtitle.url = await this.parserData(currentFiber.movie.subtitle.url)
             }
+            currentFiber = currentFiber.nextScene
         }
     }
     async parserData(url: string): Promise<string> {
@@ -109,7 +106,7 @@ class Parser {
         const { data, } = await axios.get(url, {
             responseType: "blob",
         })
-        const result = await BlobTransformBase64(data)
+        const result = await BlobTransformBlobUrl(data)
         this.cache.set(url, result)
         return result
     }
