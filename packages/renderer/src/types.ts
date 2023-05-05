@@ -29,8 +29,14 @@ namespace RendererOptions {
         loop: ElementValue<ElementType, boolean, 1>
         startTime: ElementValue<ElementType, number, 1>
         endTime: ElementValue<ElementType, number, 1>
+    }
+
+    export interface SceneData {
+        movie: MovieOptions
         voice?: AudioOptions.Options
-        subtitle?: any
+        subtitle?: Omit<ElementOptions.TextElement, "type" | "text"> & {
+            url: string
+        }
     }
 
     export interface SourceStatus {

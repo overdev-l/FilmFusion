@@ -4,7 +4,7 @@ import ElementConfig from "../../renderer/src/elementTypes"
 namespace ParserConfig {
     export interface Options {
         backgroundAudio?: AudioConfig.Options[]
-        scenes: RendererConfig.MovieOptions[]
+        scenes: RendererConfig.SceneData[]
         elements?: ElementConfig.ElementOptions[]
         background?: RendererConfig.Background
         cover?: RendererConfig.Cover
@@ -13,8 +13,15 @@ namespace ParserConfig {
         isHead: boolean
         isTail: boolean
         isLoaded: boolean
-        movie: any
+        sceneData: SceneData
         nextScene: SceneFiber | null
+    }
+    interface SceneData {
+        movie: RendererConfig.MovieOptions
+        voice?: AudioConfig.Options
+        subtitle?: Omit<ElementConfig.TextElement, "type" | "text"> & {
+            data: []
+        }
     }
 }
 

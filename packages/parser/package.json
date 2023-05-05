@@ -34,7 +34,8 @@
     "author": "Overdev",
     "license": "MIT",
     "dependencies": {
-        "axios": "^1.4.0"
+        "axios": "^1.4.0",
+        "srt-parser-2": "^1.2.2"
     },
     "devDependencies": {
         "@types/axios": "^0.14.0"

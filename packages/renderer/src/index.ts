@@ -192,12 +192,12 @@ class Renderer {
     /** 
      * setMovie
      */
-    public setMovie(options: RendererConfig.MovieOptions) {
+    public setMovie(options: RendererConfig.SceneData) {
         this.movieLayer.destroyChildren()
         this.sourceStatus.movieReady = false
-        if (options.type === 2) {
+        if (options.movie.type === 2) {
             this.mediaTarget = new Image()
-            this.mediaTarget.src = options.url
+            this.mediaTarget.src = options.movie.url
             this.mediaTarget.onload = () => {
                 this.movieTarget = new Konva.Image({
                     image: this.mediaTarget,
@@ -215,14 +215,14 @@ class Renderer {
                 this.movieLayer.add(this.movieTarget)
                 this.sourceStatus.movieReady = true
             }
-        } else if (options.type === 1) {
+        } else if (options.movie.type === 1) {
             let target: HTMLVideoElement
             this.mediaTarget = target = document.createElement("video") 
-            this.mediaTarget.src = options.url
-            target.addEventListener("timeupdate", this.videoPlayEvent.bind(this, options, target))
+            this.mediaTarget.src = options.movie.url
+            target.addEventListener("timeupdate", this.videoPlayEvent.bind(this, options.movie, target))
             this.mediaTarget.onloadeddata = () => {
-                target.currentTime = options.startTime / 1000
-                target.volume = options.volume / 100
+                target.currentTime = options.movie.startTime / 1000
+                target.volume = options.movie.volume / 100
                 this.movieTarget = new Konva.Image({
                     image: this.mediaTarget,
                     x: this.movieWidth / 2,

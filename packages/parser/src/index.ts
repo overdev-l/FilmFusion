@@ -32,7 +32,16 @@ class Parser {
                 isHead: i === 0,
                 isTail: i === options.scenes.length - 1,
                 isLoaded: false,
-                movie: options.scenes[i],
+                sceneData: {
+                    movie: options.scenes[i].movie,
+                    voice: options.scenes[i].voice || undefined,
+                    subtitle: options.scenes[i].subtitle? {
+                        name: options.scenes[i].subtitle?.name || "",
+                        style: options.scenes[i].subtitle!.style,
+                        position: options.scenes[i].subtitle!.position,
+                        data: [],
+                    }: undefined,
+                },
                 nextScene: null,
             }
             if (current) {
@@ -90,13 +99,13 @@ class Parser {
     async parserFiber(options: ParserConfig.SceneFiber) {
         let currentFiber: ParserConfig.SceneFiber | null = options
         while(currentFiber !== null) {
-            currentFiber.movie.url = await this.parserData(currentFiber.movie.url)
-            if (currentFiber.movie.voice) {
-                currentFiber.movie.voice.audio = await this.parserData(currentFiber.movie.voice.audio)
-            }
-            if (currentFiber.movie.subtitle) {
-                currentFiber.movie.subtitle.url = await this.parserData(currentFiber.movie.subtitle.url)
-            }
+            // currentFiber.sceneData.url = await this.parserData(currentFiber.movie.url)
+            // if (currentFiber.movie.voice) {
+            //     currentFiber.movie.voice.audio = await this.parserData(currentFiber.movie.voice.audio)
+            // }
+            // if (currentFiber.movie.subtitle) {
+            //     currentFiber.movie.subtitle.url = await this.parserData(currentFiber.movie.subtitle.url)
+            // }
             currentFiber = currentFiber.nextScene
         }
     }
@@ -109,6 +118,10 @@ class Parser {
         const result = await BlobTransformBlobUrl(data)
         this.cache.set(url, result)
         return result
+    }
+
+    async parserSubtitle(url: string) {
+        console.log(url)
     }
 }
 
