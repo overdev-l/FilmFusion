@@ -1,18 +1,18 @@
 import Konva from "konva"
-import ElementOptions from "./elementTypes"
+import ElementConfig from "./elementTypes"
 import { transformColorFormat, getPosition, } from "./utils"
 class Element {
     private elements: Array<Konva.Label | Konva.Image>
     private layer: Konva.Layer
     private movieWidth: number
     private movieHeight: number
-    constructor(options: ElementOptions.Options) {
+    constructor(options: ElementConfig.Options) {
         this.layer = options.layer
         this.elements = []
         this.movieWidth = options.movieWidth
         this.movieHeight = options.movieHeight
     }
-    public addElement(elements: ElementOptions.AddElementOptions<1 | 2>[]) {
+    public addElement(elements: ElementConfig.ElementOptions[]) {
         for (let i = 0; i < elements.length; i++) {
             const element = elements[i]
             const existElement = this.layer.getChildren().find((item) => item.name() === element.name)

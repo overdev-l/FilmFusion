@@ -1,13 +1,13 @@
-import ParserOptions from "./types"
+import ParserConfig from "./types"
 import axios from "axios"
 import { BlobTransformBase64, } from "./utils"
 class Parser {
     cache: Map<string, string> = new Map()
-    sceneFiber: ParserOptions.SceneFiber | null = null
-    backgroundAudio: ParserOptions.Options["backgroundAudio"] = []
-    background: ParserOptions.Options["background"]
-    elements: ParserOptions.Options["elements"]
-    constructor(options: ParserOptions.Options) {
+    sceneFiber: ParserConfig.SceneFiber | null = null
+    backgroundAudio: ParserConfig.Options["backgroundAudio"] = []
+    background: ParserConfig.Options["background"]
+    elements: ParserConfig.Options["elements"]
+    constructor(options: ParserConfig.Options) {
         this.initFiber(options)
         if (options.backgroundAudio) {
             this.parserBackgroundAudio(options.backgroundAudio)
@@ -18,20 +18,26 @@ class Parser {
         if (options.elements) {
             this.parserElements(options.elements)
         }
-        this.parserFiber(this.sceneFiber as ParserOptions.SceneFiber)
+        this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber)
     }
 
-    initFiber(options: ParserOptions.Options) {
-        let current: ParserOptions.SceneFiber | null = null
+    initFiber(options: ParserConfig.Options) {
+        let current: ParserConfig.SceneFiber | null = null
         if (options.scenes.length === 0) {
             throw new Error("scenes is empty")
         }
         for (let i = 0; i < options.scenes.length; i++) {
-            const fiber: ParserOptions.SceneFiber = {
+            const fiber: ParserConfig.SceneFiber = {
                 isHead: i === 0,
                 isTail: i === options.scenes.length - 1,
                 isLoaded: false,
-                movie: options.scenes[i],
+                movie: {
+                    ...options.scenes[i],
+                    subtitle: options.scenes[i].subtitle ? {
+                        ...options.scenes[i].subtitle,
+                        data: [],
+                    } : undefined,
+                },
                 nextScene: null,
             }
             if (current) {
@@ -46,7 +52,7 @@ class Parser {
         }
     }
 
-    async parserBackgroundAudio(options: ParserOptions.Options["backgroundAudio"]) {
+    async parserBackgroundAudio(options: ParserConfig.Options["backgroundAudio"]) {
         this.backgroundAudio = []
         if (!options) return
         for (let i = 0; i < options.length; i++) {
@@ -66,43 +72,26 @@ class Parser {
         }
     }
 
-    async parserBackground(options: ParserOptions.Options["background"]) {
+    async parserBackground(options: ParserConfig.Options["background"]) {
         if (!options) return
         if (options.type !== 2) return
-        if (this.cache.has(options.image as string)) {
-            options.image = this.cache.get(options.image as string) as string
-            return
-        }
-        const { data, } = await axios.get(options.image as string, {
-            responseType: "blob",
-        })
-        const result = await BlobTransformBase64(data)
-        this.cache.set(options.image as string, result)
+        const result = await this.parserData(options.image as string)
         options.image = result
         this.background = options
     }
     
-    async parserElements(options: ParserOptions.Options["elements"]) {
+    async parserElements(options: ParserConfig.Options["elements"]) {
         if (!options) return
         for (const element of options) {
             if (element!.type === 2) {
-                if (this.cache.has(element.image as string)) {
-                    element.image = this.cache.get(element.image as string) as string
-                    continue
-                }
-                const { data, } = await axios.get(element.image as string, {
-                    responseType: "blob",
-                })
-                const result = await BlobTransformBase64(data)
-                this.cache.set(element.image as string, result)
+                const result = await this.parserData(element.image)
                 element.image = result
             }
         }
         this.elements = options
     }
 
-    async parserFiber(options: ParserOptions.SceneFiber) {
-        console.log(options)
+    async parserFiber(options: ParserConfig.SceneFiber) {
         const currentFiber = options
         while(currentFiber !== null) {
             currentFiber.movie.url = await this.parserData(currentFiber.movie.url)
@@ -128,5 +117,5 @@ class Parser {
 
 export {
     Parser,
-    ParserOptions,
+    ParserConfig,
 }

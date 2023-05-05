@@ -1,10 +1,10 @@
-import RendererOptions from "./types"
-import ElementOptions from "./elementTypes"
+import RendererConfig from "./types"
+import ElementConfig from "./elementTypes"
 import Konva from "konva"
 import { getTargetScale, } from "./utils"
 import Element from "./element"
 import AudioElement from "./audio"
-import AudioOptions from "./audioTypes"
+import AudioConfig from "./audioTypes"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
@@ -27,13 +27,13 @@ class Renderer {
     private movieHeight: number
     private scale: number
     private playerStatus: "playing" | "pause" | "stop" = "stop"
-    private sourceStatus: RendererOptions.SourceStatus = {
+    private sourceStatus: RendererConfig.SourceStatus = {
         backgroundMusicReady: false,
         voiceMusicReady: false,
         movieReady: false,
         subtitleReady: false,
     }
-    constructor(options: RendererOptions.Options) {
+    constructor(options: RendererConfig.Options) {
         if (options.target instanceof HTMLDivElement) {
             this.target = options.target
         } else {
@@ -182,7 +182,7 @@ class Renderer {
      * @param options 
      * @param target 
      */
-    private videoPlayEvent(options: RendererOptions.MovieOptions, target: HTMLVideoElement) {
+    private videoPlayEvent(options: RendererConfig.MovieOptions, target: HTMLVideoElement) {
         const currentTime = target.currentTime * 1000
         if (currentTime> options.endTime && options.loop) {
             target.currentTime = options.startTime / 1000
@@ -192,7 +192,7 @@ class Renderer {
     /** 
      * setMovie
      */
-    public setMovie(options: RendererOptions.MovieOptions) {
+    public setMovie(options: RendererConfig.MovieOptions) {
         this.movieLayer.destroyChildren()
         this.sourceStatus.movieReady = false
         if (options.type === 2) {
@@ -275,7 +275,7 @@ class Renderer {
      * setBackgroundAudios
      * @param audios 
      */
-    public setBackgroundAudios(audios: AudioOptions.Options[]) {
+    public setBackgroundAudios(audios: AudioConfig.Options[]) {
         this.sourceStatus.backgroundMusicReady = false
         this.backgroundElements.setAudios(audios, () => {
             this.sourceStatus.backgroundMusicReady = true
@@ -292,7 +292,7 @@ class Renderer {
      * setVoiceAudio
      * @param audio 
      */
-    public setVoiceAudio(audio: AudioOptions.Options) {
+    public setVoiceAudio(audio: AudioConfig.Options) {
         this.sourceStatus.voiceMusicReady = false
         this.voiceElements.setAudios([audio,], () => {
             this.sourceStatus.voiceMusicReady = true
@@ -322,7 +322,7 @@ class Renderer {
      * @param Background 
      * @param Background.type 1. color 2. image
      */
-    public setBackground(background: RendererOptions.Background) {
+    public setBackground(background: RendererConfig.Background) {
         if (background.type === 1) {
             this.backgroundRect.fill(background.color as string)
             this.backgroundRect.alpha(background.alpha)
@@ -346,7 +346,7 @@ class Renderer {
      * @param Cover 
      * @param Cover.type 1. color 2. image
      */
-    public setCover(cover: RendererOptions.Cover) {
+    public setCover(cover: RendererConfig.Cover) {
         this.coverLayer.destroyChildren()
         if (cover.type === 1) {
             this.coverTarget = new Konva.Rect({
@@ -386,7 +386,7 @@ class Renderer {
      * addElements
      * @param elements.type 1. image 2. text 
      */
-    public addElements(elements: ElementOptions.AddElementOptions<1 | 2>[]) {
+    public addElements(elements: ElementConfig.ElementOptions[]) {
         this.elementTarget.addElement(elements)
     }
     /**
@@ -402,7 +402,7 @@ class Renderer {
 
     public play() {
         const isNotReady = Object.keys(this.sourceStatus).some((val) => {
-            const key: keyof RendererOptions.SourceStatus = val as keyof RendererOptions.SourceStatus
+            const key: keyof RendererConfig.SourceStatus = val as keyof RendererConfig.SourceStatus
             return this.sourceStatus[key] === false
         })
         if (isNotReady) {
@@ -446,8 +446,8 @@ class Renderer {
 
 export {
     Renderer,
-    RendererOptions,
-    ElementOptions,
-    AudioOptions,
+    RendererConfig,
+    ElementConfig,
+    AudioConfig,
 }
 

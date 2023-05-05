@@ -30,7 +30,7 @@ namespace RendererOptions {
         startTime: ElementValue<ElementType, number, 1>
         endTime: ElementValue<ElementType, number, 1>
         voice?: AudioOptions.Options
-        subtitle?: SubtitleOptions
+        subtitle?: any
     }
 
     export interface SourceStatus {
@@ -38,10 +38,6 @@ namespace RendererOptions {
         voiceMusicReady: boolean
         movieReady: boolean
         subtitleReady: boolean
-    }
-    export interface SubtitleOptions extends ElementOptions.AddElementOptions<1> {
-        url: string,
-        source?: string[]
     }
 }
 

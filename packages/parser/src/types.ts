@@ -1,21 +1,21 @@
-import AudioOptions from "../../renderer/src/audioTypes"
-import RendererOptions from "../../renderer/src/types"
-import ElementOptions from "../../renderer/src/elementTypes"
-namespace ParserOptions {
+import AudioConfig from "../../renderer/src/audioTypes"
+import RendererConfig from "../../renderer/src/types"
+import ElementConfig from "../../renderer/src/elementTypes"
+namespace ParserConfig {
     export interface Options {
-        backgroundAudio?: AudioOptions.Options[]
-        scenes: RendererOptions.MovieOptions[]
-        elements?: ElementOptions.AddElementOptions<1 | 2>[]
-        background?: RendererOptions.Background
-        cover?: RendererOptions.Cover
+        backgroundAudio?: AudioConfig.Options[]
+        scenes: RendererConfig.MovieOptions[]
+        elements?: ElementConfig.ElementOptions[]
+        background?: RendererConfig.Background
+        cover?: RendererConfig.Cover
     }
     export interface SceneFiber {
         isHead: boolean
         isTail: boolean
         isLoaded: boolean
-        movie: RendererOptions.MovieOptions
+        movie: any
         nextScene: SceneFiber | null
     }
 }
 
-export default ParserOptions
+export default ParserConfig

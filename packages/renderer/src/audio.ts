@@ -1,12 +1,12 @@
 import { Howl, } from "howler"
-import AudioOptions from "./audioTypes"
+import AudioConfig from "./audioTypes"
 class AudioElement {
     audios: {
         target: Howl,
         id?: number
     }[] = []
 
-    setAudios(options: AudioOptions.Options[], callback: () => void) {
+    setAudios(options: AudioConfig.Options[], callback: () => void) {
         const ps = []
         for (let index = 0; index < options.length; index++) {
             const element = options[index]

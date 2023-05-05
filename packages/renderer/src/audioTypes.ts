@@ -1,4 +1,4 @@
-namespace AudioOptions {
+namespace AudioConfig {
     export interface Options {
         audio: string
         loop: boolean
@@ -11,5 +11,5 @@ namespace AudioOptions {
     }
 }
 
-export default AudioOptions
+export default AudioConfig
 
