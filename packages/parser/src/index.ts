@@ -6,6 +6,7 @@ class Parser {
     sceneFiber: ParserOptions.SceneFiber | null = null
     backgroundAudio: ParserOptions.Options["backgroundAudio"] = []
     background: ParserOptions.Options["background"]
+    elements: ParserOptions.Options["elements"]
     constructor(options: ParserOptions.Options) {
         this.initFiber(options)
         if (options.backgroundAudio) {
@@ -76,7 +77,25 @@ class Parser {
         options.image = result
         this.background = options
     }
-
+    
+    async parserElements(options: ParserOptions.Options["elements"]) {
+        if (!options) return
+        for (const element of options) {
+            if (element!.type === 2) {
+                if (this.cache.has(element.image as string)) {
+                    element.image = this.cache.get(element.image as string) as string
+                    continue
+                }
+                const { data, } = await axios.get(element.image as string, {
+                    responseType: "blob",
+                })
+                const result = await BlobTransformBase64(data)
+                this.cache.set(element.image as string, result)
+                element.image = result
+            }
+        }
+        this.elements = options
+    }
 }
 
 export {

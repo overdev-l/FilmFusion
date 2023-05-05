@@ -5,7 +5,7 @@ namespace ParserOptions {
     export interface Options {
         backgroundAudio?: AudioOptions.Options[]
         scenes: RendererOptions.MovieOptions[]
-        elements?: ElementOptions.AddElementOptions<1 | 2>
+        elements?: ElementOptions.AddElementOptions<1 | 2>[]
         background?: RendererOptions.Background
         cover?: RendererOptions.Cover
     }
