@@ -40,6 +40,7 @@ class Parser {
                         style: options.scenes[i].subtitle!.style,
                         position: options.scenes[i].subtitle!.position,
                         data: [],
+                        url: options.scenes[i].subtitle!.url,
                     }: undefined,
                 },
                 nextScene: null,
@@ -99,13 +100,13 @@ class Parser {
     async parserFiber(options: ParserConfig.SceneFiber) {
         let currentFiber: ParserConfig.SceneFiber | null = options
         while(currentFiber !== null) {
-            // currentFiber.sceneData.url = await this.parserData(currentFiber.movie.url)
-            // if (currentFiber.movie.voice) {
-            //     currentFiber.movie.voice.audio = await this.parserData(currentFiber.movie.voice.audio)
-            // }
-            // if (currentFiber.movie.subtitle) {
-            //     currentFiber.movie.subtitle.url = await this.parserData(currentFiber.movie.subtitle.url)
-            // }
+            currentFiber.sceneData.movie.url = await this.parserData(currentFiber.sceneData.movie.url)
+            if (currentFiber.sceneData.voice) {
+                currentFiber.sceneData.voice.audio = await this.parserData(currentFiber.sceneData.voice.audio)
+            }
+            if (currentFiber.sceneData.subtitle) {
+                currentFiber.sceneData.subtitle.data = await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
+            }
             currentFiber = currentFiber.nextScene
         }
     }
@@ -120,8 +121,9 @@ class Parser {
         return result
     }
 
-    async parserSubtitle(url: string) {
+    async parserSubtitle(url: string): Promise<string[]> {
         console.log(url)
+        return Promise.resolve([])
     }
 }
 

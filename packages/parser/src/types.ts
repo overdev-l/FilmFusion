@@ -20,7 +20,8 @@ namespace ParserConfig {
         movie: RendererConfig.MovieOptions
         voice?: AudioConfig.Options
         subtitle?: Omit<ElementConfig.TextElement, "type" | "text"> & {
-            data: []
+            data: string[],
+            url: string
         }
     }
 }
