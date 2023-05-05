@@ -15,6 +15,10 @@ class Parser {
         if (options.background) {
             this.parserBackground(options.background)
         }
+        if (options.elements) {
+            this.parserElements(options.elements)
+        }
+        this.parserFiber(this.sceneFiber as ParserOptions.SceneFiber)
     }
 
     initFiber(options: ParserOptions.Options) {
@@ -95,6 +99,30 @@ class Parser {
             }
         }
         this.elements = options
+    }
+
+    async parserFiber(options: ParserOptions.SceneFiber) {
+        console.log(options)
+        const currentFiber = options
+        while(currentFiber !== null) {
+            currentFiber.movie.url = await this.parserData(currentFiber.movie.url)
+            if (currentFiber.movie.voice) {
+                currentFiber.movie.voice.audio = await this.parserData(currentFiber.movie.voice.audio)
+            }
+            if (currentFiber.movie.subtitle) {
+                currentFiber.movie.subtitle.url = await this.parserData(currentFiber.movie.subtitle.url)
+            }
+        }
+    }
+    async parserData(url: string): Promise<string> {
+        const isLoaded = this.cache.has(url)
+        if (isLoaded) return this.cache.get(url) as string
+        const { data, } = await axios.get(url, {
+            responseType: "blob",
+        })
+        const result = await BlobTransformBase64(data)
+        this.cache.set(url, result)
+        return result
     }
 }
 

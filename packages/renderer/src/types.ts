@@ -40,7 +40,8 @@ namespace RendererOptions {
         subtitleReady: boolean
     }
     export interface SubtitleOptions extends ElementOptions.AddElementOptions<1> {
-        url: string
+        url: string,
+        source?: string[]
     }
 }
 
