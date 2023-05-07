@@ -1,7 +1,8 @@
 import ParserConfig from "./types"
 import axios from "axios"
 
-import { BlobTransformBlobUrl, UrlTransformSubtitle, } from "./utils"
+import {BlobTransformBlobUrl, UrlTransformSubtitle,} from "./utils"
+
 class Parser {
     cache: Map<string, string> = new Map()
     subtitleCache: Map<string, ParserConfig.SubtitleData[]> = new Map()
@@ -21,7 +22,6 @@ class Parser {
             this.parserElements(options.elements)
         }
         this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber)
-        console.log(this.cache)
     }
 
     initFiber(options: ParserConfig.Options) {
@@ -82,8 +82,7 @@ class Parser {
     async parserBackground(options: ParserConfig.Options["background"]) {
         if (!options) return
         if (options.type !== 2) return
-        const result = await this.parserData(options.image as string)
-        options.image = result
+        options.image = await this.parserData(options.image as string)
         this.background = options
     }
 
@@ -91,8 +90,7 @@ class Parser {
         if (!options) return
         for (const element of options) {
             if (element!.type === 2) {
-                const result = await this.parserData(element.image)
-                element.image = result
+                element.image = await this.parserData(element.image)
             }
         }
         this.elements = options
