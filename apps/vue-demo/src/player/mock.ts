@@ -72,6 +72,28 @@ export const voiceMusicData_51000ms = {
     volume: 100,
     mute: false,
 }
+export const subtitleData = {
+    url: "https://image.liuyongzhi.cn/video/video2subtitle.srt",
+    style: {
+        alpha: 90,
+        color: "#2399D7",
+        fontSize: 100,
+        fontFamily: "微软雅黑",
+        fontItalic: false,
+        fontBold: true,
+        align: "center",
+        fontStoke: "#FFFB7D",
+        fontStokeWidth: 10,
+        backgroundColor: "#2BFF88",
+        backgroundAlpha: 50,
+        backgroundPadding: 20,
+    },
+    position: {
+        x: 0,
+        y: 0,
+        z: 90,
+    },
+}
 
 export const movieImageData = {
     type: 2,
@@ -79,22 +101,27 @@ export const movieImageData = {
 }
 
 export const movieVideoData1920_1080_9s = {
-    type: 1,
-    url: "https://image.liuyongzhi.cn/video/pexels-1920%E2%80%8A%C3%97%E2%80%8A1080-9s.mp4",
-    volume: 100,
-    loop: true,
-    startTime: 5000,
-    endTime: 9000,
+    movie: {
+        type: 1,
+        url: "https://image.liuyongzhi.cn/video/pexels-1920%E2%80%8A%C3%97%E2%80%8A1080-9s.mp4",
+        volume: 100,
+        loop: true,
+        startTime: 5000,
+        endTime: 9000,
+    },
     voice: voiceMusicData_51000ms,
+    subtitle: subtitleData,
     duration: 51000,
 }
 export const movieVideoData2160_3240_15s = {
-    type: 1,
-    url: "https://image.liuyongzhi.cn/video/pexels-2160%E2%80%8A%C3%97%E2%80%8A3240-15s.mp4",
-    volume: 100,
-    loop: true,
-    startTime: 5000,
-    endTime: 10000,
+    movie: {
+        type: 1,
+        url: "https://image.liuyongzhi.cn/video/pexels-2160%E2%80%8A%C3%97%E2%80%8A3240-15s.mp4",
+        volume: 100,
+        loop: true,
+        startTime: 5000,
+        endTime: 10000,
+    },
 }
 
 
@@ -108,3 +135,5 @@ export const backgroundMusicData = [
         mute: false,
     },
 ]
+
+

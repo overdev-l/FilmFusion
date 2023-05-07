@@ -19,10 +19,18 @@ namespace ParserConfig {
     interface SceneData {
         movie: RendererConfig.MovieOptions
         voice?: AudioConfig.Options
-        subtitle?: Omit<ElementConfig.TextElement, "type" | "text"> & {
-            data: string[],
+        subtitle?: Omit<ElementConfig.TextElement, "type" | "text" | "name"> & {
+            data: SubtitleData[],
             url: string
         }
+    }
+    export interface SubtitleData {
+        endSeconds: number
+        startSeconds: number
+        startTime: string
+        endTime: string
+        id: string
+        text: string
     }
 }
 

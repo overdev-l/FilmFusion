@@ -34,7 +34,7 @@ namespace RendererOptions {
     export interface SceneData {
         movie: MovieOptions
         voice?: AudioOptions.Options
-        subtitle?: Omit<ElementOptions.TextElement, "type" | "text"> & {
+        subtitle?: Omit<ElementOptions.TextElement, "type" | "text" | "name"> & {
             url: string
         }
     }

@@ -1,8 +1,10 @@
 import ParserConfig from "./types"
 import axios from "axios"
-import { BlobTransformBlobUrl, } from "./utils"
+
+import { BlobTransformBlobUrl, UrlTransformSubtitle, } from "./utils"
 class Parser {
     cache: Map<string, string> = new Map()
+    subtitleCache: Map<string, ParserConfig.SubtitleData[]> = new Map()
     sceneFiber: ParserConfig.SceneFiber | null = null
     backgroundAudio: ParserConfig.Options["backgroundAudio"] = []
     background: ParserConfig.Options["background"]
@@ -36,7 +38,6 @@ class Parser {
                     movie: options.scenes[i].movie,
                     voice: options.scenes[i].voice || undefined,
                     subtitle: options.scenes[i].subtitle? {
-                        name: options.scenes[i].subtitle?.name || "",
                         style: options.scenes[i].subtitle!.style,
                         position: options.scenes[i].subtitle!.position,
                         data: [],
@@ -85,7 +86,7 @@ class Parser {
         options.image = result
         this.background = options
     }
-    
+
     async parserElements(options: ParserConfig.Options["elements"]) {
         if (!options) return
         for (const element of options) {
@@ -121,9 +122,13 @@ class Parser {
         return result
     }
 
-    async parserSubtitle(url: string): Promise<string[]> {
-        console.log(url)
-        return Promise.resolve([])
+    async parserSubtitle(url: string): Promise<ParserConfig.SubtitleData[]> {
+        if (this.subtitleCache.has(url)) {
+            return this.subtitleCache.get(url) as ParserConfig.SubtitleData[]
+        }
+        const result = await UrlTransformSubtitle(url)
+        this.subtitleCache.set(url, result)
+        return result
     }
 }
 

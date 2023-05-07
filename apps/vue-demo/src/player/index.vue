@@ -77,7 +77,14 @@ import Badge from 'primevue/badge';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import ProgressBar from 'primevue/progressbar';
-import { elementsData, backgroundImageData, movieVideoData1920_1080_9s, movieVideoData2160_3240_15s, backgroundMusicData } from './mock'
+import {
+    elementsData,
+    backgroundImageData,
+    movieVideoData1920_1080_9s,
+    movieVideoData2160_3240_15s,
+    backgroundMusicData
+
+} from './mock'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
