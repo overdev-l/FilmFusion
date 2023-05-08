@@ -67,7 +67,7 @@ class Parser {
 
     initWorkerMessage() {
         this.worker.onmessage = (e) => {
-            this.cache.set(e.data.movie.key, e.data.movie.value)
+            this.cache.set(e.data.movieData.key, e.data.movieData.value)
             if (e.data.voice) {
                 this.cache.set(e.data.voice.key, e.data.voice.value)
             }
