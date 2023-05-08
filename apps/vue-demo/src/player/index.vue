@@ -69,7 +69,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { Renderer, RendererConfig } from '@film-fusion/renderer';
-import { Parser } from '@film-fusion/parser';
+import {Parser, ParserConfig} from "@film-fusion/parser"
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
@@ -108,9 +108,6 @@ const initRender = () => {
         movieWidth: 1080,
         movieHeight: 1920
     })
-    refs.render.setBackground(backgroundImageData)
-    refs.render.setMovie(movieVideoData1920_1080_9s)
-    refs.render.setBackgroundAudios(backgroundMusicData)
 
 }
 const initParser = () => {
@@ -119,7 +116,14 @@ const initParser = () => {
         scenes: refs.ScenesEditor.get(),
         elements: refs.ElementsEditor.get(),
         background: backgroundImageData as RendererConfig.Background,
+        firstLoaded: firstRender,
     })
+}
+const firstRender = (fiber: ParserConfig.SceneFiber, background, elements, backgroundAudio) => {
+    refs.render.setBackground(background)
+    refs.render.setMovie(fiber.sceneData)
+    refs.render.setBackgroundAudios(backgroundAudio)
+    refs.render.addElements(elements)
 }
 window.addEventListener('resize', () => {
     refs.render.resize()
@@ -173,7 +177,7 @@ const setBackgroundMusic = () => {
 const nextScene = async () => {
     console.log(await refs.parser.nextFiber())
 }
-// onMounted(initRender)
+onMounted(initRender)
 onMounted(initScenesJsonEditor)
 onMounted(initBackgroundMusicJsonEditor)
 onMounted(initElementsJsonEditor)

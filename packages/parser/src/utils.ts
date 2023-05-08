@@ -65,21 +65,25 @@ self.onmessage = async function(e) {
         voiceData: null,
         subtitleData: null,
     }
-    const { data, } = e
+    const data = e.data.fiber
+    const cache = e.data.cache
+    const subtitleCache = e.data.subtitleCache
     const { movie } = data.sceneData
-    const movieData = await parserMedia(movie.url)
-    result.movieData = {
-        key: movie.url,
-        value: URL.createObjectURL(movieData),
+    if (!cache.has(movie.url)) {
+        const movieData = await parserMedia(movie.url)
+        result.movieData = {
+            key: movie.url,
+            value: URL.createObjectURL(movieData),
+        }
     }
-    if (data.sceneData.voice) {
+    if (data.sceneData.voice && !cache.has(data.sceneData.voice.audio)) {
        const voiceData = await parserMedia(data.sceneData.voice.audio)
        result.voiceData = {
               key: data.sceneData.voice.audio,
               value: URL.createObjectURL(voiceData),
        }
     }
-    if (data.sceneData.subtitle) {
+    if (data.sceneData.subtitle && !subtitleCache.has(data.sceneData.subtitle.url)) {
         const subtitleText = await loadSubtitle(data.sceneData.subtitle.url)
         result.subtitleData = {
             key: data.sceneData.subtitle.url,

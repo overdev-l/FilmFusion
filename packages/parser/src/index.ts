@@ -15,18 +15,24 @@ class Parser {
     parserInstance = new ParserSubtitle()
     worker = new Worker(URL.createObjectURL(new Blob([workString,], { type: "text/javascript", })))
     constructor(options: ParserConfig.Options) {
+        const promiseAll: Promise<any>[] = []
         this.initFiber(options)
         this.playerFiber = this.sceneFiber as ParserConfig.SceneFiber
         this.initWorkerMessage()
         if (options.backgroundAudio) {
-            // this.parserBackgroundAudio(options.backgroundAudio)
+            promiseAll.push(this.parserBackgroundAudio(options.backgroundAudio))
         }
         if (options.background) {
-            // this.parserBackground(options.background)
+            promiseAll.push(this.parserBackground(options.background))
         }
         if (options.elements) {
-            // this.parserElements(options.elements)
+            promiseAll.push(this.parserElements(options.elements))
         }
+        promiseAll.push(this.parserFiber(this.playerFiber as ParserConfig.SceneFiber))
+
+        Promise.all(promiseAll).then(() => {
+            options.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
+        })
         this.coroutineParserFiber(this.sceneFiber as ParserConfig.SceneFiber)
     }
 
@@ -145,11 +151,15 @@ class Parser {
     coroutineParserFiber(currentFiber: ParserConfig.SceneFiber| null) {
         if (!currentFiber) return
         const parser = () => {
-            this.worker.postMessage(currentFiber)
+            this.worker.postMessage({
+                fiber: currentFiber,
+                cache: this.cache,
+                subtitleCache: this.subtitleCache,
+            })
         }
         window.requestIdleCallback(() => {
             parser()
-            this.coroutineParserFiber.bind(this, currentFiber?.nextScene || null)
+            this.coroutineParserFiber(currentFiber?.nextScene || null)
         })
     }
 

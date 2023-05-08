@@ -1,6 +1,7 @@
 import AudioConfig from "../../renderer/src/audioTypes"
 import RendererConfig from "../../renderer/src/types"
 import ElementConfig from "../../renderer/src/elementTypes"
+import RendererOptions from "../../renderer/src/types"
 namespace ParserConfig {
     export interface Options {
         backgroundAudio?: AudioConfig.Options[]
@@ -8,6 +9,7 @@ namespace ParserConfig {
         elements?: ElementConfig.ElementOptions[]
         background?: RendererConfig.Background
         cover?: RendererConfig.Cover
+        firstLoaded: (scene: ParserConfig.SceneFiber, background: RendererOptions.Background | undefined, elements: ElementConfig.ElementOptions[] | undefined, backgroundAudio: AudioConfig.Options[] | undefined) => void
     }
     export interface SceneFiber {
         isHead: boolean

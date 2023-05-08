@@ -37,7 +37,7 @@ export const elementsData = [
             fontBold: true,
             align: "center",
             fontStoke: "#FFFB7D",
-            fontStokeWidth: 10,
+            fontStokeWidth: 100,
             backgroundColor: "#2BFF88",
             backgroundAlpha: 50,
             backgroundPadding: 20,
@@ -75,7 +75,7 @@ export const voiceMusicData_51000ms = {
 export const subtitleData = {
     url: "https://image.liuyongzhi.cn/video/video2subtitle.srt",
     style: {
-        alpha: 90,
+        alpha: 30,
         color: "#2399D7",
         fontSize: 100,
         fontFamily: "微软雅黑",
@@ -83,15 +83,15 @@ export const subtitleData = {
         fontBold: true,
         align: "center",
         fontStoke: "#FFFB7D",
-        fontStokeWidth: 10,
+        fontStokeWidth: 100,
         backgroundColor: "#2BFF88",
         backgroundAlpha: 50,
         backgroundPadding: 20,
     },
     position: {
-        x: 0,
-        y: 0,
-        z: 90,
+        x: 540,
+        y: 1920,
+        z: 100,
     },
 }
 

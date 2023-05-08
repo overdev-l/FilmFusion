@@ -1,7 +1,7 @@
 import RendererConfig from "./types"
 import ElementConfig from "./elementTypes"
 import Konva from "konva"
-import { getTargetScale, } from "./utils"
+import {getPosition, getTargetScale, transformColorFormat,} from "./utils"
 import Element from "./element"
 import AudioElement from "./audio"
 import AudioConfig from "./audioTypes"
@@ -166,7 +166,7 @@ class Renderer {
     /**
      * updateMovieLayer
      * 更新视频预览
-     * @param target 
+     * @param target
      */
     private updateMovieLayer(target: HTMLVideoElement) {
         requestAnimationFrame(() => {
@@ -179,8 +179,8 @@ class Renderer {
     /**
      * videoPlayEvent
      * video loop
-     * @param options 
-     * @param target 
+     * @param options
+     * @param target
      */
     private videoPlayEvent(options: RendererConfig.MovieOptions, target: HTMLVideoElement) {
         const currentTime = target.currentTime * 1000
@@ -189,7 +189,7 @@ class Renderer {
             target.play()
         }
     }
-    /** 
+    /**
      * setMovie
      */
     public setMovie(options: RendererConfig.SceneData) {
@@ -217,7 +217,7 @@ class Renderer {
             }
         } else if (options.movie.type === 1) {
             let target: HTMLVideoElement
-            this.mediaTarget = target = document.createElement("video") 
+            this.mediaTarget = target = document.createElement("video")
             this.mediaTarget.src = options.movie.url
             target.addEventListener("timeupdate", this.videoPlayEvent.bind(this, options.movie, target))
             this.mediaTarget.onloadeddata = () => {
@@ -255,6 +255,41 @@ class Renderer {
         }
         if (options.subtitle) {
             console.log(options.subtitle)
+            const textGroup = new Konva.Label()
+            const textContainer = new Konva.Tag()
+            this.subtitleText = new Konva.Text({
+                text: "试",
+                fontSize: options.subtitle.style.fontSize,
+                fontFamily: options.subtitle.style.fontFamily,
+                fontStyle: options.subtitle.style.fontItalic ? "italic" : "normal",
+                fontWeight: options.subtitle.style.fontBold ? "bold" : "normal",
+                fill: options.subtitle.style.color,
+                align: options.subtitle.style.align,
+                opacity: options.subtitle.style.alpha / 100,
+                padding: options.subtitle.style.backgroundPadding,
+                stroke: options.subtitle.style.fontStoke,
+                strokeWidth: options.subtitle.style.fontStokeWidth,
+                fillAfterStrokeEnabled: true,
+                lineJoin: "round",
+            })
+            const width = this.subtitleText.width() + this.subtitleText.strokeWidth() * 2
+            const height = this.subtitleText.width() + this.subtitleText.strokeWidth() * 2
+            textContainer.width(width + 300)
+            textContainer.height(height + 300)
+            textContainer.fill(transformColorFormat(options.subtitle.style.backgroundColor, options.subtitle.style.backgroundAlpha))
+            textGroup.width(textContainer.width())
+            textGroup.height(textContainer.height())
+            textGroup.add(textContainer)
+            textGroup.add(this.subtitleText)
+            const position = getPosition(options.subtitle.position.x, options.subtitle.position.y, textContainer.width(), textContainer.height(), this.movieWidth, this.movieHeight)
+            textGroup.x(position.x)
+            textGroup.y(position.y)
+            textGroup.offsetX(textContainer.width() / 2)
+            textGroup.offsetY(textContainer.height() / 2)
+            this.subtitleLayer.add(textGroup)
+            this.subtitleText.zIndex(options.subtitle.position.z / 100)
+            textContainer.zIndex((options.subtitle.position.z - 1) / 100)
+            this.sourceStatus.subtitleReady = true
         } else {
             this.sourceStatus.subtitleReady = true
         }
@@ -262,7 +297,7 @@ class Renderer {
 
     /**
      * setVideoVolume
-     * @param volume 
+     * @param volume
      */
     public setVideoVolume(volume: number) {
         if (this.mediaTarget instanceof HTMLVideoElement) {
@@ -273,7 +308,7 @@ class Renderer {
     }
     /**
      * setBackgroundAudios
-     * @param audios 
+     * @param audios
      */
     public setBackgroundAudios(audios: AudioConfig.Options[]) {
         this.sourceStatus.backgroundMusicReady = false
@@ -283,14 +318,14 @@ class Renderer {
     }
     /**
      * setBackgroundMusicAudio
-     * @param volume 
+     * @param volume
      */
     public setBackgroundMusicAudioVolume(volume: number) {
         this.backgroundElements.setAudiosVolume(volume)
     }
     /**
      * setVoiceAudio
-     * @param audio 
+     * @param audio
      */
     public setVoiceAudio(audio: AudioConfig.Options) {
         this.sourceStatus.voiceMusicReady = false
@@ -300,7 +335,7 @@ class Renderer {
     }
     /**
      * setBackgroundMusicAudio
-     * @param volume 
+     * @param volume
      */
     public setVoiceMusicAudioVolume(volume: number) {
         this.voiceElements.setAudiosVolume(volume)
@@ -319,7 +354,7 @@ class Renderer {
     }
     /**
      * setBackground
-     * @param Background 
+     * @param Background
      * @param Background.type 1. color 2. image
      */
     public setBackground(background: RendererConfig.Background) {
@@ -343,7 +378,7 @@ class Renderer {
     }
     /**
      * setCover
-     * @param Cover 
+     * @param Cover
      * @param Cover.type 1. color 2. image
      */
     public setCover(cover: RendererConfig.Cover) {
@@ -384,14 +419,14 @@ class Renderer {
     }
     /**
      * addElements
-     * @param elements.type 1. image 2. text 
+     * @param elements.type 1. image 2. text
      */
     public addElements(elements: ElementConfig.ElementOptions[]) {
         this.elementTarget.addElement(elements)
     }
     /**
      * removeElements
-     * @param ids 
+     * @param ids
      */
     public removeElements(ids: string[]) {
         for(const id of ids) {
@@ -401,9 +436,10 @@ class Renderer {
 
 
     public play() {
+        console.log(this.sourceStatus)
         const isNotReady = Object.keys(this.sourceStatus).some((val) => {
             const key: keyof RendererConfig.SourceStatus = val as keyof RendererConfig.SourceStatus
-            return this.sourceStatus[key] === false
+            return !this.sourceStatus[key]
         })
         if (isNotReady) {
             console.warn("the source is not ready")
