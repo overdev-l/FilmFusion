@@ -8,7 +8,7 @@ class Parser {
     cache: Map<string, string> = new Map()
     subtitleCache: Map<string, ParserConfig.SubtitleData[]> = new Map()
     sceneFiber: ParserConfig.SceneFiber | null = null
-    playerFiber: ParserConfig.SceneFiber
+    playerFiber: ParserConfig.SceneFiber | null
     backgroundAudio: ParserConfig.Options["backgroundAudio"] = []
     background: ParserConfig.Options["background"]
     elements: ParserConfig.Options["elements"]
@@ -19,15 +19,14 @@ class Parser {
         this.playerFiber = this.sceneFiber as ParserConfig.SceneFiber
         this.initWorkerMessage()
         if (options.backgroundAudio) {
-            this.parserBackgroundAudio(options.backgroundAudio)
+            // this.parserBackgroundAudio(options.backgroundAudio)
         }
         if (options.background) {
-            this.parserBackground(options.background)
+            // this.parserBackground(options.background)
         }
         if (options.elements) {
-            this.parserElements(options.elements)
+            // this.parserElements(options.elements)
         }
-        this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber)
         this.coroutineParserFiber(this.sceneFiber as ParserConfig.SceneFiber)
     }
 
@@ -115,12 +114,12 @@ class Parser {
     }
 
     async parserFiber(currentFiber: ParserConfig.SceneFiber) {
-        currentFiber.sceneData.movie.url = await this.parserData(currentFiber.sceneData.movie.url)
+        await this.parserData(currentFiber.sceneData.movie.url)
         if (currentFiber.sceneData.voice) {
-            currentFiber.sceneData.voice.audio = await this.parserData(currentFiber.sceneData.voice.audio)
+            await this.parserData(currentFiber.sceneData.voice.audio)
         }
         if (currentFiber.sceneData.subtitle) {
-            currentFiber.sceneData.subtitle.data = await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
+            await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
         }
     }
     async parserData(url: string): Promise<string> {
@@ -155,13 +154,12 @@ class Parser {
     }
 
     async nextFiber() {
-        if (this.playerFiber.nextScene) {
-            this.playerFiber = this.playerFiber.nextScene
+        if (this.playerFiber) {
             const isMovieExist = this.cache.has(this.playerFiber.sceneData.movie.url)
             let isVoiceExist = true
             let isSubtitleExist = true
             if (this.playerFiber.sceneData.voice) {
-                isVoiceExist = this.cache.has(this.playerFiber.sceneData.voice!.audio)
+                isVoiceExist = this.cache.has(this.playerFiber.sceneData.voice.audio)
             }
             if (this.playerFiber.sceneData.subtitle) {
                 isSubtitleExist = this.subtitleCache.has(this.playerFiber.sceneData.subtitle.url)
@@ -176,7 +174,9 @@ class Parser {
             if (this.playerFiber.sceneData.subtitle) {
                 this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
             }
+            return this.playerFiber
         }
+        return null
     }
     freeMemory(urls: string[]) {
         for (const url of urls) {

@@ -70,20 +70,20 @@ self.onmessage = async function(e) {
     const movieData = await parserMedia(movie.url)
     result.movieData = {
         key: movie.url,
-        url: URL.createObjectURL(movieData),
+        value: URL.createObjectURL(movieData),
     }
     if (data.sceneData.voice) {
        const voiceData = await parserMedia(data.sceneData.voice.audio)
        result.voiceData = {
               key: data.sceneData.voice.audio,
-              url: URL.createObjectURL(voiceData),
+              value: URL.createObjectURL(voiceData),
        }
     }
     if (data.sceneData.subtitle) {
         const subtitleText = await loadSubtitle(data.sceneData.subtitle.url)
         result.subtitleData = {
             key: data.sceneData.subtitle.url,
-            data: subtitleText,
+            value: subtitleText,
         }
     }
     self.postMessage(result)

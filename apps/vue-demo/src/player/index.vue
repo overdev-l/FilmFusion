@@ -8,7 +8,7 @@
                         <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="pause" />
                     </div>
                     <div class="flex justify-between">
-                        <Button label="Update Scenes" severity="help" icon="pi pi-sync" raised rounded @click="pause" />
+                        <Button label="Next Scenes" severity="help" icon="pi pi-sync" raised rounded @click="nextScene" />
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
                         <Badge :value="refs.videoVolume" class="flex1"></Badge>
@@ -169,7 +169,11 @@ const removeElements = () => {
 const setBackgroundMusic = () => {
     refs.render.setBackgroundAudios(refs.BackgroundMusicEditor.get())
 }
-onMounted(initRender)
+
+const nextScene = async () => {
+    console.log(await refs.parser.nextFiber())
+}
+// onMounted(initRender)
 onMounted(initScenesJsonEditor)
 onMounted(initBackgroundMusicJsonEditor)
 onMounted(initElementsJsonEditor)
