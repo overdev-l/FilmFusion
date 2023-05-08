@@ -166,16 +166,15 @@ class Parser {
             if (this.playerFiber.sceneData.subtitle) {
                 isSubtitleExist = this.subtitleCache.has(this.playerFiber.sceneData.subtitle.url)
             }
-            if (isMovieExist && isVoiceExist && isSubtitleExist) {
-                this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
-                if (this.playerFiber.sceneData.voice) {
-                    this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio) as string
-                }
-                if (this.playerFiber.sceneData.subtitle) {
-                    this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
-                }
-            } else {
+            if (!(isMovieExist && isVoiceExist && isSubtitleExist)) {
                 await this.parserFiber(this.playerFiber)
+            }
+            this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
+            if (this.playerFiber.sceneData.voice) {
+                this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio) as string
+            }
+            if (this.playerFiber.sceneData.subtitle) {
+                this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
             }
         }
     }
