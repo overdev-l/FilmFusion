@@ -1,7 +1,8 @@
 import ParserConfig from "./types"
 import axios from "axios"
 
-import {BlobTransformBlobUrl, UrlTransformSubtitle,} from "./utils"
+import {BlobTransformBlobUrl, UrlTransformSubtitle, workString,} from "./utils"
+import ParserSubtitle from "srt-parser-2"
 
 class Parser {
     cache: Map<string, string> = new Map()
@@ -10,8 +11,11 @@ class Parser {
     backgroundAudio: ParserConfig.Options["backgroundAudio"] = []
     background: ParserConfig.Options["background"]
     elements: ParserConfig.Options["elements"]
+    parserInstance = new ParserSubtitle()
+    worker = new Worker(URL.createObjectURL(new Blob([workString,], { type: "text/javascript", })))
     constructor(options: ParserConfig.Options) {
         this.initFiber(options)
+        this.initWorkerMessage()
         if (options.backgroundAudio) {
             this.parserBackgroundAudio(options.backgroundAudio)
         }
@@ -22,6 +26,7 @@ class Parser {
             this.parserElements(options.elements)
         }
         this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber)
+        this.coroutineParserFiber(this.sceneFiber as ParserConfig.SceneFiber)
     }
 
     initFiber(options: ParserConfig.Options) {
@@ -55,7 +60,18 @@ class Parser {
             if (i === 0) {
                 this.sceneFiber = fiber
             }
-            console.log(this.sceneFiber)
+        }
+    }
+
+    initWorkerMessage() {
+        this.worker.onmessage = (e) => {
+            this.cache.set(e.data.movie.key, e.data.movie.value)
+            if (e.data.voice) {
+                this.cache.set(e.data.voice.key, e.data.voice.value)
+            }
+            if (e.data.subtitle) {
+                this.subtitleCache.set(e.data.subtitle.key, this.parserInstance.fromSrt(e.data.subtitle.value))
+            }
         }
     }
 
@@ -96,17 +112,13 @@ class Parser {
         this.elements = options
     }
 
-    async parserFiber(options: ParserConfig.SceneFiber) {
-        let currentFiber: ParserConfig.SceneFiber | null = options
-        while(currentFiber !== null) {
-            currentFiber.sceneData.movie.url = await this.parserData(currentFiber.sceneData.movie.url)
-            if (currentFiber.sceneData.voice) {
-                currentFiber.sceneData.voice.audio = await this.parserData(currentFiber.sceneData.voice.audio)
-            }
-            if (currentFiber.sceneData.subtitle) {
-                currentFiber.sceneData.subtitle.data = await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
-            }
-            currentFiber = currentFiber.nextScene
+    async parserFiber(currentFiber: ParserConfig.SceneFiber) {
+        currentFiber.sceneData.movie.url = await this.parserData(currentFiber.sceneData.movie.url)
+        if (currentFiber.sceneData.voice) {
+            currentFiber.sceneData.voice.audio = await this.parserData(currentFiber.sceneData.voice.audio)
+        }
+        if (currentFiber.sceneData.subtitle) {
+            currentFiber.sceneData.subtitle.data = await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
         }
     }
     async parserData(url: string): Promise<string> {
@@ -128,6 +140,18 @@ class Parser {
         this.subtitleCache.set(url, result)
         return result
     }
+
+    coroutineParserFiber(currentFiber: ParserConfig.SceneFiber| null) {
+        if (!currentFiber) return
+        const parser = () => {
+            this.worker.postMessage(currentFiber)
+        }
+        window.requestIdleCallback(() => {
+            parser()
+            this.coroutineParserFiber.bind(this, currentFiber?.nextScene || null)
+        })
+    }
+
 }
 
 export {
