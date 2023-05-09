@@ -254,11 +254,10 @@ class Renderer {
             })
         }
         if (options.subtitle) {
-            console.log(options.subtitle)
-            const textGroup = new Konva.Label()
-            const textContainer = new Konva.Tag()
+            const textGroup = new Konva.Group()
+            const textContainer = new Konva.Rect()
             this.subtitleText = new Konva.Text({
-                text: "试",
+                text: "测试",
                 fontSize: options.subtitle.style.fontSize,
                 fontFamily: options.subtitle.style.fontFamily,
                 fontStyle: options.subtitle.style.fontItalic ? "italic" : "normal",
@@ -272,10 +271,18 @@ class Renderer {
                 fillAfterStrokeEnabled: true,
                 lineJoin: "round",
             })
-            const width = this.subtitleText.width() + this.subtitleText.strokeWidth() * 2
-            const height = this.subtitleText.width() + this.subtitleText.strokeWidth() * 2
-            textContainer.width(width + 300)
-            textContainer.height(height + 300)
+            const width = this.subtitleText.width() + this.subtitleText.strokeWidth() / 2
+            const height = this.subtitleText.height() + this.subtitleText.strokeWidth() / 2
+            textContainer.width(width)
+            textContainer.height(height)
+            this.subtitleText.setPosition({
+                x: width / 2,
+                y: height / 2,
+            })
+            this.subtitleText.offset({
+                x: this.subtitleText.width() / 2,
+                y: this.subtitleText.height() / 2,
+            })
             textContainer.fill(transformColorFormat(options.subtitle.style.backgroundColor, options.subtitle.style.backgroundAlpha))
             textGroup.width(textContainer.width())
             textGroup.height(textContainer.height())

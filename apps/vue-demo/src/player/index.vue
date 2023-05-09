@@ -108,7 +108,10 @@ const initRender = () => {
         movieWidth: 1080,
         movieHeight: 1920
     })
-
+    refs.render.setBackground(backgroundImageData)
+    refs.render.setMovie(movieVideoData1920_1080_9s)
+    refs.render.setBackgroundAudios(backgroundMusicData)
+    refs.render.addElements(elementsData)
 }
 const initParser = () => {
     refs.parser = new Parser({

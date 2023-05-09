@@ -2,7 +2,7 @@ import Konva from "konva"
 import ElementConfig from "./elementTypes"
 import { transformColorFormat, getPosition, } from "./utils"
 class Element {
-    private elements: Array<Konva.Label | Konva.Image>
+    private elements: Array<Konva.Group | Konva.Image>
     private layer: Konva.Layer
     private movieWidth: number
     private movieHeight: number
@@ -21,8 +21,8 @@ class Element {
                 continue
             }
             if (element.type === 1) {
-                const textGroup = new Konva.Label()
-                const textContainer = new Konva.Tag()
+                const textGroup = new Konva.Group()
+                const textContainer = new Konva.Rect()
                 const text = new Konva.Text({
                     text: element.text,
                     fontSize: element.style.fontSize,
@@ -31,15 +31,25 @@ class Element {
                     fontWeight: element.style.fontBold ? "bold" : "normal",
                     fill: element.style.color,
                     align: element.style.align,
-                    opacity: element.style.alpha,
+                    opacity: element.style.alpha / 100,
                     padding: element.style.backgroundPadding,
                     stroke: element.style.fontStoke,
                     strokeWidth: element.style.fontStokeWidth,
                     fillAfterStrokeEnabled: true,
                     lineJoin: "round",
                 })
-                textContainer.width(text.width())
-                textContainer.height(text.height())
+                const width = text.width() + text.strokeWidth() / 2
+                const height = text.height() + text.strokeWidth() / 2
+                textContainer.width(width)
+                textContainer.height(height)
+                text.setPosition({
+                    x: width / 2,
+                    y: height / 2,
+                })
+                text.offset({
+                    x: text.width() / 2,
+                    y: text.height() / 2,
+                })
                 textContainer.fill(transformColorFormat(element.style.backgroundColor, element.style.backgroundAlpha))
                 textGroup.width(textContainer.width())
                 textGroup.height(textContainer.height())
