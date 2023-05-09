@@ -37,6 +37,7 @@ namespace RendererOptions {
         subtitle?: Omit<ElementOptions.TextElement, "type" | "text" | "name"> & {
             url: string
         }
+        duration: number
     }
 
     export interface SourceStatus {

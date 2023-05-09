@@ -49,12 +49,14 @@ class Parser {
                 sceneData: {
                     movie: options.scenes[i].movie,
                     voice: options.scenes[i].voice || undefined,
+                    duration: options.scenes[i].duration,
                     subtitle: options.scenes[i].subtitle? {
                         style: options.scenes[i].subtitle!.style,
                         position: options.scenes[i].subtitle!.position,
                         data: [],
                         url: options.scenes[i].subtitle!.url,
                     }: undefined,
+                    
                 },
                 nextScene: null,
             }

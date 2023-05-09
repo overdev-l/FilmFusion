@@ -25,6 +25,7 @@ namespace ParserConfig {
             data: SubtitleData[],
             url: string
         }
+        duration: number
     }
     export interface SubtitleData {
         endSeconds: number

@@ -149,10 +149,6 @@ const initRender = () => {
         movieWidth: 1080,
         movieHeight: 1920
     })
-    refs.render.setBackground(backgroundImageData)
-    refs.render.setMovie(movieVideoData1920_1080_9s)
-    refs.render.setBackgroundAudios(backgroundMusicData)
-    refs.render.addElements(elementsData)
 }
 const initParser = () => {
     refs.parser = new Parser({
@@ -162,7 +158,6 @@ const initParser = () => {
         background: backgroundImageData as RendererConfig.Background,
         firstLoaded: firstRender,
     })
-    console.log(refs.ScenesEditor.get())
     refs.timeController = new TimeController({
         duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
         onTimeUpdate: (time) => {
@@ -178,6 +173,7 @@ const firstRender = (fiber: ParserConfig.SceneFiber, background: any, elements: 
     refs.render.setMovie(fiber.sceneData)
     refs.render.setBackgroundAudios(backgroundAudio)
     refs.render.addElements(elements)
+    refs.timeController.setCurrentTime(fiber.sceneData.duration)
 }
 window.addEventListener('resize', () => {
     refs.render.resize()
@@ -233,10 +229,10 @@ const nextScene = async () => {
 }
 
 const timeControllerPlay = () => {
-    console.log("timeControllerPlay")
+    refs.timeController.play()
 }
 const timeControllerPause = () => {
-    console.log("timeControllerPause")
+    refs.timeController.pause()
 }
 onMounted(initRender)
 onMounted(initScenesJsonEditor)
