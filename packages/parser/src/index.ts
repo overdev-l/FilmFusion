@@ -17,7 +17,7 @@ class Parser {
     constructor(options: ParserConfig.Options) {
         const promiseAll: Promise<any>[] = []
         this.initFiber(options)
-        this.playerFiber = this.sceneFiber as ParserConfig.SceneFiber
+        this.playerFiber = this.sceneFiber
         this.initWorkerMessage()
         if (options.backgroundAudio) {
             promiseAll.push(this.parserBackgroundAudio(options.backgroundAudio))
@@ -33,7 +33,7 @@ class Parser {
         Promise.all(promiseAll).then(() => {
             options.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
         })
-        this.coroutineParserFiber(this.sceneFiber as ParserConfig.SceneFiber)
+        this.coroutineParserFiber(this.sceneFiber)
     }
 
     initFiber(options: ParserConfig.Options) {

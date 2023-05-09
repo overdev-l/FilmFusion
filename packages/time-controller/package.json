@@ -9,8 +9,8 @@
         "dist"
     ],
     "scripts": {
-        "dev": "esbuild --bundle --format=esm --outfile=dist/time-controller.esm.js --watch=forever src/index.ts",
-        "ts-types": "tsc -w --emitDeclarationOnly --outDir dist"
+        "dev": "esbuild --bundle --format=esm --outfile=dist/index.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts"
     },
     "repository": {
         "type": "git",
