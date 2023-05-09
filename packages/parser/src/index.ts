@@ -32,8 +32,8 @@ class Parser {
 
         Promise.all(promiseAll).then(() => {
             options.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
+            this.coroutineParserFiber(this.sceneFiber!.nextScene)
         })
-        this.coroutineParserFiber(this.sceneFiber)
     }
 
     initFiber(options: ParserConfig.Options) {
@@ -161,7 +161,6 @@ class Parser {
         }
         window.requestIdleCallback(() => {
             parser()
-            this.coroutineParserFiber(currentFiber?.nextScene || null)
         })
     }
 
@@ -186,6 +185,7 @@ class Parser {
             if (this.playerFiber.sceneData.subtitle) {
                 this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
             }
+            this.coroutineParserFiber(this.playerFiber.nextScene)
             return this.playerFiber
         }
         return null
