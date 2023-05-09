@@ -1,4 +1,4 @@
-
+import TimeControllerConfig from "./types"
 class TimeController {
     totalDuration = 0
     totalCurrentDuration = 0
@@ -12,8 +12,16 @@ class TimeController {
      * @description 当前播放场景的计时器
      */
     startSceneNow = 0
-    constructor(totalDuration: number) {
-        this.totalDuration = totalDuration
+    onTimeUpdate: TimeControllerConfig.Options["onTimeUpdate"]
+    constructor(options: TimeControllerConfig.Options) {
+        this.totalDuration = options.duration
+        this.onTimeUpdate = options.onTimeUpdate
+        options.onTimeUpdate({
+            currentTime: this.currentTime,
+            currentDuration: this.currentDuration,
+            totalDuration: this.totalDuration,
+            totalTime: this.totalCurrentDuration,
+        })
     }
     /**
      * @description 设置当前场景总时长

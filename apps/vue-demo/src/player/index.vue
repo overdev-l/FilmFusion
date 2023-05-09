@@ -61,6 +61,40 @@
             </div>
             <div class="flex-1 h-full box-border p-[1.25rem]">
                 <ProgressBar :value="refs.progress" />
+                <Tag severity="success" value="Time Controller" class="mt-2" />
+                <div class="w-full mt-2">
+                    <div class="w-full flex gap-2">
+                        <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="timeControllerPlay" />
+                        <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="timeControllerPause" />
+                        <Button label="Replay" severity="help" icon="pi pi-sync" raised rounded @click="timeControllerPause" />
+                    </div>
+                    <div class="w-full mt-2 flex flex-row gap-4">
+                        <div>
+                            <Tag icon="pi pi-clock" severity="info" value="Current Time" />
+                            <div class="text-xl font-medium text-slate-900">
+                                {{ refs.currentTime }}
+                            </div>
+                        </div>
+                        <div>
+                            <Tag icon="pi pi-clock" severity="info" value="Current Duration" />
+                            <div class="text-xl font-medium text-slate-900">
+                                {{ refs.currentDuration }}
+                            </div>
+                        </div>
+                        <div>
+                            <Tag icon="pi pi-clock" severity="info" value="Total Duration" />
+                            <div class="text-xl font-medium text-slate-900">
+                                {{ refs.totalDuration }}
+                            </div>
+                        </div>
+                        <div>
+                            <Tag icon="pi pi-clock" severity="info" value="Total Duration" />
+                            <div class="text-xl font-medium text-slate-900">
+                                {{ refs.totalTime }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -70,6 +104,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { Renderer, RendererConfig } from '@film-fusion/renderer';
 import {Parser, ParserConfig} from "@film-fusion/parser"
+import { TimeController } from "@film-fusion/time-controller"
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
@@ -77,6 +112,7 @@ import Badge from 'primevue/badge';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import ProgressBar from 'primevue/progressbar';
+import Tag from 'primevue/Tag';
 import {
     elementsData,
     backgroundImageData,
@@ -90,6 +126,7 @@ import 'jsoneditor/dist/jsoneditor.min.css'
 const refs = reactive<any>({
     render: null,
     parser: null,
+    timeController: null,
     videoVolume: 100,
     backgroundVolume: 100,
     voiceVolume: 100,
@@ -98,6 +135,10 @@ const refs = reactive<any>({
     BackgroundMusicEditor: undefined,
     ElementsEditor: undefined,
     elementNames: elementsData.map(item => item.name).join(','),
+    currentTime: 0,
+    currentDuration: 0,
+    totalTime: 0,
+    totalDuration: 0
 })
 const ScenesRef = ref<HTMLElement>()
 const BackgroundMusicRef = ref<HTMLElement>()
@@ -121,8 +162,18 @@ const initParser = () => {
         background: backgroundImageData as RendererConfig.Background,
         firstLoaded: firstRender,
     })
+    console.log(refs.ScenesEditor.get())
+    refs.timeController = new TimeController({
+        duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
+        onTimeUpdate: (time) => {
+            refs.currentTime = time.currentTime
+            refs.currentDuration = time.currentDuration
+            refs.totalTime = time.totalTime
+            refs.totalDuration = time.totalDuration
+        }
+    })
 }
-const firstRender = (fiber: ParserConfig.SceneFiber, background, elements, backgroundAudio) => {
+const firstRender = (fiber: ParserConfig.SceneFiber, background: any, elements: any, backgroundAudio: any) => {
     refs.render.setBackground(background)
     refs.render.setMovie(fiber.sceneData)
     refs.render.setBackgroundAudios(backgroundAudio)
@@ -179,6 +230,13 @@ const setBackgroundMusic = () => {
 
 const nextScene = async () => {
     console.log(await refs.parser.nextFiber())
+}
+
+const timeControllerPlay = () => {
+    console.log("timeControllerPlay")
+}
+const timeControllerPause = () => {
+    console.log("timeControllerPause")
 }
 onMounted(initRender)
 onMounted(initScenesJsonEditor)

@@ -2,9 +2,9 @@
     "name": "@film-fusion/time-controller",
     "version": "0.0.1",
     "description": "@film-fusion/time-controller",
-    "main": "dis/time-controller.esm.js",
-    "module": "dist/time-controller.esm.js",
-    "types": "dist/time-controller.d.ts",
+    "main": "dis/index.esm.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/types/index.d.ts",
     "files": [
         "dist"
     ],

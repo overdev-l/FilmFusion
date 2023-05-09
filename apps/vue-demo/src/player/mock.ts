@@ -122,6 +122,7 @@ export const movieVideoData2160_3240_15s = {
         startTime: 5000,
         endTime: 10000,
     },
+    duration: 5000,
 }
 
 

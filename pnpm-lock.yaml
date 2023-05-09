@@ -68,6 +68,9 @@ importers:
       '@film-fusion/renderer':
         specifier: workspace:*
         version: link:../../packages/renderer
+      '@film-fusion/time-controller':
+        specifier: workspace:^
+        version: link:../../packages/time-controller
       jsoneditor:
         specifier: ^9.10.0
         version: 9.10.0
