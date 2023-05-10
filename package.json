@@ -7,7 +7,8 @@
     "lint": "npx eslint packages/* --fix",
     "lint-staged": "lint-staged",
     "dev": "turbo run dev",
-    "ts-types": "turbo run ts-types"
+    "ts-types": "turbo run ts-types",
+    "test": "vitest"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
@@ -19,13 +20,15 @@
     "esbuild": "^0.17.17",
     "eslint": "^8.39.0",
     "husky": "^8.0.3",
+    "jsdom": "^22.0.0",
     "lint-staged": "^13.2.1",
     "npm-run-all": "^4.1.5",
     "rollup": "^3.20.7",
     "rollup-plugin-esbuild": "^5.0.0",
     "tslib": "^2.5.0",
     "turbo": "^1.9.3",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
   },
   "dependencies": {
     "howler": "^2.2.3",
