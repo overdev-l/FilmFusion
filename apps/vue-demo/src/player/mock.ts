@@ -111,7 +111,8 @@ export const movieVideoData1920_1080_9s = {
     },
     voice: voiceMusicData_51591_75ms,
     subtitle: subtitleData,
-    duration: 51591.75,
+    // duration: 51591.75,
+    duration: 5000,
 }
 export const movieVideoData2160_3240_15s = {
     movie: {

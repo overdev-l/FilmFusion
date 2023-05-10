@@ -19,11 +19,13 @@ class TimeController {
     onTimeUpdate: TimeControllerConfig.Options["onTimeUpdate"]
     renderPlay: TimeControllerConfig.Options["play"]
     renderPause: TimeControllerConfig.Options["pause"]
+    nextFiber: TimeControllerConfig.Options["nextFiber"]
     constructor(options: TimeControllerConfig.Options) {
         this.totalDuration = options.duration
         this.onTimeUpdate = options.onTimeUpdate
         this.renderPlay = options.play
         this.renderPause = options.pause
+        this.nextFiber = options.nextFiber
         options.onTimeUpdate({
             currentTime: this.currentTime,
             currentDuration: this.currentDuration,
@@ -65,8 +67,10 @@ class TimeController {
         })
     }
 
-    next() {
+    async next() {
         this.renderPause()
+        await this.nextFiber()
+        this.renderPlay()
     }
 
     timeController() {

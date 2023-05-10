@@ -60,35 +60,18 @@ function loadSubtitle(url) {
     })
 }
 self.onmessage = async function(e) {
+    
+    const data = e.data.url
+    const type = e.data.type
     const result = {
-        movieData: null,
-        voiceData: null,
-        subtitleData: null,
+        data: null,
+        url: data,
+        type: type,
     }
-    const data = e.data.fiber
-    const cache = e.data.cache
-    const subtitleCache = e.data.subtitleCache
-    const { movie } = data.sceneData
-    if (!cache.has(movie.url)) {
-        const movieData = await parserMedia(movie.url)
-        result.movieData = {
-            key: movie.url,
-            value: URL.createObjectURL(movieData),
-        }
-    }
-    if (data.sceneData.voice && !cache.has(data.sceneData.voice.audio)) {
-       const voiceData = await parserMedia(data.sceneData.voice.audio)
-       result.voiceData = {
-              key: data.sceneData.voice.audio,
-              value: URL.createObjectURL(voiceData),
-       }
-    }
-    if (data.sceneData.subtitle && !subtitleCache.has(data.sceneData.subtitle.url)) {
-        const subtitleText = await loadSubtitle(data.sceneData.subtitle.url)
-        result.subtitleData = {
-            key: data.sceneData.subtitle.url,
-            value: subtitleText,
-        }
+    if (type === 1) {
+        result.data = await parserMedia(data)
+    } else {
+        result.data = await loadSubtitle(data)
     }
     self.postMessage(result)
  }

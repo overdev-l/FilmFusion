@@ -160,13 +160,16 @@ const initParser = () => {
             refs.totalDuration = time.totalDuration
             refs.progress = time.totalTime / time.totalDuration * 100
         },
-        nextFiber: () => {
-            const fiber = refs.parser.nextFiber()
+        nextFiber: async () => {
+            const fiber = await refs.parser.nextFiber()
             refs.timeController.setCurrentTime(fiber.duration)
             refs.render.setMovie(fiber.sceneData)
-            refs.render.setBackground(fiber.background)
-            refs.render.setBackgroundAudios(fiber.backgroundAudio)
-            refs.render.addElements(fiber.elements)
+            console.log(fiber)
+            if (fiber.isHead) {
+                refs.render.setBackground(fiber.background)
+                refs.render.setBackgroundAudios(fiber.backgroundAudio)
+                refs.render.addElements(fiber.elements)
+            }
         },
         play: () => {
             refs.render.play()

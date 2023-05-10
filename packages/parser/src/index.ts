@@ -3,6 +3,7 @@ import axios from "axios"
 
 import {BlobTransformBlobUrl, UrlTransformSubtitle, workString,} from "./utils"
 import ParserSubtitle from "srt-parser-2"
+import { cloneDeep, } from "lodash-es"
 
 class Parser {
     cache: Map<string, string> = new Map()
@@ -32,6 +33,7 @@ class Parser {
 
         Promise.all(promiseAll).then(() => {
             options.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
+            this.playerFiber = this.sceneFiber?.nextScene || null
             this.coroutineParserFiber(this.sceneFiber!.nextScene)
         })
     }
@@ -74,12 +76,10 @@ class Parser {
 
     initWorkerMessage() {
         this.worker.onmessage = (e) => {
-            this.cache.set(e.data.movieData.key, e.data.movieData.value)
-            if (e.data.voice) {
-                this.cache.set(e.data.voice.key, e.data.voice.value)
-            }
-            if (e.data.subtitle) {
-                this.subtitleCache.set(e.data.subtitle.key, this.parserInstance.fromSrt(e.data.subtitle.value))
+            if (e.data.type === 1) {
+                this.cache.set(e.data.url, e.data.data)
+            } else {
+                this.subtitleCache.set(e.data.url, this.parserInstance.fromSrt(e.data.data))
             }
         }
     }
@@ -129,6 +129,7 @@ class Parser {
         if (currentFiber.sceneData.subtitle) {
             await this.parserSubtitle(currentFiber.sceneData.subtitle.url)
         }
+        currentFiber.isLoaded = true
     }
     async parserData(url: string): Promise<string> {
         const isLoaded = this.cache.has(url)
@@ -154,10 +155,21 @@ class Parser {
         if (!currentFiber) return
         const parser = () => {
             this.worker.postMessage({
-                fiber: currentFiber,
-                cache: this.cache,
-                subtitleCache: this.subtitleCache,
+                type: 1,
+                url: currentFiber.sceneData.movie.url,
             })
+            if (currentFiber.sceneData.voice) {
+                this.worker.postMessage({
+                    type: 1,
+                    url: currentFiber.sceneData.voice.audio,
+                })
+            }
+            if(currentFiber.sceneData.subtitle) {
+                this.worker.postMessage({
+                    type: 2,
+                    url: currentFiber.sceneData.subtitle.url,
+                })
+            }
         }
         window.requestIdleCallback(() => {
             parser()
@@ -166,16 +178,7 @@ class Parser {
 
     async nextFiber() {
         if (this.playerFiber) {
-            const isMovieExist = this.cache.has(this.playerFiber.sceneData.movie.url)
-            let isVoiceExist = true
-            let isSubtitleExist = true
-            if (this.playerFiber.sceneData.voice) {
-                isVoiceExist = this.cache.has(this.playerFiber.sceneData.voice.audio)
-            }
-            if (this.playerFiber.sceneData.subtitle) {
-                isSubtitleExist = this.subtitleCache.has(this.playerFiber.sceneData.subtitle.url)
-            }
-            if (!(isMovieExist && isVoiceExist && isSubtitleExist)) {
+            if (!this.playerFiber.isLoaded) {
                 await this.parserFiber(this.playerFiber)
             }
             this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
@@ -186,7 +189,9 @@ class Parser {
                 this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
             }
             this.coroutineParserFiber(this.playerFiber.nextScene)
-            return this.playerFiber
+            const current = cloneDeep(this.playerFiber)
+            this.playerFiber = this.playerFiber.nextScene
+            return current
         }
         return null
     }
