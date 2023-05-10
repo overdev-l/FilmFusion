@@ -64,11 +64,11 @@ export const elementsData = [
         },
     },
 ]
-export const voiceMusicData_51000ms = {
+export const voiceMusicData_51591_75ms = {
     audio: "https://image.liuyongzhi.cn/video/description.mp3",
     loop: false,
     startTime: 0,
-    endTime: 51000,
+    endTime: 51591.75,
     volume: 100,
     mute: false,
 }
@@ -109,9 +109,9 @@ export const movieVideoData1920_1080_9s = {
         startTime: 5000,
         endTime: 9000,
     },
-    voice: voiceMusicData_51000ms,
+    voice: voiceMusicData_51591_75ms,
     subtitle: subtitleData,
-    duration: 51000,
+    duration: 51591.75,
 }
 export const movieVideoData2160_3240_15s = {
     movie: {

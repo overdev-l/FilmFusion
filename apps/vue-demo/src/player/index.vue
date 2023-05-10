@@ -4,8 +4,9 @@
             <div class="w-[50%] h-full box-border flex-col gap-6 p-[1.25rem] overflow-y-scroll">
                 <div class="h-full flex flex-col gap-6">
                     <div class="flex justify-between">
-                        <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="play" />
-                        <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="pause" />
+                        <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="timeControllerPlay" />
+                        <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="timeControllerPause" />
+                        <Button label="Replay" severity="help" icon="pi pi-sync" raised rounded @click="timeControllerPause" />
                     </div>
                     <div class="flex justify-between">
                         <Button label="Next Scenes" severity="help" icon="pi pi-sync" raised rounded @click="nextScene" />
@@ -61,35 +62,29 @@
             </div>
             <div class="flex-1 h-full box-border p-[1.25rem]">
                 <ProgressBar :value="refs.progress" />
-                <Tag severity="success" value="Time Controller" class="mt-2" />
                 <div class="w-full mt-2">
-                    <div class="w-full flex gap-2">
-                        <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="timeControllerPlay" />
-                        <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="timeControllerPause" />
-                        <Button label="Replay" severity="help" icon="pi pi-sync" raised rounded @click="timeControllerPause" />
-                    </div>
-                    <div class="w-full mt-2 flex flex-row gap-4">
-                        <div>
+                    <div class="w-full mt-2 flex flex-row gap-4 justify-between">
+                        <div class="flex-1">
                             <Tag icon="pi pi-clock" severity="info" value="Current Time" />
-                            <div class="text-xl font-medium text-slate-900">
+                            <div class="text-ml font-medium text-slate-900">
                                 {{ refs.currentTime }}
                             </div>
                         </div>
                         <div>
                             <Tag icon="pi pi-clock" severity="info" value="Current Duration" />
-                            <div class="text-xl font-medium text-slate-900">
+                            <div class="text-ml font-medium text-slate-900">
                                 {{ refs.currentDuration }}
                             </div>
                         </div>
                         <div>
                             <Tag icon="pi pi-clock" severity="info" value="Total Duration" />
-                            <div class="text-xl font-medium text-slate-900">
+                            <div class="text-ml font-medium text-slate-900">
                                 {{ refs.totalDuration }}
                             </div>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <Tag icon="pi pi-clock" severity="info" value="Total Duration" />
-                            <div class="text-xl font-medium text-slate-900">
+                            <div class="text-ml font-medium text-slate-900">
                                 {{ refs.totalTime }}
                             </div>
                         </div>
@@ -130,7 +125,7 @@ const refs = reactive<any>({
     videoVolume: 100,
     backgroundVolume: 100,
     voiceVolume: 100,
-    progress: 50,
+    progress: 0,
     ScenesEditor: undefined,
     BackgroundMusicEditor: undefined,
     ElementsEditor: undefined,
@@ -143,14 +138,12 @@ const refs = reactive<any>({
 const ScenesRef = ref<HTMLElement>()
 const BackgroundMusicRef = ref<HTMLElement>()
 const ElementsRef = ref<HTMLElement>()
-const initRender = () => {
+const initParser = () => {
     refs.render = new Renderer({
         target: "#player",
         movieWidth: 1080,
         movieHeight: 1920
     })
-}
-const initParser = () => {
     refs.parser = new Parser({
         backgroundAudio: refs.BackgroundMusicEditor.get(),
         scenes: refs.ScenesEditor.get(),
@@ -165,7 +158,22 @@ const initParser = () => {
             refs.currentDuration = time.currentDuration
             refs.totalTime = time.totalTime
             refs.totalDuration = time.totalDuration
-        }
+            refs.progress = time.totalTime / time.totalDuration * 100
+        },
+        nextFiber: () => {
+            const fiber = refs.parser.nextFiber()
+            refs.timeController.setCurrentTime(fiber.duration)
+            refs.render.setMovie(fiber.sceneData)
+            refs.render.setBackground(fiber.background)
+            refs.render.setBackgroundAudios(fiber.backgroundAudio)
+            refs.render.addElements(fiber.elements)
+        },
+        play: () => {
+            refs.render.play()
+        },
+        pause: () => {
+            refs.render.pause()
+        },
     })
 }
 const firstRender = (fiber: ParserConfig.SceneFiber, background: any, elements: any, backgroundAudio: any) => {
@@ -198,12 +206,6 @@ const initElementsJsonEditor = () => {
         language: "en"
     }, elementsData)
 }
-const play = () => {
-    refs.render.play()
-}
-const pause = () => {
-    refs.render.pause()
-}
 const setVideoVolume = () => {
     refs.render.setVideoVolume(refs.videoVolume)
 }
@@ -234,7 +236,6 @@ const timeControllerPlay = () => {
 const timeControllerPause = () => {
     refs.timeController.pause()
 }
-onMounted(initRender)
 onMounted(initScenesJsonEditor)
 onMounted(initBackgroundMusicJsonEditor)
 onMounted(initElementsJsonEditor)

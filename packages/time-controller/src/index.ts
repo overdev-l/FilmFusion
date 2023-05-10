@@ -17,9 +17,13 @@ class TimeController {
      */
     startSceneNow = 0
     onTimeUpdate: TimeControllerConfig.Options["onTimeUpdate"]
+    renderPlay: TimeControllerConfig.Options["play"]
+    renderPause: TimeControllerConfig.Options["pause"]
     constructor(options: TimeControllerConfig.Options) {
         this.totalDuration = options.duration
         this.onTimeUpdate = options.onTimeUpdate
+        this.renderPlay = options.play
+        this.renderPause = options.pause
         options.onTimeUpdate({
             currentTime: this.currentTime,
             currentDuration: this.currentDuration,
@@ -39,7 +43,6 @@ class TimeController {
     }
 
     play() {
-        console.log(this.playerStatus)
         if (this.playerStatus === 0) {
             console.warn("the scene was over")
             return
@@ -50,30 +53,32 @@ class TimeController {
         }
         this.playerStatus = 1
         this.timeCtx.resume().then(() => {
-            this.startSceneNow = this.timeCtx.currentTime
+            this.startSceneNow = this.timeCtx.currentTime * 1000
             this.timeController()
+            this.renderPlay()
         })
     }
     pause() {
         this.timeCtx.suspend().then(() => {
             this.playerStatus = 2
+            this.renderPause()
         })
     }
 
     next() {
-        console.log("next")
+        this.renderPause()
     }
 
     timeController() {
         if (this.playerStatus !== 1) return
-        const c = this.timeCtx.currentTime
+        const c = this.timeCtx.currentTime * 1000
         this.currentTime += c - this.startSceneNow
         this.totalTime += c - this.startSceneNow
         if (this.totalTime >= this.totalDuration) {
             this.playerStatus = 0
             return
         }
-        this.startSceneNow = this.timeCtx.currentTime
+        this.startSceneNow = this.timeCtx.currentTime * 1000
         this.updateTime()
         if (this.currentTime >= this.currentDuration) {
             this.next()

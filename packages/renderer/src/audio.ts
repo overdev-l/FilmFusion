@@ -48,7 +48,6 @@ class AudioElement {
     }
     play() {
         this.audios.forEach((audio) => {
-            console.log(audio.target)
             const id = audio.target.play("main")
             audio.id = id            
         })

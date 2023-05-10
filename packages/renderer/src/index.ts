@@ -443,7 +443,6 @@ class Renderer {
 
 
     public play() {
-        console.log(this.sourceStatus)
         const isNotReady = Object.keys(this.sourceStatus).some((val) => {
             const key: keyof RendererConfig.SourceStatus = val as keyof RendererConfig.SourceStatus
             return !this.sourceStatus[key]
