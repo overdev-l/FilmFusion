@@ -69,7 +69,7 @@ self.onmessage = async function(e) {
         type: type,
     }
     if (type === 1) {
-        result.data = await parserMedia(data)
+        result.data = URL.createObjectURL(await parserMedia(data))
     } else {
         result.data = await loadSubtitle(data)
     }

@@ -7,6 +7,9 @@ class AudioElement {
     }[] = []
 
     setAudios(options: AudioConfig.Options[], callback: () => void) {
+        this.audios.forEach(audio => {
+            audio.target.unload()
+        })
         const ps = []
         for (let index = 0; index < options.length; index++) {
             const element = options[index]

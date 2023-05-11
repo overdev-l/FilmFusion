@@ -112,7 +112,7 @@ import {
     elementsData,
     backgroundImageData,
     movieVideoData1920_1080_9s,
-    movieVideoData2160_3240_15s,
+    movieVideoData1920_1080_9s_no_voice,
     backgroundMusicData
 
 } from './mock'
@@ -138,13 +138,17 @@ const refs = reactive<any>({
 const ScenesRef = ref<HTMLElement>()
 const BackgroundMusicRef = ref<HTMLElement>()
 const ElementsRef = ref<HTMLElement>()
+const status = ref<boolean>(false)
 const initParser = () => {
     refs.render = new Renderer({
         target: "#player",
         movieWidth: 1080,
         movieHeight: 1920,
-        onSceneReady: (slef: any) => {
-            console.log(slef)
+        onSceneReady: (self: Renderer) => {
+            console.log("sceneReady", self)
+            if (status.value) {
+                self.play()
+            }
         }
     })
     refs.parser = new Parser({
@@ -165,6 +169,7 @@ const initParser = () => {
         },
         nextFiber: async () => {
             const fiber = await refs.parser.nextFiber()
+            console.log(fiber, "fiber")
             refs.timeController.setCurrentTime(fiber.duration)
             refs.render.setMovie(fiber.sceneData)
             if (fiber.isHead) {
@@ -197,7 +202,7 @@ const initScenesJsonEditor = () => {
     refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    }, [movieVideoData1920_1080_9s, movieVideoData2160_3240_15s, movieVideoData1920_1080_9s, movieVideoData2160_3240_15s])
+    }, [movieVideoData1920_1080_9s, movieVideoData1920_1080_9s_no_voice, movieVideoData1920_1080_9s, movieVideoData1920_1080_9s])
 }
 const initBackgroundMusicJsonEditor = () => {
     refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {
@@ -237,6 +242,7 @@ const nextScene = async () => {
 
 const timeControllerPlay = () => {
     refs.timeController.play()
+    status.value = true
 }
 const timeControllerPause = () => {
     refs.timeController.pause()

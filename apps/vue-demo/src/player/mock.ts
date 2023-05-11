@@ -114,6 +114,19 @@ export const movieVideoData1920_1080_9s = {
     // duration: 51591.75,
     duration: 5000,
 }
+export const movieVideoData1920_1080_9s_no_voice = {
+    movie: {
+        type: 1,
+        url: "https://image.liuyongzhi.cn/video/pexels-1920%E2%80%8A%C3%97%E2%80%8A1080-9s.mp4",
+        volume: 100,
+        loop: true,
+        startTime: 5000,
+        endTime: 9000,
+    },
+    subtitle: subtitleData,
+    // duration: 51591.75,
+    duration: 5000,
+}
 export const movieVideoData2160_3240_15s = {
     movie: {
         type: 1,
@@ -137,5 +150,9 @@ export const backgroundMusicData = [
         mute: false,
     },
 ]
+
+export const mockSceneData1 = {
+
+}
 
 
