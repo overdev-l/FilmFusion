@@ -68,9 +68,9 @@ class TimeController {
     }
 
     async next() {
+        this.pause()
         this.renderPause()
         await this.nextFiber()
-        this.renderPlay()
     }
 
     timeController() {

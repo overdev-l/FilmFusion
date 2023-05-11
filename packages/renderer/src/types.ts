@@ -1,12 +1,14 @@
 import AudioOptions from "./audioTypes"
 import ElementOptions from "./elementTypes"
+import { Renderer, } from "."
 namespace RendererOptions {
     type ElementType = 1 | 2 // 1. (视频 | 颜色) 2. 图片
     type ElementValue<T, O, P> = T extends P ? O : never
     export interface Options {
         target: string | HTMLDivElement
         movieWidth: number
-        movieHeight: number
+        movieHeight: number,
+        onSceneReady?: (self: Renderer) => void
     }
     export interface Background {
         type: 1 | 2

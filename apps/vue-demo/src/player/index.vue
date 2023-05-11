@@ -142,7 +142,10 @@ const initParser = () => {
     refs.render = new Renderer({
         target: "#player",
         movieWidth: 1080,
-        movieHeight: 1920
+        movieHeight: 1920,
+        onSceneReady: (slef: any) => {
+            console.log(slef)
+        }
     })
     refs.parser = new Parser({
         backgroundAudio: refs.BackgroundMusicEditor.get(),
@@ -164,7 +167,6 @@ const initParser = () => {
             const fiber = await refs.parser.nextFiber()
             refs.timeController.setCurrentTime(fiber.duration)
             refs.render.setMovie(fiber.sceneData)
-            console.log(fiber)
             if (fiber.isHead) {
                 refs.render.setBackground(fiber.background)
                 refs.render.setBackgroundAudios(fiber.backgroundAudio)

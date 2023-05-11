@@ -33,7 +33,9 @@ class Renderer {
         movieReady: false,
         subtitleReady: false,
     }
+    onSceneReady = (slef: Renderer) => {/**/}
     constructor(options: RendererConfig.Options) {
+        this.onSceneReady = options.onSceneReady || this.onSceneReady
         if (options.target instanceof HTMLDivElement) {
             this.target = options.target
         } else {
@@ -190,11 +192,25 @@ class Renderer {
         }
     }
     /**
+     * setSourceStatus
+     */
+    setSourceStatus(key: keyof RendererConfig.SourceStatus, value: boolean) {
+        this.sourceStatus[key] = value
+        const isNotReady = Object.keys(this.sourceStatus).some((val) => {
+            const key: keyof RendererConfig.SourceStatus = val as keyof RendererConfig.SourceStatus
+            return !this.sourceStatus[key]
+        })
+        if (!isNotReady) {
+            console.log("source ready")
+            this.onSceneReady(this)
+        }
+    }
+    /**
      * setMovie
      */
     public setMovie(options: RendererConfig.SceneData) {
         this.movieLayer.destroyChildren()
-        this.sourceStatus.movieReady = false
+        this.setSourceStatus("movieReady", false)
         if (options.movie.type === 2) {
             this.mediaTarget = new Image()
             this.mediaTarget.src = options.movie.url
@@ -213,7 +229,7 @@ class Renderer {
                         y: this.mediaTarget.height / 2,
                     })
                 this.movieLayer.add(this.movieTarget)
-                this.sourceStatus.movieReady = true
+                this.setSourceStatus("movieReady", true)
             }
         } else if (options.movie.type === 1) {
             let target: HTMLVideoElement
@@ -242,15 +258,15 @@ class Renderer {
                 this.movieLayer.add(this.movieTarget)
                 this.layerAnimation()
                 this.updateMovieLayer(target)
-                this.sourceStatus.movieReady = true
+                this.setSourceStatus("movieReady", true)
             }
         }
         if (options.voice) {
             this.setVoiceAudio(options.voice)
         } else {
-            this.sourceStatus.voiceMusicReady = true
+            this.setSourceStatus("movieReady", false)
             this.voiceElements.setAudios([], () => {
-                this.sourceStatus.voiceMusicReady = true
+                this.setSourceStatus("movieReady", true)
             })
         }
         if (options.subtitle) {
@@ -296,9 +312,9 @@ class Renderer {
             this.subtitleLayer.add(textGroup)
             this.subtitleText.zIndex(options.subtitle.position.z / 100)
             textContainer.zIndex((options.subtitle.position.z - 1) / 100)
-            this.sourceStatus.subtitleReady = true
+            this.setSourceStatus("subtitleReady", true)
         } else {
-            this.sourceStatus.subtitleReady = true
+            this.setSourceStatus("subtitleReady", true)
         }
     }
 
@@ -318,9 +334,9 @@ class Renderer {
      * @param audios
      */
     public setBackgroundAudios(audios: AudioConfig.Options[]) {
-        this.sourceStatus.backgroundMusicReady = false
+        this.setSourceStatus("backgroundMusicReady", false)
         this.backgroundElements.setAudios(audios, () => {
-            this.sourceStatus.backgroundMusicReady = true
+            this.setSourceStatus("backgroundMusicReady", true)
         })
     }
     /**
@@ -335,9 +351,9 @@ class Renderer {
      * @param audio
      */
     public setVoiceAudio(audio: AudioConfig.Options) {
-        this.sourceStatus.voiceMusicReady = false
+        this.setSourceStatus("voiceMusicReady", false)
         this.voiceElements.setAudios([audio,], () => {
-            this.sourceStatus.voiceMusicReady = true
+            this.setSourceStatus("voiceMusicReady", true)
         })
     }
     /**
