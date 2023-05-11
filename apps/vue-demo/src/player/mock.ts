@@ -111,36 +111,12 @@ export const movieVideoData1920_1080_9s = {
     },
     voice: voiceMusicData_51591_75ms,
     subtitle: subtitleData,
-    // duration: 51591.75,
-    duration: 5000,
-}
-export const movieVideoData1920_1080_9s_no_voice = {
-    movie: {
-        type: 1,
-        url: "https://image.liuyongzhi.cn/video/pexels-1920%E2%80%8A%C3%97%E2%80%8A1080-9s.mp4",
-        volume: 100,
-        loop: true,
-        startTime: 5000,
-        endTime: 9000,
-    },
-    subtitle: subtitleData,
-    // duration: 51591.75,
-    duration: 5000,
-}
-export const movieVideoData2160_3240_15s = {
-    movie: {
-        type: 1,
-        url: "https://image.liuyongzhi.cn/video/pexels-2160%E2%80%8A%C3%97%E2%80%8A3240-15s.mp4",
-        volume: 100,
-        loop: true,
-        startTime: 5000,
-        endTime: 10000,
-    },
     duration: 5000,
 }
 
 
-export const backgroundMusicData = [
+
+export const backgroundMusicData_122000ms = [
     {
         audio: "https://image.liuyongzhi.cn/video/backgroundMusic_122000ms.mp3",
         loop: true,
@@ -151,8 +127,43 @@ export const backgroundMusicData = [
     },
 ]
 
-export const mockSceneData1 = {
-
+export const movieVideo1080_1920_5000ms = {
+    movie: {
+        type: 1,
+        url: "https://image.liuyongzhi.cn/video/Walk_15000ms.mp4",
+        volume: 100,
+        loop: true,
+        startTime: 0,
+        endTime: 15000,
+    },
+    voice: {
+        audio: "https://image.liuyongzhi.cn/video/Walk_24336.mp3",
+        loop: false,
+        startTime: 0,
+        endTime: 5000,
+        volume: 100,
+        mute: false,
+    },
+    duration: 5000,
+}
+export const movieVideo1920_1080_5000ms = {
+    movie: {
+        type: 1,
+        url: "https://image.liuyongzhi.cn/video/pexels_1920_1080_19000ms.mp4",
+        volume: 100,
+        loop: true,
+        startTime: 0,
+        endTime: 15000,
+    },
+    voice: {
+        audio: "https://image.liuyongzhi.cn/video/pexels_22932ms.mp3",
+        loop: false,
+        startTime: 0,
+        endTime: 5000,
+        volume: 100,
+        mute: false,
+    },
+    duration: 5000,
 }
 
 

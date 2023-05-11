@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="flex-1">
-                            <Tag icon="pi pi-clock" severity="info" value="Total Duration" />
+                            <Tag icon="pi pi-clock" severity="info" value="Total Time" />
                             <div class="text-ml font-medium text-slate-900">
                                 {{ refs.totalTime }}
                             </div>
@@ -112,8 +112,9 @@ import {
     elementsData,
     backgroundImageData,
     movieVideoData1920_1080_9s,
-    movieVideoData1920_1080_9s_no_voice,
-    backgroundMusicData
+    movieVideo1080_1920_5000ms,
+    movieVideo1920_1080_5000ms,
+    backgroundMusicData_122000ms
 
 } from './mock'
 import JSONEditor from 'jsoneditor'
@@ -147,7 +148,7 @@ const initParser = () => {
         onSceneReady: (self: Renderer) => {
             console.log("sceneReady", self)
             if (status.value) {
-                self.play()
+                refs.timeController.play()
             }
         }
     })
@@ -169,8 +170,7 @@ const initParser = () => {
         },
         nextFiber: async () => {
             const fiber = await refs.parser.nextFiber()
-            console.log(fiber, "fiber")
-            refs.timeController.setCurrentTime(fiber.duration)
+            refs.timeController.setCurrentTime(fiber.sceneData.duration)
             refs.render.setMovie(fiber.sceneData)
             if (fiber.isHead) {
                 refs.render.setBackground(fiber.background)
@@ -202,13 +202,13 @@ const initScenesJsonEditor = () => {
     refs.ScenesEditor = new JSONEditor(ScenesRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    }, [movieVideoData1920_1080_9s, movieVideoData1920_1080_9s_no_voice, movieVideoData1920_1080_9s, movieVideoData1920_1080_9s])
+    }, [movieVideoData1920_1080_9s, movieVideo1080_1920_5000ms, movieVideo1920_1080_5000ms])
 }
 const initBackgroundMusicJsonEditor = () => {
     refs.BackgroundMusicEditor = new JSONEditor(BackgroundMusicRef.value as HTMLElement, {
         mode: "form",
         language: "en"
-    }, backgroundMusicData)
+    }, backgroundMusicData_122000ms)
 }
 const initElementsJsonEditor = () => {
     refs.ElementsEditor = new JSONEditor(ElementsRef.value as HTMLElement, {

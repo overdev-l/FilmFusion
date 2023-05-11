@@ -80,6 +80,7 @@ class TimeController {
         this.totalTime += c - this.startSceneNow
         if (this.totalTime >= this.totalDuration) {
             this.playerStatus = 0
+            this.pause()
             return
         }
         this.startSceneNow = this.timeCtx.currentTime * 1000
