@@ -18,7 +18,7 @@ namespace ParserConfig {
         sceneData: SceneData
         nextScene: SceneFiber | null
     }
-    interface SceneData {
+    export interface SceneData {
         movie: RendererConfig.MovieOptions
         voice?: AudioConfig.Options
         subtitle?: Omit<ElementConfig.TextElement, "type" | "text" | "name"> & {

@@ -5,6 +5,7 @@ import {getPosition, getTargetScale, transformColorFormat, defaultSubtitleStyle,
 import Element from "./element"
 import AudioElement from "./audio"
 import AudioConfig from "./audioTypes"
+import ParserConfig from "../../parser/src/types"
 class Renderer {
     private target: HTMLDivElement
     private stage: Konva.Stage
@@ -36,6 +37,7 @@ class Renderer {
         subtitleReady: false,
     }
     private subtitleConfig: Omit<ElementConfig.TextElement, "type" | "text" | "name"> = defaultSubtitleStyle
+    private subtitleData: ParserConfig.SubtitleData[] = []
     onSceneReady = (slef: Renderer) => {/**/}
     constructor(options: RendererConfig.Options) {
         this.onSceneReady = options.onSceneReady || this.onSceneReady
@@ -274,7 +276,9 @@ class Renderer {
     /**
      * setMovie
      */
-    public setMovie(options: RendererConfig.SceneData) {
+    public setMovie(options: Omit<RendererConfig.SceneData, "subtile"> & {
+        subtitle: ParserConfig.SceneData["subtitle"]
+    }) {
         this.movieLayer.destroyChildren()
         this.setSourceStatus("movieReady", false)
         if (options.movie.type === 2) {
@@ -340,6 +344,8 @@ class Renderer {
                 style: options.subtitle.style,
                 position: options.subtitle.position,
             }
+            this.subtitleData = options.subtitle.data
+            this.setSourceStatus("subtitleReady", true)
         } else {
             this.subtitleConfig = defaultSubtitleStyle
             this.setSourceStatus("subtitleReady", true)
