@@ -116,7 +116,8 @@ class Renderer {
         this.voiceElements = new AudioElement()
     }
     /**
-     *  计算图层大小位置
+     * initLayersPosition
+     *  @description computing layers position size
      */
     private initLayersPosition() {
         this.backgroundLayer
@@ -158,7 +159,7 @@ class Renderer {
     }
     /**
      * initSubtitle
-     * @description 初始化字幕
+     * @description initialize the subtitles
      */
     private initSubtitle() {
         this.subtitleGroup = new Konva.Group()
@@ -171,7 +172,7 @@ class Renderer {
         this.subtitleGroup.add(this.subtitleText)
     }
     /**
-     * 更新字幕
+     * update subtitle
      * @param text
      */
     private updateSubtitle(text: string) {
@@ -335,50 +336,12 @@ class Renderer {
             })
         }
         if (options.subtitle) {
-            const textGroup = new Konva.Group()
-            const textContainer = new Konva.Rect()
-            this.subtitleText = new Konva.Text({
-                text: "测试",
-                fontSize: options.subtitle.style.fontSize,
-                fontFamily: options.subtitle.style.fontFamily,
-                fontStyle: options.subtitle.style.fontItalic ? "italic" : "normal",
-                fontWeight: options.subtitle.style.fontBold ? "bold" : "normal",
-                fill: options.subtitle.style.color,
-                align: options.subtitle.style.align,
-                opacity: options.subtitle.style.alpha / 100,
-                padding: options.subtitle.style.backgroundPadding,
-                stroke: options.subtitle.style.fontStoke,
-                strokeWidth: options.subtitle.style.fontStokeWidth,
-                fillAfterStrokeEnabled: true,
-                lineJoin: "round",
-            })
-            const width = this.subtitleText.width() + this.subtitleText.strokeWidth() / 2
-            const height = this.subtitleText.height() + this.subtitleText.strokeWidth() / 2
-            textContainer.width(width)
-            textContainer.height(height)
-            this.subtitleText.setPosition({
-                x: width / 2,
-                y: height / 2,
-            })
-            this.subtitleText.offset({
-                x: this.subtitleText.width() / 2,
-                y: this.subtitleText.height() / 2,
-            })
-            textContainer.fill(transformColorFormat(options.subtitle.style.backgroundColor, options.subtitle.style.backgroundAlpha))
-            textGroup.width(textContainer.width())
-            textGroup.height(textContainer.height())
-            textGroup.add(textContainer)
-            textGroup.add(this.subtitleText)
-            const position = getPosition(options.subtitle.position.x, options.subtitle.position.y, textContainer.width(), textContainer.height(), this.movieWidth, this.movieHeight)
-            textGroup.x(position.x)
-            textGroup.y(position.y)
-            textGroup.offsetX(textContainer.width() / 2)
-            textGroup.offsetY(textContainer.height() / 2)
-            this.subtitleLayer.add(textGroup)
-            this.subtitleText.zIndex(options.subtitle.position.z / 100)
-            textContainer.zIndex((options.subtitle.position.z - 1) / 100)
-            this.setSourceStatus("subtitleReady", true)
+            this.subtitleConfig = {
+                style: options.subtitle.style,
+                position: options.subtitle.position,
+            }
         } else {
+            this.subtitleConfig = defaultSubtitleStyle
             this.setSourceStatus("subtitleReady", true)
         }
     }
