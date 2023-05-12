@@ -1,7 +1,7 @@
 import RendererConfig from "./types"
 import ElementConfig from "./elementTypes"
 import Konva from "konva"
-import {getPosition, getTargetScale, transformColorFormat,} from "./utils"
+import {getPosition, getTargetScale, transformColorFormat, defaultSubtitleStyle,} from "./utils"
 import Element from "./element"
 import AudioElement from "./audio"
 import AudioConfig from "./audioTypes"
@@ -22,6 +22,8 @@ class Renderer {
     private elementAnimation: Konva.Animation
     private backgroundRect: Konva.Rect
     private elementTarget: Element
+    private subtitleGroup: Konva.Group
+    private subtitleContainer: Konva.Rect
     private subtitleText: Konva.Text
     private movieWidth: number
     private movieHeight: number
@@ -33,6 +35,7 @@ class Renderer {
         movieReady: false,
         subtitleReady: false,
     }
+    private subtitleConfig: Omit<ElementConfig.TextElement, "type" | "text" | "name"> = defaultSubtitleStyle
     onSceneReady = (slef: Renderer) => {/**/}
     constructor(options: RendererConfig.Options) {
         this.onSceneReady = options.onSceneReady || this.onSceneReady
@@ -55,6 +58,7 @@ class Renderer {
         this.initElements()
         this.initBackgroundElements()
         this.initVoiceElements()
+        this.initSubtitle()
     }
     private initScale() {
         const scaleX = this.target.clientWidth / this.movieWidth
@@ -152,6 +156,67 @@ class Renderer {
             y: this.scale,
         }).zIndex(4)
     }
+    /**
+     * initSubtitle
+     * @description 初始化字幕
+     */
+    private initSubtitle() {
+        this.subtitleGroup = new Konva.Group()
+        this.subtitleContainer = new Konva.Rect()
+        this.subtitleText = new Konva.Text({
+            fillAfterStrokeEnabled: true,
+            lineJoin: "round",
+        })
+        this.subtitleGroup.add(this.subtitleContainer)
+        this.subtitleGroup.add(this.subtitleText)
+    }
+    /**
+     * 更新字幕
+     * @param text
+     */
+    private updateSubtitle(text: string) {
+        this.subtitleLayer.clear()
+        this.subtitleText.text(text)
+        this.subtitleText.fontSize(this.subtitleConfig.style.fontSize)
+        this.subtitleText.fontFamily(this.subtitleConfig.style.fontFamily)
+        this.subtitleText.fontStyle(this.subtitleConfig.style.fontItalic ? "italic" : "normal")
+        // fontWight
+        this.subtitleText.fill(this.subtitleConfig.style.color)
+        this.subtitleText.align(this.subtitleConfig.style.align)
+        this.subtitleText.opacity(this.subtitleConfig.style.alpha / 100)
+        this.subtitleText.padding(this.subtitleConfig.style.backgroundPadding)
+        this.subtitleText.stroke(this.subtitleConfig.style.fontStoke)
+        this.subtitleText.strokeWidth(this.subtitleConfig.style.fontStokeWidth)
+        if (this.subtitleText.width() > this.movieWidth) {
+            this.subtitleText.width(this.movieWidth)
+        }
+        const width = this.subtitleText.width() + this.subtitleText.strokeWidth() / 2
+        const height = this.subtitleText.height() + this.subtitleText.strokeWidth() / 2
+        this.subtitleContainer.width(width)
+        this.subtitleContainer.height(height)
+        this.subtitleText.setPosition({
+            x: width / 2,
+            y: height / 2,
+        })
+        this.subtitleText.offset({
+            x: this.subtitleText.width() / 2,
+            y: this.subtitleText.height() / 2,
+        })
+        this.subtitleContainer.fill(transformColorFormat(this.subtitleConfig.style.backgroundColor, this.subtitleConfig.style.backgroundAlpha))
+        this.subtitleGroup.width(this.subtitleContainer.width())
+        this.subtitleGroup.height(this.subtitleContainer.height())
+        this.subtitleGroup.add(this.subtitleContainer)
+        this.subtitleGroup.add(this.subtitleText)
+        const position = getPosition(this.subtitleConfig.position.x, this.subtitleConfig.position.y, this.subtitleContainer.width(), this.subtitleContainer.height(), this.movieWidth, this.movieHeight)
+        this.subtitleGroup.x(position.x)
+        this.subtitleGroup.y(position.y)
+        this.subtitleGroup.offset({
+            x: this.subtitleContainer.width() / 2,
+            y: this.subtitleContainer.height() / 2,
+        })
+        this.subtitleLayer.add(this.subtitleGroup)
+        this.subtitleGroup.zIndex((this.subtitleConfig.position.z - 1) / 100)
+    }   
     /**
      * 初始化默认背景
      */

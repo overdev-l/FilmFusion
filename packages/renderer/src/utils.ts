@@ -1,4 +1,4 @@
-
+import ElementConfig from "./elementTypes"
 export const getTargetScale = (targetWidth: number, targetHeight: number, containerWidth: number, containerHeight: number) => {
     const containerRatio = containerWidth / containerHeight
     const videoRatio = targetWidth / targetHeight
@@ -55,4 +55,26 @@ export const getPosition = (x: number, y: number, width: number, height: number,
         y: Math.min(Math.max(y, height / 2), maxY - height/ 2),
     }
     return position
+}
+
+export const defaultSubtitleStyle: Omit<ElementConfig.TextElement, "type" | "name"| "text"> = {
+    style: {
+        alpha: 100,
+        color: "#000000",
+        fontSize: 14,
+        fontFamily: "微软雅黑",
+        fontItalic: false,
+        fontBold: false,
+        align: "center",
+        fontStoke: "",
+        fontStokeWidth: 0,
+        backgroundColor: "",
+        backgroundAlpha: 100,
+        backgroundPadding: 20,
+    },
+    position: {
+        x: 0,
+        y: 0,
+        z: 0,
+    },
 }
