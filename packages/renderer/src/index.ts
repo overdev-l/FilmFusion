@@ -182,8 +182,11 @@ class Renderer {
         this.subtitleText.text(text)
         this.subtitleText.fontSize(this.subtitleConfig.style.fontSize)
         this.subtitleText.fontFamily(this.subtitleConfig.style.fontFamily)
-        this.subtitleText.fontStyle(this.subtitleConfig.style.fontItalic ? "italic" : "normal")
-        // fontWight
+        this.subtitleText.fontStyle(
+            this.subtitleConfig.style.fontItalic ?
+                this.subtitleConfig.style.fontBold ?
+                    "bold italic" : "italic" : "normal"
+        )
         this.subtitleText.fill(this.subtitleConfig.style.color)
         this.subtitleText.align(this.subtitleConfig.style.align)
         this.subtitleText.opacity(this.subtitleConfig.style.alpha / 100)
