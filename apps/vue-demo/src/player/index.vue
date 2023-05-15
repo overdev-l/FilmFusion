@@ -159,6 +159,12 @@ const initParser = () => {
         background: backgroundImageData as RendererConfig.Background,
         firstLoaded: firstRender,
     })
+    console.log(JSON.stringify({
+        backgroundAudio: refs.BackgroundMusicEditor.get(),
+        scenes: refs.ScenesEditor.get(),
+        elements: refs.ElementsEditor.get(),
+        background: backgroundImageData as RendererConfig.Background,
+    }))
     refs.timeController = new TimeController({
         duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
         onTimeUpdate: (time) => {

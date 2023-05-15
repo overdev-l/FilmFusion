@@ -4,13 +4,13 @@
     "description": "@film-fusion/generate",
     "main": "dis/index.esm.js",
     "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
+    "types": "dist/types.d.ts",
     "files": [
         "dist"
     ],
     "scripts": {
         "dev": "esbuild --bundle --format=esm --outfile=dist/index.esm.js --watch=forever src/index.ts",
-        "ts-types": "tsc -w --emitDeclarationOnly --outDir dist"
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts"
     },
     "repository": {
         "type": "git",
