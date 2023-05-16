@@ -145,8 +145,7 @@ const initParser = () => {
         target: "#player",
         movieWidth: 1080,
         movieHeight: 1920,
-        onSceneReady: (self: Renderer) => {
-            console.log("sceneReady", self)
+        onSceneReady: () => {
             if (status.value) {
                 refs.timeController.play()
             }
@@ -159,12 +158,6 @@ const initParser = () => {
         background: backgroundImageData as RendererConfig.Background,
         firstLoaded: firstRender,
     })
-    console.log(JSON.stringify({
-        backgroundAudio: refs.BackgroundMusicEditor.get(),
-        scenes: refs.ScenesEditor.get(),
-        elements: refs.ElementsEditor.get(),
-        background: backgroundImageData as RendererConfig.Background,
-    }))
     refs.timeController = new TimeController({
         duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
         onTimeUpdate: (time) => {
@@ -173,6 +166,7 @@ const initParser = () => {
             refs.totalTime = time.totalTime
             refs.totalDuration = time.totalDuration
             refs.progress = time.totalTime / time.totalDuration * 100
+            refs.render.setSceneSubtitle(time.currentTime)
         },
         nextFiber: async () => {
             const fiber = await refs.parser.nextFiber()

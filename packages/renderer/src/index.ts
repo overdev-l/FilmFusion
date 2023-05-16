@@ -278,6 +278,11 @@ class Renderer {
             this.onSceneReady(this)
         }
     }
+    setSceneSubtitle(time: number) {
+        const result = this.subtitleData.find((val) => val.startSeconds * 1000 <= time && val.endSeconds * 1000 >= time)
+        if (!result) return
+        this.updateSubtitle(result.text)
+    }
     /**
      * setMovie
      */

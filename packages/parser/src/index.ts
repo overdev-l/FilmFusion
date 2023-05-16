@@ -29,9 +29,10 @@ class Parser {
         if (options.elements) {
             promiseAll.push(this.parserElements(options.elements))
         }
-        promiseAll.push(this.parserFiber(this.playerFiber as ParserConfig.SceneFiber))
+        promiseAll.push(this.parserFiber(this.sceneFiber as ParserConfig.SceneFiber))
 
         Promise.all(promiseAll).then(() => {
+            this.replaceFiber()
             options.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
             this.playerFiber = this.sceneFiber?.nextScene || null
             this.coroutineParserFiber(this.sceneFiber!.nextScene)
@@ -181,19 +182,23 @@ class Parser {
             if (!this.playerFiber.isLoaded) {
                 await this.parserFiber(this.playerFiber)
             }
-            this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
-            if (this.playerFiber.sceneData.voice) {
-                this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio) as string
-            }
-            if (this.playerFiber.sceneData.subtitle) {
-                this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
-            }
+            this.replaceFiber()
             this.coroutineParserFiber(this.playerFiber.nextScene)
             const current = cloneDeep(this.playerFiber)
             this.playerFiber = this.playerFiber.nextScene
             return current
         }
         return null
+    }
+    replaceFiber() {
+        if (!this.playerFiber) return
+        this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
+        if (this.playerFiber.sceneData.voice) {
+            this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio) as string
+        }
+        if (this.playerFiber.sceneData.subtitle) {
+            this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
+        }
     }
     freeMemory(urls: string[]) {
         for (const url of urls) {
