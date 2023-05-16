@@ -178,21 +178,7 @@ class Renderer {
      * @param text
      */
     private updateSubtitle(text: string) {
-        this.subtitleLayer.clear()
         this.subtitleText.text(text)
-        this.subtitleText.fontSize(this.subtitleConfig.style.fontSize)
-        this.subtitleText.fontFamily(this.subtitleConfig.style.fontFamily)
-        this.subtitleText.fontStyle(
-            this.subtitleConfig.style.fontItalic ?
-                this.subtitleConfig.style.fontBold ?
-                    "bold italic" : "italic" : "normal"
-        )
-        this.subtitleText.fill(this.subtitleConfig.style.color)
-        this.subtitleText.align(this.subtitleConfig.style.align)
-        this.subtitleText.opacity(this.subtitleConfig.style.alpha / 100)
-        this.subtitleText.padding(this.subtitleConfig.style.backgroundPadding)
-        this.subtitleText.stroke(this.subtitleConfig.style.fontStoke)
-        this.subtitleText.strokeWidth(this.subtitleConfig.style.fontStokeWidth)
         if (this.subtitleText.width() > this.movieWidth) {
             this.subtitleText.width(this.movieWidth)
         }
@@ -222,7 +208,23 @@ class Renderer {
         })
         this.subtitleLayer.add(this.subtitleGroup)
         this.subtitleGroup.zIndex((this.subtitleConfig.position.z - 1) / 100)
-    }   
+    }
+    drawSubtitle() {
+        this.subtitleLayer.destroyChildren()
+        this.subtitleText.fontSize(this.subtitleConfig.style.fontSize)
+        this.subtitleText.fontFamily(this.subtitleConfig.style.fontFamily)
+        this.subtitleText.fontStyle(
+            this.subtitleConfig.style.fontItalic ?
+                this.subtitleConfig.style.fontBold ?
+                    "bold italic" : "italic" : "normal"
+        )
+        this.subtitleText.fill(this.subtitleConfig.style.color)
+        this.subtitleText.align(this.subtitleConfig.style.align)
+        this.subtitleText.opacity(this.subtitleConfig.style.alpha / 100)
+        this.subtitleText.stroke(this.subtitleConfig.style.fontStoke)
+        this.subtitleText.strokeWidth(this.subtitleConfig.style.fontStokeWidth)
+        this.subtitleText.padding(this.subtitleConfig.style.backgroundPadding)
+    }
     /**
      * 初始化默认背景
      */
@@ -348,9 +350,11 @@ class Renderer {
                 position: options.subtitle.position,
             }
             this.subtitleData = options.subtitle.data
+            this.drawSubtitle()
             this.setSourceStatus("subtitleReady", true)
         } else {
             this.subtitleConfig = defaultSubtitleStyle
+            this.subtitleLayer.destroyChildren()
             this.setSourceStatus("subtitleReady", true)
         }
     }
