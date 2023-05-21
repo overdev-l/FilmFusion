@@ -39,7 +39,7 @@
                             @click="addElements" />
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
-                        <Button label="Set Background Music" severity="help" icon="pi pi-plus" raised rounded
+                        <Button label="Export Video" severity="help" icon="pi pi-file-export" raised rounded
                             @click="setBackgroundMusic" />
                     </div>
                 </div>
