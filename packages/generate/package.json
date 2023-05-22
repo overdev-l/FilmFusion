@@ -1,36 +1,40 @@
 {
-  "name": "@film-fusion/generate",
-  "version": "0.0.1",
-  "description": "@film-fusion/generate",
-  "main": "dis/index.esm.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/types/index.d.ts",
-  "files": [
-      "dist"
-  ],
-  "scripts": {
-      "dev": "esbuild --bundle --format=esm --outfile=dist/index.esm.js --watch=forever src/index.ts",
-      "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts"
-  },
-  "repository": {
-      "type": "git",
-      "url": "git+https://github.com/overdev-l/FilmFusion.git",
-      "directory": "packages/generate"
-  },
-  "bugs": {
-      "url": "https://github.com/overdev-l/FilmFusion/issues"
-  },
-  "buildOptions": {
-      "name": "FilmFusionGenerate",
-      "formats": [
-          "esm",
-          "cjs",
-          "umd"
-      ]
-  },
-  "keywords": [
-      "film-fusion"
-  ],
-  "author": "Overdev",
-  "license": "MIT"
+    "name": "@film-fusion/generate",
+    "version": "0.0.1",
+    "description": "@film-fusion/generate",
+    "main": "dis/index.esm.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "esbuild --bundle --format=esm --outfile=dist/index.esm.js --watch=forever src/index.ts",
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/overdev-l/FilmFusion.git",
+        "directory": "packages/generate"
+    },
+    "bugs": {
+        "url": "https://github.com/overdev-l/FilmFusion/issues"
+    },
+    "buildOptions": {
+        "name": "FilmFusionGenerate",
+        "formats": [
+            "esm",
+            "cjs",
+            "umd"
+        ]
+    },
+    "keywords": [
+        "film-fusion"
+    ],
+    "author": "Overdev",
+    "license": "MIT",
+    "dependencies": {
+        "@ffmpeg/core": "^0.11.0",
+        "@ffmpeg/ffmpeg": "^0.11.6"
+    }
 }
