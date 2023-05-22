@@ -40,7 +40,7 @@
                     </div>
                     <div class="flex gap-6 h-[40px] items-center  justify-between">
                         <Button label="Export Video" severity="help" icon="pi pi-file-export" raised rounded
-                            @click="setBackgroundMusic" />
+                            @click="generateVideo" />
                     </div>
                 </div>
             </div>
@@ -100,6 +100,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { Renderer, RendererConfig } from '@film-fusion/renderer';
 import {Parser, ParserConfig} from "@film-fusion/parser"
 import { TimeController } from "@film-fusion/time-controller"
+import { generate } from "@film-fusion/generate"
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
@@ -246,6 +247,11 @@ const timeControllerPlay = () => {
 }
 const timeControllerPause = () => {
     refs.timeController.pause()
+}
+
+const generateVideo = async () => {
+    const result = await refs.parser.parserAllFiber()
+    await generate(true, result)
 }
 onMounted(initScenesJsonEditor)
 onMounted(initBackgroundMusicJsonEditor)

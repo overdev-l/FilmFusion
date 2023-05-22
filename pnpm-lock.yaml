@@ -68,6 +68,9 @@ importers:
 
   apps/vue-demo:
     dependencies:
+      '@film-fusion/generate':
+        specifier: workspace:^
+        version: link:../../packages/generate
       '@film-fusion/parser':
         specifier: workspace:*
         version: link:../../packages/parser
@@ -99,6 +102,9 @@ importers:
       '@types/node':
         specifier: ^18.16.0
         version: 18.16.0
+      '@vitejs/plugin-basic-ssl':
+        specifier: ^1.0.1
+        version: 1.0.1(vite@4.3.1)
       '@vitejs/plugin-vue':
         specifier: ^4.1.0
         version: 4.1.0(vite@4.3.1)(vue@3.2.47)
@@ -129,10 +135,6 @@ importers:
       '@ffmpeg/ffmpeg':
         specifier: ^0.11.6
         version: 0.11.6
-    devDependencies:
-      core:
-        specifier: link:@types/@ffmpeg/core
-        version: link:@types/@ffmpeg/core
 
   packages/parser:
     dependencies:
@@ -1158,6 +1160,15 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.0
       eslint-visitor-keys: 3.4.0
+    dev: true
+
+  /@vitejs/plugin-basic-ssl@1.0.1(vite@4.3.1):
+    resolution: {integrity: sha512-pcub+YbFtFhaGRTo1832FQHQSHvMrlb43974e2eS8EKleR3p1cDdkJFPci1UhwkEf1J9Bz+wKBSzqpKp7nNj2A==}
+    engines: {node: '>=14.6.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      vite: 4.3.1(@types/node@18.16.0)
     dev: true
 
   /@vitejs/plugin-vue@4.1.0(vite@4.3.1)(vue@3.2.47):

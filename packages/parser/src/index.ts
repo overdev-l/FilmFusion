@@ -213,6 +213,24 @@ class Parser {
             }
         }
     }
+
+    async parserAllFiber() {
+        let pointer = this.sceneFiber
+        while (pointer) {
+            if (!pointer.isLoaded) {
+                await this.parserFiber(pointer)
+                pointer.sceneData.movie.url = this.cache.get(pointer.sceneData.movie.url) as string
+                if (pointer.sceneData.voice) {
+                    pointer.sceneData.voice.audio = this.cache.get(pointer.sceneData.voice.audio) as string
+                }
+                if (pointer.sceneData.subtitle) {
+                    pointer.sceneData.subtitle.data = this.subtitleCache.get(pointer.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
+                }
+            }
+            pointer = pointer.nextScene
+        }
+        return this.sceneFiber
+    }
 }
 
 export {
