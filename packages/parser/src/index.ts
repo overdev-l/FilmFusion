@@ -1,12 +1,28 @@
-import ParserConfig from "./types"
 import axios from "axios"
-
-import {BlobTransformBlobUrl, UrlTransformSubtitle, workString,} from "./utils"
 import ParserSubtitle from "srt-parser-2"
 import { cloneDeep, } from "lodash-es"
+import { LRUCache, } from "lru-cache"
+
+import {BlobTransformBlobUrl, UrlTransformSubtitle, workString, cancelSync, } from "./utils"
+import ParserConfig from "./types"
 
 class Parser {
-    cache: Map<string, string> = new Map()
+    cache: LRUCache<string, string> = new LRUCache({
+        max: 100,
+        maxSize: 500,
+        sizeCalculation: (key: string, value: string) => {
+            let n = 0
+            const callback = () => {
+                // @ts-ignore
+                n = cancelSync.run(value) as number
+            }
+            cancelSync(callback)
+            return n
+        },
+        dispose(key: string, value: string) {
+            URL.revokeObjectURL(value)
+        },
+    })
     subtitleCache: Map<string, ParserConfig.SubtitleData[]> = new Map()
     sceneFiber: ParserConfig.SceneFiber | null = null
     playerFiber: ParserConfig.SceneFiber | null

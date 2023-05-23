@@ -77,3 +77,34 @@ self.onmessage = async function(e) {
  }
 
 `
+
+export const cancelSync = function(callback: () => void) {
+    // @ts-ignore
+    this.cache = {status: "pending", data: undefined, err: undefined,}
+    // @ts-ignore
+    this.run = function(url: string) {
+        if ( this.cache.status === "success") {
+            return  this.cache.data
+        } else if ( this.cache.status === "rejected") {
+            throw  this.cache.err
+        }
+        const promise = fetch(url).then((res) => res.blob())
+            .then((blob) => {
+                this.cache = {status: "success", data: blob, err: undefined,}
+            })
+            .catch((err) => {
+                this.cache = {status: "rejected", data: undefined, err: err,}
+            })
+        throw promise
+    }
+    try {
+        callback()
+    } catch (e) {
+        if (e instanceof Promise) {
+            const r = () => {
+                callback()
+            }
+            e.then(r, r)
+        }
+    }
+}

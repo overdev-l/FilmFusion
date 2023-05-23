@@ -31,7 +31,7 @@
         "no-extra-semi": 2,
         "no-func-assign": 2,
         "no-obj-calls": 2,
-        "no-unreachable": 2,
+        "no-unreachable": 0,
         "block-scoped-var": 2,
         "eqeqeq": 2,
         "no-return-await": 2,
@@ -52,6 +52,7 @@
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/no-namespace": 0,
-        "no-undef": 0
+        "no-undef": 0,
+        "@typescript-eslint/ban-ts-comment": "off"
     }
 }

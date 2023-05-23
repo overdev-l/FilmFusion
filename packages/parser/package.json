@@ -34,8 +34,10 @@
     "author": "Overdev",
     "license": "MIT",
     "dependencies": {
+        "@types/lru-cache": "^7.10.10",
         "axios": "^1.4.0",
         "lodash-es": "^4.17.21",
+        "lru-cache": "^9.1.1",
         "srt-parser-2": "^1.2.2"
     },
     "devDependencies": {
