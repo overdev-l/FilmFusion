@@ -10,7 +10,8 @@
     ],
     "scripts": {
         "dev": "esbuild --bundle --format=esm --outfile=dist/index.esm.js --watch=forever src/index.ts",
-        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts"
+        "ts-types": "tsc -w --emitDeclarationOnly --outFile dist/types/index.d.ts",
+        "release": "release-it"
     },
     "repository": {
         "type": "git",
