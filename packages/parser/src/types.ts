@@ -35,6 +35,10 @@ namespace ParserConfig {
         id: string
         text: string
     }
+    export interface LRUData {
+        source: Blob
+        url: string
+    }
 }
 
 export default ParserConfig

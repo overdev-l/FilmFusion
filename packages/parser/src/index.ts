@@ -3,24 +3,18 @@ import ParserSubtitle from "srt-parser-2"
 import { cloneDeep, } from "lodash-es"
 import { LRUCache, } from "lru-cache"
 
-import {BlobTransformBlobUrl, UrlTransformSubtitle, workString, cancelSync, } from "./utils"
+import {BlobTransformBlobUrl, UrlTransformSubtitle, workString, } from "./utils"
 import ParserConfig from "./types"
 
 class Parser {
-    cache: LRUCache<string, string> = new LRUCache({
+    cache = new LRUCache<string, ParserConfig.LRUData>({
         max: 100,
         maxSize: 500,
-        sizeCalculation: (key: string, value: string) => {
-            let n = 0
-            const callback = () => {
-                // @ts-ignore
-                n = cancelSync.run(value) as number
-            }
-            cancelSync(callback)
-            return n
+        sizeCalculation: (value, key, ) => {
+            return value.source.size / (1024 * 1024)
         },
-        dispose(key: string, value: string) {
-            URL.revokeObjectURL(value)
+        dispose(value, key) {
+            URL.revokeObjectURL(value.url)
         },
     })
     subtitleCache: Map<string, ParserConfig.SubtitleData[]> = new Map()
@@ -106,8 +100,8 @@ class Parser {
         if (!options) return
         for (let i = 0; i < options.length; i++) {
             const audio = options[i]
-            if (this.cache.has(audio.audio)) {
-                audio.audio = this.cache.get(audio.audio) as string
+            if (this.cache.get(audio.audio)) {
+                audio.audio = this.cache.get(audio.audio)?.url as string
                 this.backgroundAudio.push(audio)
                 continue
             }
@@ -115,7 +109,10 @@ class Parser {
                 responseType: "blob",
             })
             const result = await BlobTransformBlobUrl(data)
-            this.cache.set(audio.audio, result)
+            this.cache.set(audio.audio, {
+                source: data,
+                url: result,
+            })
             audio.audio = result
             this.backgroundAudio.push(audio)
         }
@@ -150,12 +147,15 @@ class Parser {
     }
     async parserData(url: string): Promise<string> {
         const isLoaded = this.cache.has(url)
-        if (isLoaded) return this.cache.get(url) as string
+        if (isLoaded) return this.cache.get(url)?.url as string
         const { data, } = await axios.get(url, {
             responseType: "blob",
         })
         const result = await BlobTransformBlobUrl(data)
-        this.cache.set(url, result)
+        this.cache.set(url, {
+            source: data,
+            url: result,
+        })
         return result
     }
 
@@ -208,9 +208,9 @@ class Parser {
     }
     replaceFiber() {
         if (!this.playerFiber) return
-        this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url) as string
+        this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url)?.url as string
         if (this.playerFiber.sceneData.voice) {
-            this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio) as string
+            this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio)?.url as string
         }
         if (this.playerFiber.sceneData.subtitle) {
             this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
@@ -221,7 +221,6 @@ class Parser {
             const isMedia = this.cache.has(url)
             const isSubtitle = this.subtitleCache.has(url)
             if (isMedia) {
-                URL.revokeObjectURL(this.cache.get(url) as string)
                 this.cache.delete(url)
             }
             if (isSubtitle) {
@@ -235,9 +234,9 @@ class Parser {
         while (pointer) {
             if (!pointer.isLoaded) {
                 await this.parserFiber(pointer)
-                pointer.sceneData.movie.url = this.cache.get(pointer.sceneData.movie.url) as string
+                pointer.sceneData.movie.url = this.cache.get(pointer.sceneData.movie.url)?.url as string
                 if (pointer.sceneData.voice) {
-                    pointer.sceneData.voice.audio = this.cache.get(pointer.sceneData.voice.audio) as string
+                    pointer.sceneData.voice.audio = this.cache.get(pointer.sceneData.voice.audio)?.url as string
                 }
                 if (pointer.sceneData.subtitle) {
                     pointer.sceneData.subtitle.data = this.subtitleCache.get(pointer.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
