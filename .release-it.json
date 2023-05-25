@@ -4,7 +4,7 @@
         "token": "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"
     },
     "git": {
-        "commitMessage": "release: v${version}"
+        "commitMessage": "build: release v${version}"
     },
     "npm": {
         "publish": false
