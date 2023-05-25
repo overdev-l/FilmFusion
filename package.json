@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
@@ -8,7 +8,7 @@
     "lint-staged": "lint-staged",
     "dev": "turbo run dev",
     "ts-types": "turbo run ts-types",
-    "release": "release",
+    "release": "turbo run release",
     "test": "vitest"
   },
   "devDependencies": {
