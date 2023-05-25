@@ -8,4 +8,4 @@ logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
-.release-it.json
+.release-it*
