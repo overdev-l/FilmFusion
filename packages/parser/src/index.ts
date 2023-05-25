@@ -10,10 +10,10 @@ class Parser {
     cache = new LRUCache<string, ParserConfig.LRUData>({
         max: 100,
         maxSize: 500,
-        sizeCalculation: (value, key, ) => {
+        sizeCalculation: (value) => {
             return value.source.size / (1024 * 1024)
         },
-        dispose(value, key) {
+        dispose(value) {
             URL.revokeObjectURL(value.url)
         },
     })
