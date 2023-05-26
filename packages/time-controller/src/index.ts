@@ -106,4 +106,4 @@ class TimeController {
 }
 
 
-export { TimeController, }
+export { TimeController, TimeControllerConfig, }
