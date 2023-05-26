@@ -8,7 +8,7 @@
     "lint-staged": "lint-staged",
     "dev": "turbo run dev",
     "ts-types": "turbo run ts-types",
-    "release": "turbo run release",
+    "release": "release-it",
     "test": "vitest"
   },
   "devDependencies": {
