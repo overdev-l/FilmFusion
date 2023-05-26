@@ -1,5 +1,7 @@
 
 
+## [0.2.1](https://github.com/overdev-l/FilmFusion/compare/0.2.0...0.2.1) (2023-05-26)
+
 # 0.2.0 (2023-05-25)
 
 
