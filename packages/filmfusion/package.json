@@ -9,7 +9,7 @@
       "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "esbuild --bundle --format=esm --outfile=dist/index.esm.js src/index.ts && tsc --emitDeclarationOnly --outFile dist/types/index.d.ts"
   },
   "keywords": [
     "video",
