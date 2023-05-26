@@ -1,7 +1,6 @@
 {
     "github": {
-        "release": true,
-        "token": "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"
+        "release": false
     },
     "git": {
         "commitMessage": "build: release v${version}"
