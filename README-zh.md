@@ -65,5 +65,6 @@ git clone https://github.com/overdev-l/FilmFusion.git
 
 pnpm install
 
+pnpm ts-types
 pnpm dev
 ```
