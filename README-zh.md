@@ -22,25 +22,25 @@ import { Renderer, Parser, TimeController } from "film-fusion"
 
 function init() {
     // 渲染器
-    new Renderer({
+    const renderer = new Renderer({
         target: "#player",
         movieWidth: 1080,
         movieHeight: 1920,
         onSceneReady: () => {
             if (status.value) {
-                refs.timeController.play()
+                timeController.play()
             }
         }
     })
     // 解析器
-    new Parser({
+   const parser = new Parser({
         backgroundAudio: [...],
         scenes: [...],
         elements: [...],
         background: {...},
         firstLoaded: () =>{...},
     })
-    new TimeController({
+    const timeController = new TimeController({
         duration: scenes.reduce((pre: number,nex: scene) => pre + nex.duration,0),
         onTimeUpdate: (time: TimeControllerConfig.Options["onTimeUpdate"]) => {
             // time update
@@ -68,3 +68,9 @@ pnpm install
 pnpm ts-types
 pnpm dev
 ```
+
+## 📄 文档
+
+- [Parser](./packages/parser/src/types.ts)
+- [Renderer](./packages/renderer/src/types.ts)
+- [TimeController](./packages/time-controller/src/types.ts)
