@@ -1,7 +1,7 @@
 {
   "name": "film-fusion",
   "version": "0.0.1",
-  "description": "film fusion",
+  "description": "Quickly build WYSIWYG video editors",
   "main": "dis/index.esm.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
