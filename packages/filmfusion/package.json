@@ -6,7 +6,7 @@
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "files": [
-      "dist"
+    "dist"
   ],
   "scripts": {
     "build": "esbuild --bundle --format=esm --outfile=dist/index.esm.js src/index.ts && tsc --emitDeclarationOnly --outFile dist/types/index.d.ts"
@@ -16,5 +16,14 @@
     "player",
     "clip"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overdev-l/FilmFusion"
+  },
+  "author": "Liu yong zhi",
+  "bugs": {
+    "url": "https://github.com/overdev-l/FilmFusion/issues"
+  },
+  "homepage": "https://github.com/overdev-l/FilmFusion",
   "license": "ISC"
 }
