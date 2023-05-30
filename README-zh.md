@@ -69,7 +69,7 @@ pnpm ts-types
 pnpm dev
 ```
 
-## 📄 文档
+## 📄 数据结构
 
 - [Parser](./packages/parser/src/types.ts)
 - [Renderer](./packages/renderer/src/types.ts)
