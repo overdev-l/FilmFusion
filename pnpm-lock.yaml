@@ -75,21 +75,21 @@ importers:
 
   apps/vue-demo:
     dependencies:
+      '@film-fusion/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@film-fusion/generate':
         specifier: workspace:^
         version: link:../../packages/generate
       '@film-fusion/parser':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/parser
       '@film-fusion/renderer':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/renderer
       '@film-fusion/time-controller':
         specifier: workspace:^
         version: link:../../packages/time-controller
-      film-fusion:
-        specifier: workspace:^
-        version: link:../../packages/filmfusion
       jsoneditor:
         specifier: ^9.10.0
         version: 9.10.0
@@ -136,6 +136,18 @@ importers:
       vue-tsc:
         specifier: ^1.2.0
         version: 1.2.0(typescript@5.0.4)
+
+  packages/core:
+    dependencies:
+      '@film-fusion/parser':
+        specifier: workspace:^
+        version: link:../parser
+      '@film-fusion/renderer':
+        specifier: workspace:^
+        version: link:../renderer
+      '@film-fusion/time-controller':
+        specifier: workspace:^
+        version: link:../time-controller
 
   packages/filmfusion: {}
 

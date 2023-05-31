@@ -1,5 +1,5 @@
 {
-  "name": "film-fusion",
+  "name": "@film-fusion/core",
   "version": "0.0.2",
   "description": "Quickly build WYSIWYG video editors",
   "main": "dis/index.esm.js",
@@ -25,5 +25,10 @@
     "url": "https://github.com/overdev-l/FilmFusion/issues"
   },
   "homepage": "https://github.com/overdev-l/FilmFusion",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@film-fusion/parser": "workspace:^",
+    "@film-fusion/renderer": "workspace:^",
+    "@film-fusion/time-controller": "workspace:^"
+  }
 }

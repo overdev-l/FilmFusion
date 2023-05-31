@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@film-fusion/generate": "workspace:^",
-    "@film-fusion/parser": "workspace:*",
-    "@film-fusion/renderer": "workspace:*",
+    "@film-fusion/parser": "workspace:^",
+    "@film-fusion/renderer": "workspace:^",
     "@film-fusion/time-controller": "workspace:^",
-    "film-fusion": "workspace:^",
+    "@film-fusion/core": "workspace:^",
     "jsoneditor": "^9.10.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.27.0",

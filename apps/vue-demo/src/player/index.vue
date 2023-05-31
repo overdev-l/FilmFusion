@@ -97,9 +97,7 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { Renderer, RendererConfig } from '@film-fusion/renderer';
-import {Parser, ParserConfig} from "@film-fusion/parser"
-import { TimeController } from "@film-fusion/time-controller"
+import {Renderer, RendererConfig,Parser, ParserConfig,TimeController } from "@film-fusion/core"
 import { generate } from "@film-fusion/generate"
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
