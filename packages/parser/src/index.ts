@@ -11,7 +11,7 @@ class Parser {
         max: 100,
         maxSize: 500,
         sizeCalculation: (value) => {
-            return value.source.size / (1024 * 1024)
+            return Math.ceil(value.source.size / (1024 * 1024))
         },
         dispose(value) {
             URL.revokeObjectURL(value.url)

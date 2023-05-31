@@ -69,9 +69,17 @@ self.onmessage = async function(e) {
         type: type,
     }
     if (type === 1) {
-        result.data = URL.createObjectURL(await parserMedia(data))
+        const b = await parserMedia(data)
+        result.data = {
+            url: URL.createObjectURL(b),
+            source: b,
+        }
     } else {
-        result.data = await loadSubtitle(data)
+        const b = await loadSubtitle(data)
+        result.data = {
+            url: URL.createObjectURL(b),
+            source: b,
+        }
     }
     self.postMessage(result)
  }

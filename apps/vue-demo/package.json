@@ -13,6 +13,7 @@
     "@film-fusion/parser": "workspace:*",
     "@film-fusion/renderer": "workspace:*",
     "@film-fusion/time-controller": "workspace:^",
+    "film-fusion": "workspace:^",
     "jsoneditor": "^9.10.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.27.0",

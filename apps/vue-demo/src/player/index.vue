@@ -233,9 +233,6 @@ const removeElements = () => {
     const elementNames = refs.elementNames.split(",")
     refs.render.removeElements(elementNames)
 }
-const setBackgroundMusic = () => {
-    refs.render.setBackgroundAudios(refs.BackgroundMusicEditor.get())
-}
 
 const nextScene = async () => {
     console.log(await refs.parser.nextFiber())

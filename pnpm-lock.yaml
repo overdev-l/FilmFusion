@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -83,6 +87,9 @@ importers:
       '@film-fusion/time-controller':
         specifier: workspace:^
         version: link:../../packages/time-controller
+      film-fusion:
+        specifier: workspace:^
+        version: link:../../packages/filmfusion
       jsoneditor:
         specifier: ^9.10.0
         version: 9.10.0
@@ -130,6 +137,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(typescript@5.0.4)
 
+  packages/filmfusion: {}
+
   packages/generate:
     dependencies:
       '@ffmpeg/core':
@@ -165,8 +174,6 @@ importers:
         version: 4.17.7
 
   packages/renderer: {}
-
-  packages/scheduler: {}
 
   packages/time-controller: {}
 
