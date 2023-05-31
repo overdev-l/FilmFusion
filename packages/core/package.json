@@ -1,6 +1,6 @@
 {
   "name": "@film-fusion/core",
-  "private":"true",
+  "private": true,
   "version": "0.0.1",
   "description": "Quickly build WYSIWYG video editors",
   "main": "dis/index.esm.js",
