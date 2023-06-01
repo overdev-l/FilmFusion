@@ -21,7 +21,17 @@ class TimeController {
     renderPause: TimeControllerConfig.Options["pause"]
     nextFiber: TimeControllerConfig.Options["nextFiber"]
     constructor(options: TimeControllerConfig.Options) {
-        this.update(options)
+        this.totalDuration = options.duration
+        this.onTimeUpdate = options.onTimeUpdate
+        this.renderPlay = options.play
+        this.renderPause = options.pause
+        this.nextFiber = options.nextFiber
+        this.onTimeUpdate({
+            currentTime: this.currentTime,
+            currentDuration: this.currentDuration,
+            totalDuration: this.totalDuration,
+            totalTime: this.totalTime,
+        })
     }
     /**
      * @description 设置当前场景总时长
@@ -56,18 +66,11 @@ class TimeController {
             this.renderPause()
         })
     }
-    update(options: TimeControllerConfig.Options) {
-        this.totalDuration = options.duration
-        this.onTimeUpdate = options.onTimeUpdate
-        this.renderPlay = options.play
-        this.renderPause = options.pause
-        this.nextFiber = options.nextFiber
-        this.onTimeUpdate({
-            currentTime: this.currentTime,
-            currentDuration: this.currentDuration,
-            totalDuration: this.totalDuration,
-            totalTime: this.totalTime,
-        })
+    update(duration: number) {
+        this.totalDuration = duration
+        this.currentTime = 0
+        this.totalTime = 0
+        this.updateTime()
     }
 
     async next() {

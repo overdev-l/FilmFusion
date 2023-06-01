@@ -245,33 +245,8 @@ const timeControllerPause = () => {
 }
 
 const timeControllerReplay = () => {
-    refs.timeController.update({
-        duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
-        onTimeUpdate: (time: {currentTime: number, currentDuration: number,totalTime: number,totalDuration: number,}) => {
-            refs.currentTime = time.currentTime
-            refs.currentDuration = time.currentDuration
-            refs.totalTime = time.totalTime
-            refs.totalDuration = time.totalDuration
-            refs.progress = time.totalTime / time.totalDuration * 100
-            refs.render.setSceneSubtitle(time.currentTime)
-        },
-        nextFiber: async () => {
-            const fiber = await refs.parser.nextFiber()
-            refs.timeController.setCurrentTime(fiber.sceneData.duration)
-            refs.render.setMovie(fiber.sceneData)
-            if (fiber.isHead) {
-                refs.render.setBackground(fiber.background)
-                refs.render.setBackgroundAudios(fiber.backgroundAudio)
-                refs.render.addElements(fiber.elements)
-            }
-        },
-        play: () => {
-            refs.render.play()
-        },
-        pause: () => {
-            refs.render.pause()
-        },
-    })
+    refs.timeController.update(refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0))
+    refs.parser.resetHeadNode()
 }
 
 const generateVideo = async () => {
