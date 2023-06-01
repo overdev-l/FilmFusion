@@ -207,10 +207,11 @@ class Renderer {
             y: this.subtitleContainer.height() / 2,
         })
         this.subtitleLayer.add(this.subtitleGroup)
-        this.subtitleGroup.zIndex((this.subtitleConfig.position.z - 1) / 100)
+        const zIndex = (this.subtitleConfig.position.z - 1) / 100
+        this.subtitleGroup.zIndex(zIndex<0?0:zIndex)
     }
     drawSubtitle() {
-        this.subtitleLayer.destroyChildren()
+        this.subtitleLayer.removeChildren()
         this.subtitleText.fontSize(this.subtitleConfig.style.fontSize)
         this.subtitleText.fontFamily(this.subtitleConfig.style.fontFamily)
         this.subtitleText.fontStyle(
@@ -289,7 +290,7 @@ class Renderer {
     public setMovie(options: Omit<RendererConfig.SceneData, "subtile"> & {
         subtitle: ParserConfig.SceneData["subtitle"]
     }) {
-        this.movieLayer.destroyChildren()
+        this.movieLayer.removeChildren()
         this.setSourceStatus("movieReady", false)
         if (options.movie.type === 2) {
             this.mediaTarget = new Image()
@@ -359,7 +360,8 @@ class Renderer {
             this.setSourceStatus("subtitleReady", true)
         } else {
             this.subtitleConfig = defaultSubtitleStyle
-            this.subtitleLayer.destroyChildren()
+            this.subtitleLayer.removeChildren()
+            this.subtitleData = []
             this.setSourceStatus("subtitleReady", true)
         }
     }
@@ -451,7 +453,7 @@ class Renderer {
      * @param Cover.type 1. color 2. image
      */
     public setCover(cover: RendererConfig.Cover) {
-        this.coverLayer.destroyChildren()
+        this.coverLayer.removeChildren()
         if (cover.type === 1) {
             this.coverTarget = new Konva.Rect({
                 x: 0,

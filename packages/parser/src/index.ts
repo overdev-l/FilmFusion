@@ -2,18 +2,16 @@ import axios from "axios"
 import ParserSubtitle from "srt-parser-2"
 import { cloneDeep, } from "lodash-es"
 import { LRUCache, } from "lru-cache"
+import QuickLRU from "quick-lru"
+
 
 import {BlobTransformBlobUrl, UrlTransformSubtitle, workString, } from "./utils"
 import ParserConfig from "./types"
 
 class Parser {
-    cache = new LRUCache<string, ParserConfig.LRUData>({
-        max: 100,
+    cache = new QuickLRU<string, ParserConfig.LRUData>({
         maxSize: 500,
-        sizeCalculation: (value) => {
-            return Math.ceil(value.source.size / (1024 * 1024))
-        },
-        dispose(value) {
+        onEviction: (key, value) => {
             URL.revokeObjectURL(value.url)
         },
     })
