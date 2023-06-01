@@ -1,4 +1,4 @@
-import { Howl, } from "howler"
+import { Howl, Howler, } from "howler"
 import AudioConfig from "./audioTypes"
 class AudioElement {
     audios: {
@@ -6,10 +6,8 @@ class AudioElement {
         id?: number
     }[] = []
 
-    setAudios(options: AudioConfig.Options[], callback: () => void) {
-        this.audios.forEach(audio => {
-            audio.target.unload()
-        })
+    async setAudios(options: AudioConfig.Options[], callback: () => void) {
+        await Howler.unload()
         const ps = []
         for (let index = 0; index < options.length; index++) {
             const element = options[index]
@@ -35,9 +33,8 @@ class AudioElement {
             })
             ps.push(p)
         }
-        Promise.all(ps).then(() => {
-            callback()
-        })
+        await Promise.all(ps)
+        callback()
     }
     /**
      * setAudiosVolume

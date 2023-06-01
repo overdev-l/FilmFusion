@@ -171,11 +171,6 @@ const initParser = () => {
             const fiber = await refs.parser.nextFiber()
             refs.timeController.setCurrentTime(fiber.sceneData.duration)
             refs.render.setMovie(fiber.sceneData)
-            if (fiber.isHead) {
-                refs.render.setBackground(fiber.background)
-                refs.render.setBackgroundAudios(fiber.backgroundAudio)
-                refs.render.addElements(fiber.elements)
-            }
         },
         play: () => {
             refs.render.play()
@@ -247,6 +242,7 @@ const timeControllerPause = () => {
 const timeControllerReplay = () => {
     refs.timeController.update(refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0))
     refs.parser.resetHeadNode()
+    timeControllerPlay()
 }
 
 const generateVideo = async () => {

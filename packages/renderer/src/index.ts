@@ -287,7 +287,7 @@ class Renderer {
     /**
      * setMovie
      */
-    public setMovie(options: Omit<RendererConfig.SceneData, "subtile"> & {
+    public async setMovie(options: Omit<RendererConfig.SceneData, "subtile"> & {
         subtitle: ParserConfig.SceneData["subtitle"]
     }) {
         this.movieLayer.removeChildren()
@@ -343,10 +343,10 @@ class Renderer {
             }
         }
         if (options.voice) {
-            this.setVoiceAudio(options.voice)
+            await this.setVoiceAudio(options.voice)
         } else {
             this.setSourceStatus("movieReady", false)
-            this.voiceElements.setAudios([], () => {
+            await this.voiceElements.setAudios([], () => {
                 this.setSourceStatus("movieReady", true)
             })
         }
@@ -398,9 +398,10 @@ class Renderer {
      * setVoiceAudio
      * @param audio
      */
-    public setVoiceAudio(audio: AudioConfig.Options) {
+    public async setVoiceAudio(audio: AudioConfig.Options) {
+        console.log(audio, "voice")
         this.setSourceStatus("voiceMusicReady", false)
-        this.voiceElements.setAudios([audio,], () => {
+        await this.voiceElements.setAudios([audio,], () => {
             this.setSourceStatus("voiceMusicReady", true)
         })
     }
