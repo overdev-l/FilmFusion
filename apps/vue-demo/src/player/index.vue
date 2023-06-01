@@ -6,7 +6,7 @@
                     <div class="flex justify-between">
                         <Button label="Play" severity="help" icon="pi pi-play" raised rounded @click="timeControllerPlay" />
                         <Button label="Pause" severity="help" icon="pi pi-pause" raised rounded @click="timeControllerPause" />
-                        <Button label="Replay" severity="help" icon="pi pi-sync" raised rounded @click="timeControllerPause" />
+                        <Button label="Replay" severity="help" icon="pi pi-sync" raised rounded @click="timeControllerReplay" />
                     </div>
                     <div class="flex justify-between">
                         <Button label="Next Scenes" severity="help" icon="pi pi-sync" raised rounded @click="nextScene" />
@@ -242,6 +242,36 @@ const timeControllerPlay = () => {
 }
 const timeControllerPause = () => {
     refs.timeController.pause()
+}
+
+const timeControllerReplay = () => {
+    refs.timeController.update({
+        duration: refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0),
+        onTimeUpdate: (time: {currentTime: number, currentDuration: number,totalTime: number,totalDuration: number,}) => {
+            refs.currentTime = time.currentTime
+            refs.currentDuration = time.currentDuration
+            refs.totalTime = time.totalTime
+            refs.totalDuration = time.totalDuration
+            refs.progress = time.totalTime / time.totalDuration * 100
+            refs.render.setSceneSubtitle(time.currentTime)
+        },
+        nextFiber: async () => {
+            const fiber = await refs.parser.nextFiber()
+            refs.timeController.setCurrentTime(fiber.sceneData.duration)
+            refs.render.setMovie(fiber.sceneData)
+            if (fiber.isHead) {
+                refs.render.setBackground(fiber.background)
+                refs.render.setBackgroundAudios(fiber.backgroundAudio)
+                refs.render.addElements(fiber.elements)
+            }
+        },
+        play: () => {
+            refs.render.play()
+        },
+        pause: () => {
+            refs.render.pause()
+        },
+    })
 }
 
 const generateVideo = async () => {
