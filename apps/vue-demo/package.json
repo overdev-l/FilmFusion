@@ -9,16 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@film-fusion/generate": "workspace:^",
-    "@film-fusion/parser": "workspace:^",
-    "@film-fusion/renderer": "workspace:^",
-    "@film-fusion/time-controller": "workspace:^",
     "@film-fusion/core": "workspace:^",
+    "hint.css": "^2.7.0",
     "jsoneditor": "^9.10.0",
+    "naive-ui": "^2.34.4",
     "primeicons": "^6.0.1",
     "primevue": "^3.27.0",
     "reset-css": "^5.0.1",
-    "vue": "^3.2.47"
+    "sass": "^1.62.1",
+    "scss": "^0.2.4",
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@types/jsoneditor": "^9.9.0",

@@ -1,7 +1,7 @@
 <template>
-<Player />
+  <routerView />
 </template>
 
 <script lang="ts" setup>
-import Player from './player/index.vue'
+
 </script>

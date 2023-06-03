@@ -7,7 +7,7 @@ class AudioElement {
     }[] = []
 
     async setAudios(options: AudioConfig.Options[], callback: () => void) {
-        await Howler.unload()
+
         const ps = []
         for (let index = 0; index < options.length; index++) {
             const element = options[index]
@@ -57,6 +57,10 @@ class AudioElement {
         this.audios.forEach((audio) => {
             audio.target.pause(audio.id)
         })
+    }
+
+    dispose() {
+        Howler.unload()
     }
 }
 

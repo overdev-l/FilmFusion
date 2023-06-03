@@ -5,3 +5,10 @@ html,body,#app {
   width: 100%;
   height: 100%
 }
+[class*="hint--"]:after {
+  background-image: linear-gradient(to right, #606c88 0%, #3f4c6b  51%, #606c88  100%) !important;
+  border-radius: 5px;
+}
+[class*="hint--"]:before {
+  opacity: 0 !important;
+}

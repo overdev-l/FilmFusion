@@ -290,6 +290,7 @@ class Renderer {
     public async setMovie(options: Omit<RendererConfig.SceneData, "subtile"> & {
         subtitle: ParserConfig.SceneData["subtitle"]
     }) {
+        this.pause()
         this.movieLayer.removeChildren()
         this.setSourceStatus("movieReady", false)
         if (options.movie.type === 2) {
@@ -359,13 +360,18 @@ class Renderer {
             this.drawSubtitle()
             this.setSourceStatus("subtitleReady", true)
         } else {
-            this.subtitleConfig = defaultSubtitleStyle
-            this.subtitleLayer.removeChildren()
-            this.subtitleData = []
+            this.clearSubtitle()
             this.setSourceStatus("subtitleReady", true)
         }
     }
-
+    /**
+     * @description 清除字幕
+     */
+    clearSubtitle() {
+        this.subtitleConfig = defaultSubtitleStyle
+        this.subtitleLayer.removeChildren()
+        this.subtitleData = []
+    }
     /**
      * setVideoVolume
      * @param volume
@@ -399,7 +405,6 @@ class Renderer {
      * @param audio
      */
     public async setVoiceAudio(audio: AudioConfig.Options) {
-        console.log(audio, "voice")
         this.setSourceStatus("voiceMusicReady", false)
         await this.voiceElements.setAudios([audio,], () => {
             this.setSourceStatus("voiceMusicReady", true)
@@ -430,6 +435,7 @@ class Renderer {
      * @param Background.type 1. color 2. image
      */
     public setBackground(background: RendererConfig.Background) {
+        console.log(background, "background")
         if (background.type === 1) {
             this.backgroundRect.fill(background.color as string)
             this.backgroundRect.alpha(background.alpha)
@@ -548,6 +554,17 @@ class Renderer {
             this.voiceElements.pause()
         }
         this.playerStatus = "pause"
+    }
+    public clear() {
+        this.pause()
+        this.movieLayer.removeChildren()
+        this.elementsLayer.removeChildren()
+        this.subtitleLayer.removeChildren()
+        this.coverLayer.removeChildren()
+        this.backgroundLayer.removeChildren()
+        this.backgroundElements.dispose()
+        this.voiceElements.dispose()
+        this.clearSubtitle()
     }
 }
 

@@ -267,6 +267,7 @@ class Parser {
             this.coroutineParserFiber(this.playerFiber.nextScene)
             const current = cloneDeep(this.playerFiber)
             this.playerFiber = this.playerFiber.nextScene
+            console.log(this.playerFiber, "====")
             return current
         }
         return null
@@ -277,7 +278,7 @@ class Parser {
     replaceFiber() {
         if (!this.playerFiber) return
         this.playerFiber.sceneData.movie.url = this.cache.get(this.playerFiber.sceneData.movie.url)?.url as string
-        if (this.playerFiber.sceneData.voice) {
+        if (this.playerFiber.sceneData.voice && !this.playerFiber.sceneData.voice.audio.startsWith("blob")) {
             this.playerFiber.sceneData.voice.audio = this.cache.get(this.playerFiber.sceneData.voice.audio)?.url as string
         }
         if (this.playerFiber.sceneData.subtitle) {

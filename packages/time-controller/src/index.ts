@@ -61,12 +61,14 @@ class TimeController {
         })
     }
     pause() {
+        console.log("timeCtx.suspend().pause")
         this.timeCtx.suspend().then(() => {
             this.playerStatus = 2
             this.renderPause()
         })
     }
     update(duration: number) {
+        this.pause()
         this.totalDuration = duration
         this.currentTime = 0
         this.totalTime = 0

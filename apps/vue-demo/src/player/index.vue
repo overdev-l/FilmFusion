@@ -173,19 +173,23 @@ const initParser = () => {
             refs.render.setMovie(fiber.sceneData)
         },
         play: () => {
+            console.log("play")
             refs.render.play()
         },
         pause: () => {
+            console.log("pause")
             refs.render.pause()
         },
     })
 }
 const firstRender = (fiber: ParserConfig.SceneFiber, background: any, elements: any, backgroundAudio: any) => {
-    refs.render.setBackground(background)
-    refs.render.setMovie(fiber.sceneData)
-    refs.render.setBackgroundAudios(backgroundAudio)
-    refs.render.addElements(elements)
-    refs.timeController.setCurrentTime(fiber.sceneData.duration)
+    setTimeout(() => {
+        refs.render.setBackground(background)
+        refs.render.setMovie(fiber.sceneData)
+        refs.render.setBackgroundAudios(backgroundAudio)
+        refs.render.addElements(elements)
+        refs.timeController.setCurrentTime(fiber.sceneData.duration)
+    })
 }
 window.addEventListener('resize', () => {
     refs.render.resize()
@@ -241,8 +245,10 @@ const timeControllerPause = () => {
 
 const timeControllerReplay = () => {
     refs.timeController.update(refs.ScenesEditor.get().reduce((pre: number,nex: any) => pre + nex.duration,0))
-    refs.parser.resetHeadNode()
-    timeControllerPlay()
+    refs.render.clear()
+    setTimeout(() => {
+        refs.parser.resetHeadNode()
+    })
 }
 
 const generateVideo = async () => {
