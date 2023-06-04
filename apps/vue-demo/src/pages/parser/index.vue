@@ -3,13 +3,22 @@ import Button from 'primevue/button'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
 import {onBeforeUnmount, onMounted, reactive} from "vue"
+import { ParserConfig } from "@film-fusion/core"
 
 import { ParserData } from "./types.ts"
-
+import { movieVideoData1920_1080_9s, movieVideo1920_1080_5000ms } from "../../assets/data/scene.ts"
+import { elementsData } from "../../assets/data/elements.ts"
+import { backgroundImageData } from "../../assets/data/background.ts"
+import { backgroundMusicData_122000ms } from "../../assets/data/bgAudio.ts"
 const data = reactive<ParserData.PageData>({
   sourceEditor: undefined,
   currentEditor: undefined,
   cacheEditor: undefined,
+})
+const parserConfig = reactive<Omit<ParserConfig.Options, "firstLoaded">>({
+  scenes: [movieVideoData1920_1080_9s, movieVideo1920_1080_5000ms],
+  background: backgroundImageData,
+  elements: elementsData,
 })
 onMounted(() => {
   initSourceJsonEditor()
