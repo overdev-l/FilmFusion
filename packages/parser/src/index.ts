@@ -104,7 +104,7 @@ class Parser {
     /**
      * @description 更新场景
      */
-    updateFiber(options: ParserConfig.Options) {
+    update(options: ParserConfig.Options) {
         // 初始化场景链表
         this.initFiber(options)
         this.playerFiber = this.sceneFiber

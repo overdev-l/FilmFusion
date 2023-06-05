@@ -10,6 +10,8 @@ import { movieVideoData1920_1080_9s, movieVideo1920_1080_5000ms } from "../../as
 import { elementsData } from "../../assets/data/elements.ts"
 import { backgroundImageData } from "../../assets/data/background.ts"
 import { backgroundMusicData_122000ms } from "../../assets/data/bgAudio.ts"
+
+
 const data = reactive<ParserData.PageData>({
   sourceEditor: undefined,
   currentEditor: undefined,
@@ -89,6 +91,11 @@ const nextNode = async () => {
 const getCache = () => {
   const cache = parserRef.value?.getAllCache()
   data.cacheEditor?.set(cache)
+}
+
+const update = () => {
+  const sourceData = data.sourceEditor?.get()
+  parserRef.value?.update(sourceData)
 }
 </script>
 
