@@ -85,6 +85,11 @@ const nextNode = async () => {
   currentData.scene = result
   data.currentEditor?.set(currentData)
 }
+
+const getCache = () => {
+  const cache = parserRef.value?.getAllCache()
+  data.cacheEditor?.set(cache)
+}
 </script>
 
 <template>
@@ -92,7 +97,7 @@ const nextNode = async () => {
   <div class="buttons">
     <Button label="Update" severity="help" raised rounded />
     <Button label="Next Node" severity="help" raised rounded @click="nextNode"/>
-    <Button label="Get cache" severity="help" raised rounded />
+    <Button label="Get cache" severity="help" raised rounded @click="getCache"/>
   </div>
   <div class="dataContainer">
     <div class="editor"/>

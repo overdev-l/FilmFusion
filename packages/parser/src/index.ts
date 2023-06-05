@@ -284,6 +284,17 @@ class Parser {
             this.playerFiber.sceneData.subtitle.data = this.subtitleCache.get(this.playerFiber.sceneData.subtitle.url) as ParserConfig.SubtitleData[]
         }
     }
+    getAllCache() {
+        const cache = []
+        const keys = this.cache.keys()
+        for (const item of keys) {
+            cache.push({
+                key: item,
+                value: this.cache.get(item),
+            })
+        }
+        return cache
+    }
     /**
      * @description 释放内存
      * @param urls 需要释放的资源
