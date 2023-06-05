@@ -331,6 +331,14 @@ class Parser {
         }
         return this.sceneFiber
     }
+
+    public resetNodes(): ParserConfig.SceneFiber {
+        this.playerFiber = this.sceneFiber
+        this.replaceFiber()
+        const current = cloneDeep(this.playerFiber)
+        current!.nextScene = null
+        return current as ParserConfig.SceneFiber
+    }
 }
 
 export {

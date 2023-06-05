@@ -97,14 +97,22 @@ const update = () => {
   const sourceData = data.sourceEditor?.get()
   parserRef.value?.update(sourceData)
 }
+
+const resetNodes = () => {
+  const result = parserRef.value?.resetNodes()
+  if (!result) return
+  currentData.scene = result
+  data.currentEditor?.set(currentData)
+}
 </script>
 
 <template>
 <div class="parserContainer">
   <div class="buttons">
-    <Button label="Update" severity="help" raised rounded />
+    <Button label="Update" severity="help" raised rounded @click="update"/>
     <Button label="Next Node" severity="help" raised rounded @click="nextNode"/>
     <Button label="Get cache" severity="help" raised rounded @click="getCache"/>
+    <Button label="Reset Nodes" severity="help" raised rounded @click="resetNodes"/>
   </div>
   <div class="dataContainer">
     <div class="editor"/>
