@@ -1,6 +1,6 @@
 // 背景音乐
-
-export const backgroundMusicData_122000ms = [
+import { AudioConfig, } from "@film-fusion/core"
+export const backgroundMusicData_122000ms:AudioConfig.Options[] = [
     {
         audio: "https://image.liuyongzhi.cn/video/backgroundMusic_122000ms.mp3",
         loop: true,
@@ -8,5 +8,6 @@ export const backgroundMusicData_122000ms = [
         endTime: 122000,
         volume: 100,
         mute: false,
+        id: "1",
     },
 ]

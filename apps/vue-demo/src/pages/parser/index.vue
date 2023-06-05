@@ -2,8 +2,8 @@
 import Button from 'primevue/button'
 import JSONEditor from 'jsoneditor'
 import 'jsoneditor/dist/jsoneditor.min.css'
-import {onBeforeUnmount, onMounted, reactive} from "vue"
-import { ParserConfig } from "@film-fusion/core"
+import {onBeforeUnmount, onMounted, reactive, ref} from "vue"
+import {AudioConfig, ElementConfig, Parser, ParserConfig, RendererConfig} from "@film-fusion/core"
 
 import { ParserData } from "./types.ts"
 import { movieVideoData1920_1080_9s, movieVideo1920_1080_5000ms } from "../../assets/data/scene.ts"
@@ -19,11 +19,20 @@ const parserConfig = reactive<Omit<ParserConfig.Options, "firstLoaded">>({
   scenes: [movieVideoData1920_1080_9s, movieVideo1920_1080_5000ms],
   background: backgroundImageData,
   elements: elementsData,
+  backgroundAudio: backgroundMusicData_122000ms,
 })
+const currentData = reactive<ParserData.CurrentData>({
+  background: undefined,
+  backgroundAudio: undefined,
+  elements: undefined,
+  scene: undefined
+})
+const parserRef = ref<Parser>()
 onMounted(() => {
   initSourceJsonEditor()
   initCurrentJsonEditor()
   initCacheJsonEditor()
+  initParse()
 })
 onBeforeUnmount(() => {
   data.sourceEditor?.destroy()
@@ -38,14 +47,14 @@ const initSourceJsonEditor = () => {
   const container = document.querySelector('.editor') as HTMLElement
   data.sourceEditor = new JSONEditor(container, {
     mode: 'code',
-  })
+  }, parserConfig)
 }/**
  * 初始化当前数据json编辑器
  */
 const initCurrentJsonEditor = () => {
   const container = document.querySelector('.currentData') as HTMLElement
   data.currentEditor = new JSONEditor(container, {
-    mode: 'preview',
+    mode: 'code',
   })
 }/**
  * 初始化缓存json编辑器
@@ -53,8 +62,28 @@ const initCurrentJsonEditor = () => {
 const initCacheJsonEditor = () => {
   const container = document.querySelector('.cacheData') as HTMLElement
   data.cacheEditor = new JSONEditor(container, {
-    mode: 'preview',
+    mode: 'code',
   })
+}
+
+const initParse = () => {
+  parserRef.value = new Parser({
+    ...parserConfig,
+    firstLoaded: firstLoad,
+  })
+}
+const firstLoad= (scene: ParserConfig.SceneFiber, background: RendererConfig.Background | undefined, elements: ElementConfig.ElementOptions[] | undefined, backgroundAudio: AudioConfig.Options[] | undefined) => {
+  currentData.scene = scene
+  currentData.background = background
+  currentData.elements = elements
+  currentData.backgroundAudio = backgroundAudio
+  data.currentEditor?.set(currentData)
+}
+const nextNode = async () => {
+  const result = await parserRef.value?.nextFiber()
+  if (!result) return
+  currentData.scene = result
+  data.currentEditor?.set(currentData)
 }
 </script>
 
@@ -62,7 +91,7 @@ const initCacheJsonEditor = () => {
 <div class="parserContainer">
   <div class="buttons">
     <Button label="Update" severity="help" raised rounded />
-    <Button label="Next Node" severity="help" raised rounded />
+    <Button label="Next Node" severity="help" raised rounded @click="nextNode"/>
     <Button label="Get cache" severity="help" raised rounded />
   </div>
   <div class="dataContainer">

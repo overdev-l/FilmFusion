@@ -36,7 +36,7 @@ class Parser {
 
     /**
      * @description 加载节点数据
-     * @param options 
+     * @param options
      */
     loadNodeData(options: Omit<ParserConfig.Options, "firstLoaded">) {
         const promiseAll: Promise<any>[] = []
@@ -53,7 +53,10 @@ class Parser {
 
         Promise.all(promiseAll).then(() => {
             this.replaceFiber()
-            this.firstLoaded(this.sceneFiber as ParserConfig.SceneFiber, this.background, this.elements, this.backgroundAudio)
+            if (!this.sceneFiber) return
+            const node = cloneDeep(this.sceneFiber)
+            node.nextScene = null
+            this.firstLoaded(node, this.background, this.elements, this.backgroundAudio)
             this.playerFiber = this.sceneFiber?.nextScene || null
             this.coroutineParserFiber(this.sceneFiber!.nextScene)
         })
@@ -61,7 +64,7 @@ class Parser {
 
     /**
      * @description 初始化场景
-     * @param options 
+     * @param options
      */
     initFiber(options: ParserConfig.Options) {
         let current: ParserConfig.SceneFiber | null = null
@@ -83,7 +86,7 @@ class Parser {
                         data: [],
                         url: options.scenes[i].subtitle!.url,
                     }: undefined,
-                    
+
                 },
                 nextScene: null,
             }
@@ -92,10 +95,6 @@ class Parser {
                 current = fiber
             } else {
                 current = fiber
-            }
-            if (fiber.isTail) {
-                // 循环链表
-                fiber.nextScene = this.sceneFiber
             }
             if (i === 0) {
                 this.sceneFiber = fiber
@@ -133,8 +132,8 @@ class Parser {
     }
     /**
      * @description 解析背景音乐
-     * @param options 
-     * @returns 
+     * @param options
+     * @returns
      */
     async parserBackgroundAudio(options: ParserConfig.Options["backgroundAudio"]) {
         this.backgroundAudio = []
@@ -160,8 +159,8 @@ class Parser {
     }
     /**
      * @description 解析背景
-     * @param options 
-     * @returns 
+     * @param options
+     * @returns
      */
     async parserBackground(options: ParserConfig.Options["background"]) {
         if (!options) return
@@ -171,8 +170,8 @@ class Parser {
     }
     /**
      * @description 解析元素
-     * @param options 
-     * @returns 
+     * @param options
+     * @returns
      */
     async parserElements(options: ParserConfig.Options["elements"]) {
         if (!options) return
@@ -199,8 +198,8 @@ class Parser {
     }
     /**
      * @description 解析资源
-     * @param url 
-     * @returns 
+     * @param url
+     * @returns
      */
     async parserData(url: string): Promise<string> {
         const isLoaded = this.cache.has(url)
@@ -258,7 +257,7 @@ class Parser {
     /**
      * @description 播放下一个场景
      */
-    async nextFiber() {
+    async nextFiber(): Promise<ParserConfig.SceneFiber | undefined> {
         if (this.playerFiber) {
             if (!this.playerFiber.isLoaded) {
                 await this.parserFiber(this.playerFiber)
@@ -266,11 +265,11 @@ class Parser {
             this.replaceFiber()
             this.coroutineParserFiber(this.playerFiber.nextScene)
             const current = cloneDeep(this.playerFiber)
+            current.nextScene = null
             this.playerFiber = this.playerFiber.nextScene
-            console.log(this.playerFiber, "====")
             return current
         }
-        return null
+        return undefined
     }
     /**
      * @description 替换当前场景的资源
